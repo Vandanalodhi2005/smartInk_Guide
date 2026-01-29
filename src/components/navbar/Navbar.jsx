@@ -1,0 +1,334 @@
+import { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
+
+const Navbar = () => {
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const { user, signOut, isAdmin } = useAuth();
+  const { getCartCount } = useCart();
+  const navigate = useNavigate();
+  const cartCount = getCartCount();
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showUserMenu]);
+
+  const handleSignOut = () => {
+    signOut();
+    setShowUserMenu(false);
+    navigate('/');
+  };
+
+  return (
+    <>
+      <nav className="navbar">
+        <div className="navbar-container">
+          <Link to="/" className="nav-logo">
+            <div className="logo-icon">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="4" fill="#0f3d91"/>
+                <path d="M12 14H28V26H12V14Z" fill="white" opacity="0.9"/>
+                <path d="M14 16H26V20H14V16Z" fill="#0f3d91"/>
+                <circle cx="20" cy="18" r="1.5" fill="white"/>
+                <rect x="16" y="22" width="8" height="2" rx="1" fill="white" opacity="0.7"/>
+              </svg>
+            </div>
+            <span className="logo-text">Prints Carts</span>
+          </Link>
+
+          <ul className="nav-links">
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/printers">Printers</Link></li>
+            <li><Link to="/ink-toner">Ink & Toner</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/faqs">FAQs</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+          </ul>
+
+          <div className="nav-icons">
+            <Link to="/cart" className="icon-btn cart-btn" aria-label="Shopping Cart">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 7H15L14 13H6L5 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="7.5" cy="16.5" r="1.5" fill="currentColor"/>
+                <circle cx="13.5" cy="16.5" r="1.5" fill="currentColor"/>
+                <path d="M3 5H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+            </Link>
+            <div className="user-menu-container" ref={menuRef}>
+              <button 
+                className="icon-btn user-btn" 
+                aria-label="User Account"
+                onClick={() => setShowUserMenu(!showUserMenu)}
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="10" cy="7" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              {showUserMenu && (
+                <div className="user-menu">
+                  {user ? (
+                    <>
+                      <div className="user-info">
+                        <div className="user-name">{user.name || user.email}</div>
+                        <div className="user-email">{user.email}</div>
+                      </div>
+                      <div className="user-menu-divider"></div>
+                      <Link to="/profile" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
+                        My Profile
+                      </Link>
+                      <Link to="/orders" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
+                        My Orders
+                      </Link>
+                      {isAdmin && (
+                        <Link to="/admin" className="user-menu-item admin-link" onClick={() => setShowUserMenu(false)}>
+                          Admin Dashboard
+                        </Link>
+                      )}
+                      <button className="user-menu-item sign-out" onClick={handleSignOut}>
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/signin" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
+                        Sign In
+                      </Link>
+                      <Link to="/signup" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
+                        Sign Up
+                      </Link>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <style>{`
+        .navbar {
+          background: #fff;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+        }
+
+        .navbar-container {
+          max-width: 1300px;
+          margin: 0 auto;
+          padding: 16px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .nav-logo {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          text-decoration: none;
+          transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover {
+          transform: scale(1.05);
+        }
+
+        .logo-icon {
+          display: flex;
+          align-items: center;
+        }
+
+        .logo-text {
+          font-size: 24px;
+          font-weight: 700;
+          color: #0f3d91;
+        }
+
+        .nav-links {
+          display: flex;
+          list-style: none;
+          gap: 32px;
+          margin: 0;
+          padding: 0;
+        }
+
+        .nav-links a {
+          text-decoration: none;
+          color: #333;
+          font-weight: 500;
+          transition: all 0.3s;
+          position: relative;
+        }
+
+        .nav-links a::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: #0f3d91;
+          transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+          color: #0f3d91;
+        }
+
+        .nav-links a:hover::after {
+          width: 100%;
+        }
+
+        .nav-icons {
+          display: flex;
+          gap: 16px;
+          align-items: center;
+        }
+
+        .icon-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: #333;
+          padding: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: color 0.3s;
+          text-decoration: none;
+          position: relative;
+        }
+
+        .icon-btn:hover {
+          color: #0f3d91;
+        }
+
+        .cart-btn {
+          position: relative;
+        }
+
+        .cart-badge {
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: #ef4444;
+          color: #fff;
+          font-size: 10px;
+          font-weight: 600;
+          padding: 2px 6px;
+          border-radius: 10px;
+          min-width: 18px;
+          text-align: center;
+          line-height: 1.4;
+        }
+
+        .user-menu-container {
+          position: relative;
+        }
+
+        .user-menu {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          min-width: 200px;
+          z-index: 1000;
+          animation: fadeInDown 0.3s ease-out;
+        }
+
+        .user-info {
+          padding: 16px;
+          border-bottom: 1px solid #e0e0e0;
+        }
+
+        .user-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 4px;
+        }
+
+        .user-email {
+          font-size: 12px;
+          color: #666;
+        }
+
+        .user-menu-divider {
+          height: 1px;
+          background: #e0e0e0;
+          margin: 8px 0;
+        }
+
+        .user-menu-item {
+          display: block;
+          padding: 12px 16px;
+          color: #333;
+          text-decoration: none;
+          font-size: 14px;
+          transition: background 0.3s;
+          border: none;
+          background: none;
+          width: 100%;
+          text-align: left;
+          cursor: pointer;
+        }
+
+        .user-menu-item:hover {
+          background: #f8f9fa;
+        }
+
+        .user-menu-item.admin-link {
+          color: #0f3d91;
+          font-weight: 600;
+        }
+
+        .user-menu-item.sign-out {
+          color: #ef4444;
+          border-top: 1px solid #e0e0e0;
+        }
+
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 900px) {
+          .nav-links {
+            display: none;
+          }
+        }
+      `}</style>
+    </>
+  );
+};
+
+export default Navbar;
+
