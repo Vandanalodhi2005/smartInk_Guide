@@ -95,8 +95,8 @@ const InkToner = () => {
     }
   ];
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
+  const filteredProducts = selectedCategory === 'all'
+    ? products
     : products.filter(p => p.category === selectedCategory);
 
   return (
@@ -106,7 +106,7 @@ const InkToner = () => {
         <div className="ink-toner-container">
           <h1 className="page-title">Ink & Toner</h1>
           <p className="page-subtitle">
-            Find genuine-quality ink and toner cartridges for your printer. Each product includes 
+            Find genuine-quality ink and toner cartridges for your printer. Each product includes
             detailed compatibility information to help you choose the right cartridge.
           </p>
 
@@ -131,11 +131,7 @@ const InkToner = () => {
               >
                 <div className="product-image">
                   <img src={product.image} alt={product.name} />
-                  {product.originalPrice && (
-                    <div className="discount-badge">
-                      {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
-                    </div>
-                  )}
+                  {/* Discount badge removed */}
                 </div>
                 <div className="product-info">
                   <h3>{product.name}</h3>
@@ -153,7 +149,7 @@ const InkToner = () => {
                       <span className="original-price">${product.originalPrice}</span>
                     )}
                   </div>
-                  <button 
+                  <button
                     className="add-to-cart-btn"
                     onClick={() => handleAddToCart(product)}
                   >
@@ -173,29 +169,29 @@ const InkToner = () => {
           <div className="compatibility-section">
             <h2>Find Compatible Cartridges</h2>
             <p>
-              Not sure which cartridge is right for your printer? Each product page includes 
-              detailed compatibility information based on manufacturer specifications. You can also 
+              Not sure which cartridge is right for your printer? Each product page includes
+              detailed compatibility information based on manufacturer specifications. You can also
               check your printer model on the product label or user manual.
             </p>
             <div className="compatibility-features">
               <div className="feature-item">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none"/>
-                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none" />
+                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span>Genuine Quality Products</span>
               </div>
               <div className="feature-item">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none"/>
-                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none" />
+                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span>Clear Compatibility Information</span>
               </div>
               <div className="feature-item">
                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none"/>
-                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none" />
+                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span>Manufacturer Specifications</span>
               </div>

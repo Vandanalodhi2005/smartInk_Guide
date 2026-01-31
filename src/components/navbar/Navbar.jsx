@@ -5,46 +5,54 @@ import { useCart } from '../../context/CartContext';
 
 const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut, isAdmin } = useAuth();
   const { getCartCount } = useCart();
   const navigate = useNavigate();
   const cartCount = getCartCount();
   const menuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setShowUserMenu(false);
       }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) && !event.target.closest('.mobile-toggle')) {
+        setIsMobileMenuOpen(false);
+      }
     };
 
-    if (showUserMenu) {
+    if (showUserMenu || isMobileMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showUserMenu]);
+  }, [showUserMenu, isMobileMenuOpen]);
 
   const handleSignOut = () => {
     signOut();
     setShowUserMenu(false);
+    setIsMobileMenuOpen(false);
     navigate('/');
   };
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <>
       <nav className="navbar">
         <div className="navbar-container">
-          <Link to="/" className="nav-logo">
+          <Link to="/" className="nav-logo" onClick={closeMobileMenu}>
             <div className="logo-icon">
               <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="4" fill="#0f3d91"/>
-                <path d="M12 14H28V26H12V14Z" fill="white" opacity="0.9"/>
-                <path d="M14 16H26V20H14V16Z" fill="#0f3d91"/>
-                <circle cx="20" cy="18" r="1.5" fill="white"/>
-                <rect x="16" y="22" width="8" height="2" rx="1" fill="white" opacity="0.7"/>
+                <rect width="40" height="40" rx="4" fill="#0f3d91" />
+                <path d="M12 14H28V26H12V14Z" fill="white" opacity="0.9" />
+                <path d="M14 16H26V20H14V16Z" fill="#0f3d91" />
+                <circle cx="20" cy="18" r="1.5" fill="white" />
+                <rect x="16" y="22" width="8" height="2" rx="1" fill="white" opacity="0.7" />
               </svg>
             </div>
             <span className="logo-text">Prints Carts</span>
@@ -62,22 +70,22 @@ const Navbar = () => {
           <div className="nav-icons">
             <Link to="/cart" className="icon-btn cart-btn" aria-label="Shopping Cart">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 7H15L14 13H6L5 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="7.5" cy="16.5" r="1.5" fill="currentColor"/>
-                <circle cx="13.5" cy="16.5" r="1.5" fill="currentColor"/>
-                <path d="M3 5H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M5 7H15L14 13H6L5 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="7.5" cy="16.5" r="1.5" fill="currentColor" />
+                <circle cx="13.5" cy="16.5" r="1.5" fill="currentColor" />
+                <path d="M3 5H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </Link>
             <div className="user-menu-container" ref={menuRef}>
-              <button 
-                className="icon-btn user-btn" 
+              <button
+                className="icon-btn user-btn"
                 aria-label="User Account"
                 onClick={() => setShowUserMenu(!showUserMenu)}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="7" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="10" cy="7" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
               {showUserMenu && (
@@ -96,7 +104,7 @@ const Navbar = () => {
                         My Orders
                       </Link>
                       {isAdmin && (
-                        <Link to="/admin" className="user-menu-item admin-link" onClick={() => setShowUserMenu(false)}>
+                        <Link to="/dashboard" className="user-menu-item admin-link" onClick={() => setShowUserMenu(false)}>
                           Admin Dashboard
                         </Link>
                       )}
@@ -117,7 +125,37 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+            <button
+              className="icon-btn mobile-toggle"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+              )}
+            </button>
           </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`} ref={mobileMenuRef}>
+          <ul className="mobile-nav-links">
+            <li><Link to="/" onClick={closeMobileMenu}>Home</Link></li>
+            <li><Link to="/printers" onClick={closeMobileMenu}>Printers</Link></li>
+            <li><Link to="/ink-toner" onClick={closeMobileMenu}>Ink & Toner</Link></li>
+            <li><Link to="/about" onClick={closeMobileMenu}>About Us</Link></li>
+            <li><Link to="/faqs" onClick={closeMobileMenu}>FAQs</Link></li>
+            <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
+          </ul>
         </div>
       </nav>
 
@@ -129,7 +167,8 @@ const Navbar = () => {
           top: 0;
           left: 0;
           right: 0;
-          z-index: 1000;
+          z-index: 9999;
+          width: 100%;
         }
 
         .navbar-container {
@@ -324,6 +363,59 @@ const Navbar = () => {
           .nav-links {
             display: none;
           }
+
+          .mobile-toggle {
+            display: flex;
+          }
+
+          .mobile-menu {
+            display: block;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+            border-top: 1px solid #f0f0f0;
+            z-index: 10000;
+          }
+
+          .mobile-menu.open {
+            max-height: 400px;
+          }
+
+          .mobile-nav-links {
+            list-style: none;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+          }
+
+          .mobile-nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 16px;
+            display: block;
+            padding: 8px 0;
+          }
+
+          .mobile-nav-links a:hover {
+            color: #0f3d91;
+          }
+        }
+
+        .mobile-toggle {
+          display: none;
+        }
+
+        .mobile-menu {
+          display: none;
         }
       `}</style>
     </>

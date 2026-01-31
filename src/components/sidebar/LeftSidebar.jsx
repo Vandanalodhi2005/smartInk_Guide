@@ -7,7 +7,7 @@ const LeftSidebar = () => {
         <div className="offer-card">
           <img src="https://i.imgur.com/2nCt3Sbl.jpg" alt="HP Printer" />
           <p>HP LaserJet Pro</p>
-          <span>Flat 15% OFF</span>
+          <span>Special Deal</span>
         </div>
 
         <h3>Categories</h3>

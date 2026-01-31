@@ -238,7 +238,7 @@ const Printers = () => {
 
     // Category filter
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(p => 
+      filtered = filtered.filter(p =>
         p.category === selectedCategory || p.subcategory === selectedCategory
       );
     }
@@ -253,7 +253,7 @@ const Printers = () => {
     }
 
     // Price range filter
-    filtered = filtered.filter(p => 
+    filtered = filtered.filter(p =>
       p.price >= priceRange.min && p.price <= priceRange.max
     );
 
@@ -303,7 +303,7 @@ const Printers = () => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    
+
     return (
       <>
         {'★'.repeat(fullStars)}
@@ -320,7 +320,7 @@ const Printers = () => {
         <div className="printers-container">
           <h1 className="page-title">Printers</h1>
           <p className="page-subtitle">
-            Find the perfect printer for your home or office. Browse our selection of reliable printers 
+            Find the perfect printer for your home or office. Browse our selection of reliable printers
             with clear compatibility information and detailed specifications.
           </p>
 
@@ -334,8 +334,8 @@ const Printers = () => {
               className="search-input"
             />
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="search-icon">
-              <path d="M9 16C12.866 16 16 12.866 16 9C16 5.13401 12.866 2 9 2C5.13401 2 2 5.13401 2 9C2 12.866 5.13401 16 9 16Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M18 18L14 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M9 16C12.866 16 16 12.866 16 9C16 5.13401 12.866 2 9 2C5.13401 2 2 5.13401 2 9C2 12.866 5.13401 16 9 16Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M18 18L14 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
 
@@ -355,12 +355,12 @@ const Printers = () => {
             </div>
 
             <div className="filters-right">
-              <button 
+              <button
                 className="filter-toggle-btn"
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 5H17M5 10H15M7 15H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M3 5H17M5 10H15M7 15H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
                 Filters
               </button>
@@ -419,11 +419,7 @@ const Printers = () => {
                 <div className="printer-image">
                   <img src={printer.image} alt={printer.name} />
                   <div className="printer-badge">Best Seller</div>
-                  {printer.originalPrice && (
-                    <div className="discount-badge">
-                      {Math.round((1 - printer.price / printer.originalPrice) * 100)}% OFF
-                    </div>
-                  )}
+                  {/* Discount badge removed */}
                   {!printer.inStock && (
                     <div className="out-of-stock-badge">Out of Stock</div>
                   )}
@@ -461,7 +457,7 @@ const Printers = () => {
                     )}
                   </div>
                   <div className="printer-actions">
-                    <button 
+                    <button
                       className="add-to-cart-btn"
                       onClick={() => handleAddToCart(printer)}
                       disabled={!printer.inStock}
@@ -478,8 +474,8 @@ const Printers = () => {
           {filteredAndSortedPrinters.length === 0 && (
             <div className="no-products">
               <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                <circle cx="32" cy="32" r="30" stroke="#e0e0e0" strokeWidth="2"/>
-                <path d="M32 20V32M32 36H32.01" stroke="#e0e0e0" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="32" cy="32" r="30" stroke="#e0e0e0" strokeWidth="2" />
+                <path d="M32 20V32M32 36H32.01" stroke="#e0e0e0" strokeWidth="2" strokeLinecap="round" />
               </svg>
               <h3>No printers found</h3>
               <p>Try adjusting your filters or search query</p>
@@ -492,26 +488,26 @@ const Printers = () => {
             <div className="info-grid">
               <div className="info-card">
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-                  <path d="M24 12L28 20H36L29 26L32 34L24 28L16 34L19 26L12 20H20L24 12Z" fill="#0f3d91"/>
+                  <rect width="48" height="48" rx="8" fill="#e0f2fe" />
+                  <path d="M24 12L28 20H36L29 26L32 34L24 28L16 34L19 26L12 20H20L24 12Z" fill="#0f3d91" />
                 </svg>
                 <h3>Genuine Quality</h3>
                 <p>All printers are genuine, original equipment from trusted manufacturers.</p>
               </div>
               <div className="info-card">
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-                  <path d="M24 16C20.69 16 18 18.69 18 22V26C18 29.31 20.69 32 24 32C27.31 32 30 29.31 30 26V22C30 18.69 27.31 16 24 16Z" fill="#0f3d91"/>
+                  <rect width="48" height="48" rx="8" fill="#e0f2fe" />
+                  <path d="M24 16C20.69 16 18 18.69 18 22V26C18 29.31 20.69 32 24 32C27.31 32 30 29.31 30 26V22C30 18.69 27.31 16 24 16Z" fill="#0f3d91" />
                 </svg>
                 <h3>Clear Compatibility</h3>
                 <p>Detailed compatibility information for all printer models and cartridges.</p>
               </div>
               <div className="info-card">
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-                  <path d="M16 20H32V22H16V20Z" fill="#0f3d91"/>
-                  <path d="M16 24H28V26H16V24Z" fill="#0f3d91"/>
-                  <path d="M20 28H32V30H20V28Z" fill="#0f3d91"/>
+                  <rect width="48" height="48" rx="8" fill="#e0f2fe" />
+                  <path d="M16 20H32V22H16V20Z" fill="#0f3d91" />
+                  <path d="M16 24H28V26H16V24Z" fill="#0f3d91" />
+                  <path d="M20 28H32V30H20V28Z" fill="#0f3d91" />
                 </svg>
                 <h3>Fast Shipping</h3>
                 <p>Quick and reliable delivery across the United States and Canada.</p>
