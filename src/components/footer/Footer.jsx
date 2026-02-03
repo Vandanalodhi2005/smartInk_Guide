@@ -1,95 +1,64 @@
 import { Link } from 'react-router-dom';
+import './Footer.css';
 
 const Footer = () => {
   return (
-    <>
-      <footer className="footer-minimal">
-        <div className="footer-minimal-container">
-          <div className="footer-minimal-content">
-            <div className="footer-left">
-              <span className="footer-copyright">
-                &copy; {new Date().getFullYear()} Prints Carts. All rights reserved.
-              </span>
-            </div>
-            <div className="footer-right">
-              <Link to="/printers">Printers</Link>
-              <span className="separator">|</span>
-              <Link to="/ink-toner">Ink & Toner</Link>
-              <span className="separator">|</span>
-              <Link to="/faqs">FAQs</Link>
-              <span className="separator">|</span>
-              <Link to="/contact">Contact</Link>
-            </div>
+    <footer className="footer-enhanced">
+      <div className="footer-container">
+        <div className="footer-content">
+          {/* Company Info */}
+          <div className="footer-section">
+            <h3 className="footer-heading">Prints Carts</h3>
+            <p className="footer-description">
+              Your trusted source for printers, ink, toner, and printing supplies.
+              We're committed to providing quality products with transparent service.
+            </p>
+            <p className="footer-copyright">
+              &copy; {new Date().getFullYear()} Prints Carts. All rights reserved.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div className="footer-section">
+            <h4 className="footer-section-title">Quick Links</h4>
+            <ul className="footer-links">
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/faqs">FAQs</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
+              <li><Link to="/printers">Shop Printers</Link></li>
+              <li><Link to="/ink-toner">Ink & Toner</Link></li>
+            </ul>
+          </div>
+
+          {/* Policies */}
+          <div className="footer-section">
+            <h4 className="footer-section-title">Policies</h4>
+            <ul className="footer-links">
+              <li><Link to="/shipping-policy">Shipping Policy</Link></li>
+              <li><Link to="/refund-return-policy">Returns & Refunds</Link></li>
+              <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+              <li><Link to="/terms-conditions">Terms & Conditions</Link></li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div className="footer-section">
+            <h4 className="footer-section-title">Legal</h4>
+            <ul className="footer-links">
+              <li><Link to="/cookie-policy">Cookie Policy</Link></li>
+              <li><Link to="/do-not-sell">Do Not Sell</Link></li>
+              <li><Link to="/accessibility">Accessibility</Link></li>
+              <li><Link to="/disclaimer">Disclaimer</Link></li>
+            </ul>
           </div>
         </div>
-      </footer>
 
-      <style>{`
-        .footer-minimal {
-          background: linear-gradient(135deg, #0f3d91, #0b2c66);
-          color: #fff;
-          padding: 24px 20px;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-minimal-container {
-          max-width: 1300px;
-          margin: 0 auto;
-        }
-
-        .footer-minimal-content {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 20px;
-        }
-
-        .footer-left {
-          display: flex;
-          align-items: center;
-        }
-
-        .footer-copyright {
-          font-size: 14px;
-          color: rgba(255, 255, 255, 0.9);
-        }
-
-        .footer-right {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-
-        .footer-right a {
-          font-size: 14px;
-          color: rgba(255, 255, 255, 0.9);
-          text-decoration: none;
-          transition: color 0.3s ease;
-        }
-
-        .footer-right a:hover {
-          color: #fff;
-        }
-
-        .separator {
-          color: rgba(255, 255, 255, 0.5);
-          font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-          .footer-minimal-content {
-            flex-direction: column;
-            text-align: center;
-          }
-
-          .footer-right {
-            justify-content: center;
-          }
-        }
-      `}</style>
-    </>
+        {/* Bottom Bar */}
+        <div className="footer-bottom">
+          <p>Made with care for our customers | Independent Retailer</p>
+        </div>
+      </div>
+    </footer>
   );
 };
 

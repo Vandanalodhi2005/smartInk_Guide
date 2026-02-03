@@ -1,28 +1,27 @@
+import React from 'react';
 import Navbar from "../components/navbar/Navbar";
-import Hero from "../components/hero/Hero";
-import FeatureIcons from "../components/sections/FeatureIcons";
-import AboutSection from "../components/sections/AboutSection";
-import WhyChooseUs from "../components/sections/WhyChooseUs";
+import HomeHero from "../components/home/HomeHero/HomeHero";
+import HomeAbout from "../components/home/HomeAbout/HomeAbout";
+import HomeWhyChoose from "../components/home/HomeWhyChoose/HomeWhyChoose";
 import ShopByCategory from "../components/sections/ShopByCategory";
-import Commitment from "../components/sections/Commitment";
-import Values from "../components/sections/Values";
-import CTA from "../components/sections/CTA";
-import ImportantNotice from "../components/sections/ImportantNotice";
+import HomeCommitment from "../components/home/HomeCommitment/HomeCommitment";
+import HomeValues from "../components/home/HomeValues/HomeValues";
+import HomePeaceOfMind from "../components/home/HomePeaceOfMind/HomePeaceOfMind";
+import HomeNotice from "../components/home/HomeNotice/HomeNotice";
 import Footer from "../components/footer/Footer";
 
 const Home = () => {
   return (
     <>
       <Navbar />
-      <Hero />
-      <FeatureIcons />
-      <AboutSection />
-      <WhyChooseUs />
+      <HomeHero />
+      <HomeAbout />
+      <HomeWhyChoose />
       <ShopByCategory />
-      <Commitment />
-      <Values />
-      <CTA />
-      <ImportantNotice />
+      <HomeCommitment />
+      <HomeValues />
+      <HomePeaceOfMind />
+      <HomeNotice />
       <Footer />
     </>
   );

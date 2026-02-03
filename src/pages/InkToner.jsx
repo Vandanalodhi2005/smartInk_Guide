@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useCart } from '../context/CartContext';
@@ -149,12 +150,15 @@ const InkToner = () => {
                       <span className="original-price">${product.originalPrice}</span>
                     )}
                   </div>
-                  <button
-                    className="add-to-cart-btn"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
+                  <div className="product-actions">
+                    <button
+                      className="add-to-cart-btn"
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Add to Cart
+                    </button>
+                    <Link to={`/ink-toner/${product.id}`} className="view-details-btn-sm">View Details</Link>
+                  </div>
                 </div>
               </div>
             ))}

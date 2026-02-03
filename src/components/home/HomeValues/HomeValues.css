@@ -1,0 +1,75 @@
+.home-values {
+    padding: 100px 20px;
+    background: #fff;
+}
+
+.values-container {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.home-values .section-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #0f3d91;
+    margin-bottom: 60px;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.value-card {
+    padding: 40px;
+    background: #f8faff;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(15, 61, 145, 0.08);
+}
+
+.value-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.value-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.value-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+}
+
+.value-details {
+    margin-top: 12px !important;
+    font-size: 13px !important;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.value-card.independence {
+    grid-column: span 1;
+}
+
+@media (max-width: 768px) {
+    .home-values {
+        padding: 60px 20px;
+    }
+}

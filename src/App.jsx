@@ -9,9 +9,18 @@ import Home from "./pages/Home";
 import FAQs from "./pages/FAQs";
 import Contact from "./pages/Contact";
 import ShippingPolicy from "./pages/ShippingPolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
+import CookiePolicy from "./pages/CookiePolicy";
+import DoNotSell from "./pages/DoNotSell";
+import Accessibility from "./pages/Accessibility";
+import Disclaimer from "./pages/Disclaimer";
 import Printers from "./pages/Printers";
 import InkToner from "./pages/InkToner";
 import AboutUs from "./pages/AboutUs";
+import ProductDetails from "./pages/ProductDetails";
+import BrowsePrinters from "./pages/BrowsePrinters";
+import RefundReturnPolicy from "./pages/RefundReturnPolicy";
 
 // Auth pages
 import SignIn from "./pages/SignIn";
@@ -41,11 +50,21 @@ function App() {
             {/* Public */}
             <Route path="/" element={<Home />} />
             <Route path="/printers" element={<Printers />} />
+            <Route path="/printers/:id" element={<ProductDetails />} />
+            <Route path="/browse-printers" element={<BrowsePrinters />} />
             <Route path="/ink-toner" element={<InkToner />} />
+            <Route path="/ink-toner/:id" element={<ProductDetails />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/refund-return-policy" element={<RefundReturnPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-conditions" element={<TermsConditions />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/do-not-sell" element={<DoNotSell />} />
+            <Route path="/accessibility" element={<Accessibility />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
 
             {/* Auth */}
             <Route path="/signin" element={<SignIn />} />

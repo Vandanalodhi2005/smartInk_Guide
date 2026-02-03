@@ -1,0 +1,39 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './HomeAbout.css';
+
+const HomeAbout = () => {
+    return (
+        <section className="home-about">
+            <div className="home-about-container">
+                <div className="home-about-content">
+                    <h2 className="section-subtitle">About Prints Carts</h2>
+                    <h3 className="section-title">Your Trusted Online Destination for Printing Essentials</h3>
+                    <p>
+                        Prints Carts is an independent online retail platform offering a broad range of printers,
+                        genuine-quality ink and toner cartridges, and essential printing supplies. We focus on
+                        accuracy, transparency, and customer satisfaction—helping you choose the right products with confidence.
+                    </p>
+                    <p>
+                        Our goal is to make everyday printing easier for homes, small offices, students, and businesses.
+                        Whether you’re upgrading your printer or restocking supplies, we provide a straightforward
+                        shopping experience designed around clarity, trust, and convenience.
+                    </p>
+                    <Link to="/about" className="btn-secondary">Learn More About Us</Link>
+                </div>
+                <div className="home-about-image">
+                    <img
+                        src="https://images.unsplash.com/photo-1591405351990-4726e331f141?w=800"
+                        alt="Printing supplies and office setup"
+                    />
+                    <div className="experience-badge">
+                        <span className="years">Reliable</span>
+                        <span className="text">Service</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default HomeAbout;

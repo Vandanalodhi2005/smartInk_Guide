@@ -1,19 +1,21 @@
+import { Link } from 'react-router-dom';
+
 const ShopByCategory = () => {
   const categories = [
     {
       image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400",
       title: "Printers",
-      link: "#printers"
+      link: "/browse-printers"
     },
     {
       image: "https://images.unsplash.com/photo-1606756790136-261ff86dd101?w=400",
       title: "Ink Cartridges",
-      link: "#ink"
+      link: "/ink-toner"
     },
     {
       image: "https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400",
       title: "Toner & Supplies",
-      link: "#toner"
+      link: "/ink-toner"
     }
   ];
 
@@ -30,7 +32,7 @@ const ShopByCategory = () => {
                 </div>
                 <div className="category-content">
                   <h3>{category.title}</h3>
-                  <a href={category.link} className="category-btn">Shop Now</a>
+                  <Link to={category.link} className="category-btn">Shop Now</Link>
                 </div>
               </div>
             ))}

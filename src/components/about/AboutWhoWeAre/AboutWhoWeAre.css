@@ -1,0 +1,18 @@
+.who-we-are {
+    margin-bottom: 80px;
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.who-we-are h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f3d91;
+    margin: 0 0 24px 0;
+}
+
+.who-we-are p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin: 0 0 20px 0;
+}
