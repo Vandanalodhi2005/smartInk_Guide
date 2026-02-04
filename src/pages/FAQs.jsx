@@ -14,6 +14,7 @@ const FAQs = () => {
   const [openItems, setOpenItems] = useState({});
 
   const tabs = [
+    { id: 'all', label: 'All' },
     { id: 'products', label: 'Product & Compatibility' },
     { id: 'ordering', label: 'Ordering & Payments' },
     { id: 'shipping', label: 'Shipping & Delivery' },
@@ -60,14 +61,27 @@ const FAQs = () => {
     ]
   };
 
+  const allFaqs = Object.values(faqData).flat();
+
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+    if (value.trim() !== '') {
+      setActiveTab('all');
+    } else {
+      setActiveTab('products');
+    }
+  };
+
   const toggleItem = (id) => {
     setOpenItems(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const filteredFaqs = (faqData[activeTab] || []).filter(item =>
-    item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.answer.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredFaqs = searchQuery.trim() !== ''
+    ? allFaqs.filter(item =>
+        item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.answer.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : (faqData[activeTab] || []);
 
   return (
     <>
@@ -75,7 +89,7 @@ const FAQs = () => {
       <div className="faqs-page">
         <div className="faqs-container">
           <FAQHero />
-          <FAQSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <FAQSearch searchQuery={searchQuery} setSearchQuery={handleSearchChange} />
           <FAQTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
           <FAQList faqs={filteredFaqs} openItems={openItems} toggleItem={toggleItem} />
           <FAQContact />

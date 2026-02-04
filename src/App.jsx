@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { FavoritesProvider } from "./context/FavoritesContext";
 
 import "./App.css";
 
@@ -21,6 +22,7 @@ import AboutUs from "./pages/AboutUs";
 import ProductDetails from "./pages/ProductDetails";
 import BrowsePrinters from "./pages/BrowsePrinters";
 import RefundReturnPolicy from "./pages/RefundReturnPolicy";
+import PolicyHub from "./pages/PolicyHub";
 
 // Auth pages
 import SignIn from "./pages/SignIn";
@@ -40,13 +42,17 @@ import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
 import Settings from "./pages/Settings";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import MyOrders from "./pages/MyOrders";
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Router>
-          <Routes>
+        <FavoritesProvider>
+          <Router>
+            <Routes>
             {/* Public */}
             <Route path="/" element={<Home />} />
             <Route path="/printers" element={<Printers />} />
@@ -57,6 +63,7 @@ function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/policies" element={<PolicyHub />} />
             <Route path="/shipping-policy" element={<ShippingPolicy />} />
             <Route path="/refund-return-policy" element={<RefundReturnPolicy />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -77,6 +84,10 @@ function App() {
 
             {/* User */}
             <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/orders" element={<MyOrders />} />
 
             {/* Admin */}
             <Route path="/admin" element={<AdminDashboard />} />
@@ -88,8 +99,7 @@ function App() {
               <Route path="settings" element={<Settings />} />
             </Route>
           </Routes>
-        </Router>
-      </CartProvider>
+        </Router>        </FavoritesProvider>      </CartProvider>
     </AuthProvider>
   );
 }

@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
+import { useFavorites } from '../context/useFavorites';
 import '../styles/pages.css';
 
 const Profile = () => {
@@ -11,7 +12,7 @@ const Profile = () => {
     const { addToCart } = useCart();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('profile');
-    const [profileImage, setProfileImage] = useState('https://i.pravatar.cc/150?u=' + (user?.email || 'user'));
+    const profileImage = 'https://i.pravatar.cc/150?u=' + (user?.email || 'user');
 
     // Edit state
     const [isEditing, setIsEditing] = useState(false);
@@ -21,6 +22,25 @@ const Profile = () => {
         phone: user?.phone || '+1 (555) 000-0000',
         address: user?.address || '123 Business Ave, Suite 100, New York, NY 10001'
     });
+
+    // Local UI state for favorites add-to-cart feedback
+    const [addedToCart, setAddedToCart] = useState({});
+
+    const { favorites, removeFavorite } = useFavorites();
+
+    const handleAddToCart = (item) => {
+        addToCart({ ...item, quantity: 1 });
+        setAddedToCart(prev => ({ ...prev, [item.id]: true }));
+        setTimeout(() => setAddedToCart(prev => {
+            const copy = { ...prev };
+            delete copy[item.id];
+            return copy;
+        }), 2000);
+    };
+
+    const handleManagePreferences = () => {
+        navigate('/settings');
+    };
 
     useEffect(() => {
         if (!user) {
@@ -72,12 +92,8 @@ const Profile = () => {
         }
     ];
 
-    // Mock Data for Favorites
-    const mockFavorites = [
-        { id: 101, name: 'Epson EcoTank L3210', price: 189, image: 'https://i.imgur.com/8N4NQXf.jpg' },
-        { id: 102, name: 'Brother HL-L2350DW', price: 145, image: 'https://i.imgur.com/vH1N9f4.jpg' },
-        { id: 103, name: 'Premium Glossy Photo Paper', price: 25, image: 'https://i.imgur.com/7YfN1Yx.jpg' }
-    ];
+    // Favorites will be sourced from FavoritesContext
+    // (persisted to localStorage by the provider)
 
     return (
         <>
@@ -217,14 +233,18 @@ const Profile = () => {
                                 <div style={{ marginTop: '40px' }}>
                                     <h3>Newsletter Subscription</h3>
                                     <p style={{ color: '#666', fontSize: '14px', marginBottom: '16px' }}>You are currently subscribed to all promotional emails.</p>
-                                    <button className="category-btn" style={{ padding: '8px 16px', fontSize: '14px' }}>Manage Preferences</button>
+                                    <button className="category-btn" style={{ padding: '8px 16px', fontSize: '14px' }} onClick={handleManagePreferences}>Manage Preferences</button>
                                 </div>
                             </div>
                         )}
 
                         {activeTab === 'orders' && (
                             <div className="profile-section">
-                                <h2>My Orders</h2>
+                                <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                                    <h2 style={{ margin: 0 }}>My Orders</h2>
+                                    <button className="category-btn" onClick={() => navigate('/my-orders')}>View All Orders</button>
+                                </div>
+
                                 <div className="orders-list">
                                     {mockOrders.map((order) => (
                                         <div key={order.id} className="order-card">
@@ -278,28 +298,32 @@ const Profile = () => {
                             <div className="profile-section">
                                 <h2>My Favorites</h2>
                                 <div className="favorites-grid">
-                                    {mockFavorites.map((item) => (
-                                        <div key={item.id} className="favorite-card">
-                                            <div className="fav-img-container">
-                                                <img src={item.image} alt={item.name} />
-                                                <button className="remove-fav-btn">
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                                    </svg>
-                                                </button>
+                                    {favorites.length === 0 ? (
+                                        <div className="text-sm text-gray-500">You have no favorites yet — add products using the heart icon.</div>
+                                    ) : (
+                                        favorites.map((item) => (
+                                            <div key={item.id} className="favorite-card">
+                                                <div className="fav-img-container">
+                                                    <img src={item.image} alt={item.name} />
+                                                    <button className="remove-fav-btn" onClick={() => removeFavorite(item.id)}>
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div className="fav-info">
+                                                    <h3>{item.name}</h3>
+                                                    <div className="fav-price">${item.price}</div>
+                                                    <button
+                                                        className="add-to-cart-sm add-to-cart-btn"
+                                                        onClick={() => handleAddToCart(item)}
+                                                    >
+                                                        {addedToCart[item.id] ? 'Added' : 'Add to Cart'}
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div className="fav-info">
-                                                <h3>{item.name}</h3>
-                                                <div className="fav-price">${item.price}</div>
-                                                <button
-                                                    className="add-to-cart-sm"
-                                                    onClick={() => addToCart({ ...item, quantity: 1 })}
-                                                >
-                                                    Add to Cart
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         )}
