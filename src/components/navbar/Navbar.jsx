@@ -1,17 +1,84 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { useCart } from '../../context/CartContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/actions/userActions';
+import axios from 'axios';
 
 const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user, signOut, isAdmin } = useAuth();
-  const { getCartCount } = useCart();
+  
+  // Search State
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  
+  const user = userInfo;
+  const isAdmin = userInfo && userInfo.isAdmin;
+
+  // Cart from Redux
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
+  const cartCount = cartItems.reduce((acc, item) => acc + Number(item.qty), 0);
+
   const navigate = useNavigate();
-  const cartCount = getCartCount();
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  const searchRef = useRef(null);
+  
+  // Search Logic
+  const handleSearchChange = async (e) => {
+      const query = e.target.value;
+      setSearchQuery(query);
+
+      if (query.length >= 2) {
+          try {
+              const { data } = await axios.get(
+                  `${import.meta.env.VITE_API_URL}/products/search/suggestions`,
+                  { params: { q: query } }
+              );
+              setSuggestions(data);
+              setShowSuggestions(true);
+          } catch (error) {
+              console.error("Error fetching suggestions:", error);
+              setSuggestions([]);
+              setShowSuggestions(false);
+          }
+      } else {
+          setSuggestions([]);
+          setShowSuggestions(false);
+      }
+  };
+
+  const handleSearchSubmit = (e) => {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+          // Navigate to search results page (assuming /printers handles search or create /search route)
+          // For now, let's assume /printers?search=... or just stay on same page if implemented
+          // But smartEprinting uses: navigate(`/?search=${encodeURIComponent(searchQuery)}`);
+          // Let's implement similar:
+          navigate(`/printers?search=${encodeURIComponent(searchQuery)}`);
+          setIsSearchOpen(false);
+          setShowSuggestions(false);
+      }
+  };
+  
+    const handleSuggestionClick = (suggestion) => {
+        setIsSearchOpen(false);
+        setShowSuggestions(false);
+        setSearchQuery('');
+        
+        if (suggestion.slug) {
+            navigate(`/product/${suggestion.slug}`);
+        } else {
+            navigate(`/printers?search=${encodeURIComponent(suggestion.title)}`);
+        }
+    };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -21,19 +88,23 @@ const Navbar = () => {
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) && !event.target.closest('.mobile-toggle')) {
         setIsMobileMenuOpen(false);
       }
+      if (searchRef.current && !searchRef.current.contains(event.target) && !event.target.closest('.search-btn')) {
+          // Don't close immediately if clicking inside suggestion
+          // handled by click handlers
+      }
     };
 
-    if (showUserMenu || isMobileMenuOpen) {
+    if (showUserMenu || isMobileMenuOpen || isSearchOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showUserMenu, isMobileMenuOpen]);
+  }, [showUserMenu, isMobileMenuOpen, isSearchOpen]);
 
   const handleSignOut = () => {
-    signOut();
+    dispatch(logout());
     setShowUserMenu(false);
     setIsMobileMenuOpen(false);
     navigate('/');
@@ -61,14 +132,49 @@ const Navbar = () => {
           <ul className="nav-links">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/printers">Printers</Link></li>
-            <li><Link to="/browse-printers">Browse Printers</Link></li>
-            <li><Link to="/ink-toner">Ink & Toner</Link></li>
             <li><Link to="/about">About Us</Link></li>
             <li><Link to="/faqs">FAQs</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>
 
           <div className="nav-icons">
+             {/* Search Button */}
+             <div className="search-container" ref={searchRef}>
+                <button className="icon-btn search-btn" aria-label="Search" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </button>
+                
+                {isSearchOpen && (
+                    <div className="search-dropdown">
+                        <form onSubmit={handleSearchSubmit}>
+                            <input 
+                                type="text" 
+                                placeholder="Search products..." 
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                autoFocus
+                            />
+                            <button type="submit">Go</button>
+                        </form>
+                        {showSuggestions && suggestions.length > 0 && (
+                            <ul className="search-suggestions">
+                                {suggestions.map((s) => (
+                                    <li key={s._id} onClick={() => handleSuggestionClick(s)}>
+                                        <div className="suggestion-item">
+                                            {s.image && <img src={s.image.startsWith('http') ? s.image : `${import.meta.env.VITE_API_URL.replace('/api', '')}${s.image}`} alt="" />}
+                                            <span>{s.title}</span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                )}
+             </div>
+
             <Link to="/cart" className="icon-btn cart-btn" aria-label="Shopping Cart">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 7H15L14 13H6L5 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -152,8 +258,6 @@ const Navbar = () => {
           <ul className="mobile-nav-links">
             <li><Link to="/" onClick={closeMobileMenu}>Home</Link></li>
             <li><Link to="/printers" onClick={closeMobileMenu}>Printers</Link></li>
-            <li><Link to="/browse-printers" onClick={closeMobileMenu}>Browse Printers</Link></li>
-            <li><Link to="/ink-toner" onClick={closeMobileMenu}>Ink & Toner</Link></li>
             <li><Link to="/about" onClick={closeMobileMenu}>About Us</Link></li>
             <li><Link to="/faqs" onClick={closeMobileMenu}>FAQs</Link></li>
             <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
@@ -349,6 +453,99 @@ const Navbar = () => {
           color: #ef4444;
           border-top: 1px solid #e0e0e0;
         }
+        
+        /* Search Styles */
+        .search-container {
+            position: relative;
+        }
+        .search-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #374151; /* Dark gray */
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .search-btn:hover {
+            background-color: #f3f4f6;
+        }
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 300px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 12px;
+            z-index: 50;
+            border: 1px solid #e5e7eb;
+            margin-top: 8px;
+        }
+        .search-dropdown form {
+            display: flex;
+            gap: 8px;
+        }
+        .search-dropdown input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-dropdown input:focus {
+             border-color: #0f3d91;
+             box-shadow: 0 0 0 2px rgba(15, 61, 145, 0.1);
+        }
+        .search-dropdown button[type="submit"] {
+            background: #0f3d91;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .search-suggestions {
+            list-style: none;
+            margin: 10px 0 0 0;
+            padding: 0;
+            border-top: 1px solid #eee;
+        }
+        .search-suggestions li {
+            padding: 8px 4px;
+            cursor: pointer;
+            transition: background 0.1s;
+            border-bottom: 1px solid #f9fafb;
+        }
+        .search-suggestions li:last-child {
+            border-bottom: none;
+        }
+        .search-suggestions li:hover {
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .suggestion-item img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: #f9fafb;
+        }
+        .suggestion-item span {
+            font-size: 13px;
+            color: #374151;
+            font-weight: 500;
+            line-height: 1.2;
+        }
 
         @keyframes fadeInDown {
           from {
@@ -361,7 +558,16 @@ const Navbar = () => {
           }
         }
 
-        @media (max-width: 900px) {
+        /* Default states for mobile elements */
+        .mobile-toggle {
+          display: none;
+        }
+
+        .mobile-menu {
+          display: none;
+        }
+
+        @media (max-width: 1024px) {
           .nav-links {
             display: none;
           }
@@ -377,16 +583,18 @@ const Navbar = () => {
             left: 0;
             right: 0;
             background: #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             max-height: 0;
+            opacity: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-            border-top: 1px solid #f0f0f0;
+            transition: all 0.3s ease-in-out;
             z-index: 10000;
           }
 
           .mobile-menu.open {
             max-height: 400px;
+            opacity: 1;
+            border-top: 1px solid #f0f0f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           }
 
           .mobile-nav-links {
@@ -410,14 +618,6 @@ const Navbar = () => {
           .mobile-nav-links a:hover {
             color: #0f3d91;
           }
-        }
-
-        .mobile-toggle {
-          display: none;
-        }
-
-        .mobile-menu {
-          display: none;
         }
       `}</style>
     </>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, updateUserProfile } from '../redux/actions/userActions';
 import { useCart } from '../context/CartContext';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
@@ -8,9 +9,13 @@ import { useFavorites } from '../context/useFavorites';
 import '../styles/pages.css';
 
 const Profile = () => {
-    const { user, signOut } = useAuth();
-    const { addToCart } = useCart();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo: user } = userLogin;
+
+    const { addToCart } = useCart();
     const [activeTab, setActiveTab] = useState('profile');
     const profileImage = 'https://i.pravatar.cc/150?u=' + (user?.email || 'user');
 
@@ -45,13 +50,20 @@ const Profile = () => {
     useEffect(() => {
         if (!user) {
             navigate('/signin');
+        } else {
+            setFormData({
+                name: user.name || '',
+                email: user.email || '',
+                phone: '+1 (555) 000-0000',
+                address: '123 Business Ave, Suite 100, New York, NY 10001'
+            });
         }
     }, [user, navigate]);
 
     if (!user) return null;
 
     const handleSignOut = () => {
-        signOut();
+        dispatch(logout());
         navigate('/');
     };
 

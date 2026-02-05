@@ -1,70 +1,31 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { forgotPassword } from '../redux/actions/userActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import PageContainer from '../components/common/PageContainer';
 import '../styles/pages.css';
 
 const ForgotPassword = () => {
-  const [identifier, setIdentifier] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(null);
+  const [email, setEmail] = useState('');
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const validateEmail = (value) => /\S+@\S+\.\S+/.test(value);
-  const validatePhone = (value) => {
-    const digits = (value || '').replace(/\D/g, '');
-    return digits.length >= 7 && digits.length <= 15;
-  };
+  const userForgotPassword = useSelector((state) => state.userForgotPassword);
+  const { loading, error, success } = userForgotPassword;
 
-  const detectIdentifierType = (value) => {
-    if (validateEmail(value)) return 'email';
-    if (validatePhone(value)) return 'phone';
-    return null;
-  };
+  useEffect(() => {
+    if (success) {
+      navigate('/reset-password', { state: { email } });
+    }
+  }, [success, navigate, email]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    if (!identifier) {
-      setError('Please enter your email address or phone number.');
-      setLoading(false);
-      return;
-    }
-
-    const type = detectIdentifierType(identifier);
-    if (!type) {
-      setError('Please enter a valid email address or phone number.');
-      setLoading(false);
-      return;
-    }
-
-    const normalized =
-      type === 'phone'
-        ? identifier.replace(/\D/g, '')
-        : identifier.toLowerCase().trim();
-
-    const token =
-      Math.random().toString(36).slice(2, 10) +
-      Date.now().toString(36);
-
-    try {
-      localStorage.setItem(
-        `pwreset:${token}`,
-        JSON.stringify({
-          identifierType: type,
-          identifier: normalized,
-          token,
-          expires: Date.now() + 1000 * 60 * 60,
-        })
-      );
-      setSent({ token, identifier: normalized, type });
-    } catch {
-      setError('Failed to start reset process. Please try again.');
-    } finally {
-      setLoading(false);
+    if (email) {
+      dispatch(forgotPassword(email));
     }
   };
 
@@ -76,53 +37,38 @@ const ForgotPassword = () => {
           <div className="auth-card">
             <h1>Forgot password</h1>
             <p className="auth-subtitle">
-              Enter your email or phone number and we’ll send you a reset link.
+              Enter your email address and we’ll send you an OTP to reset your password.
             </p>
 
-            {error && <div className="error-message">{error}</div>}
-
-            {!sent ? (
-              <form onSubmit={handleSubmit} className="auth-form">
-                <div className="form-group">
-                  <label>Email or phone</label>
-                  <input
-                    value={identifier}
-                    onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="you@example.com or +1 555 555 5555"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="auth-submit-btn"
-                  disabled={loading}
-                >
-                  {loading ? 'Sending…' : 'Send reset link'}
-                </button>
-
-                <p className="auth-switch">
-                  Remembered your password? <Link to="/signin">Sign in</Link>
-                </p>
-              </form>
-            ) : (
-              <div className="success-box">
-                <h4>Reset link created</h4>
-                <p>
-                  A reset link was generated for{' '}
-                  <strong>{sent.identifier}</strong>.
-                </p>
-                <p className="hint">
-                  Demo mode only — normally sent via{' '}
-                  {sent.type === 'phone' ? 'SMS' : 'email'}.
-                </p>
-                <Link
-                  to={`/reset-password/${sent.token}`}
-                  className="reset-link"
-                >
-                  Open reset link
-                </Link>
-              </div>
+            {error && (
+              <div className="error-message">{error}</div>
             )}
+
+            <form onSubmit={handleSubmit} className="auth-form">
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="auth-submit-btn"
+                disabled={loading}
+              >
+                {loading ? 'Sending OTP...' : 'Send OTP'}
+              </button>
+
+              <div className="auth-switch">
+                Remembered your password? <Link to="/signin">Sign in</Link>
+              </div>
+            </form>
           </div>
         </div>
       </PageContainer>

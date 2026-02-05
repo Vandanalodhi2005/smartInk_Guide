@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../redux/actions/userActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import '../styles/pages.css';
@@ -8,35 +9,36 @@ import '../styles/pages.css';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const [isAdminLogin, setIsAdminLogin] = useState(false);
+  
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
 
-    try {
-      // Basic validation
-      if (!email || !password) {
-        setError('Please fill in all fields');
-        setLoading(false);
-        return;
-      }
+  const redirect = location.search ? location.search.split('=')[1] : null;
 
-      const result = signIn(email, password);
-      if (result.success) {
-        navigate('/');
-      } else {
-        setError('Invalid email or password');
-      }
-    } catch {
-      setError('An error occurred. Please try again.');
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (userInfo) {
+        if (redirect) {
+            navigate(`/${redirect}`);
+        } else if (userInfo.isAdmin) {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/');
+        }
     }
+  }, [userInfo, navigate, redirect]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+       return; 
+    }
+
+    dispatch(login(email, password, isAdminLogin));
   };
 
   return (
@@ -45,7 +47,7 @@ const SignIn = () => {
       <div className="auth-page">
         <div className="auth-container">
           <div className="auth-card">
-            <h1>Sign In</h1>
+            <h1>{isAdminLogin ? 'Admin Sign In' : 'Sign In'}</h1>
             <p className="auth-subtitle">Welcome back! Please sign in to your account.</p>
 
             {error && (
@@ -85,8 +87,12 @@ const SignIn = () => {
 
               <div className="form-options">
                 <label className="checkbox-label">
-                  <input type="checkbox" />
-                  <span>Remember me</span>
+                  <input 
+                      type="checkbox" 
+                      onChange={(e) => setIsAdminLogin(e.target.checked)}
+                      checked={isAdminLogin}
+                  />
+                  <span>Login as Admin</span>
                 </label>
                 <Link to="/forgot-password" className="forgot-link">Forgot Password?</Link>
               </div>
@@ -99,10 +105,15 @@ const SignIn = () => {
             <div className="auth-divider">
               <span>OR</span>
             </div>
+            
+             <center>
+             {!isAdminLogin ? (
+                <p>New customer? <Link to="/signup" className="text-indigo-600 font-semibold">Create an account</Link></p>
+             ) : (
+                <p>Not an admin? <span className="text-indigo-600 font-semibold cursor-pointer" onClick={() => setIsAdminLogin(false)}>User Login</span></p>
+             )}
+             </center>
 
-            <p className="auth-switch">
-              Don't have an account? <Link to="/signup">Sign Up</Link>
-            </p>
           </div>
         </div>
       </div>

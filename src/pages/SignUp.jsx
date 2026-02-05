@@ -1,55 +1,63 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendRegistrationOTP, verifyRegistrationOTP } from '../redux/actions/userActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import '../styles/pages.css';
 
 const SignUp = () => {
+  const [step, setStep] = useState(1); // 1: Details, 2: Verification
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { signUp } = useAuth();
+  const [otp, setOtp] = useState('');
+  
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const userSendOTP = useSelector((state) => state.userSendOTP);
+  const { loading: loadingSendOTP, error: errorSendOTP, success: successSendOTP } = userSendOTP;
+
+  const userVerifyOTP = useSelector((state) => state.userVerifyOTP);
+  const { loading: loadingVerifyOTP, error: errorVerifyOTP, success: successVerifyOTP } = userVerifyOTP;
+  
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo: userLoginInfo } = userLogin;
+
+  useEffect(() => {
+    if (userLoginInfo) {
+      navigate('/');
+    }
+  }, [navigate, userLoginInfo]);
+
+  useEffect(() => {
+    if (successSendOTP) {
+      setStep(2);
+    }
+  }, [successSendOTP]);
+
+  useEffect(() => {
+    if (successVerifyOTP) {
+      navigate('/signin?message=Verification successful. Please login.');
+    }
+  }, [successVerifyOTP, navigate]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
 
-    try {
-      // Validation
-      if (!name || !email || !password || !confirmPassword) {
-        setError('Please fill in all fields');
-        setLoading(false);
-        return;
-      }
-
+    if (step === 1) {
       if (password !== confirmPassword) {
-        setError('Passwords do not match');
-        setLoading(false);
+        alert('Passwords do not match');
         return;
       }
-
-      if (password.length < 6) {
-        setError('Password must be at least 6 characters');
-        setLoading(false);
-        return;
-      }
-
-      const result = signUp(name, email, password);
-      if (result.success) {
-        navigate('/');
-      } else {
-        setError('An error occurred. Please try again.');
-      }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
-    } finally {
-      setLoading(false);
+      const nameParts = name.trim().split(' ');
+      const firstName = nameParts[0];
+      const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+      dispatch(sendRegistrationOTP(firstName, lastName, email, password));
+    } else {
+      dispatch(verifyRegistrationOTP(email, otp));
     }
   };
 
@@ -59,77 +67,98 @@ const SignUp = () => {
       <div className="auth-page">
         <div className="auth-container">
           <div className="auth-card">
-            <h1>Sign Up</h1>
-            <p className="auth-subtitle">Create your account to start shopping.</p>
+            <h1>{step === 1 ? 'Sign Up' : 'Verify Email'}</h1>
+            <p className="auth-subtitle">
+              {step === 1 
+                ? 'Create your account to start shopping.' 
+                : `We've sent a verification code to ${email}`}
+            </p>
 
-            {error && (
+            {(errorSendOTP || errorVerifyOTP) && (
               <div className="error-message">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <circle cx="10" cy="10" r="9" fill="#ef4444"/>
                   <path d="M10 6V10M10 14H10.01" stroke="white" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
-                <span>{error}</span>
+                <span>{step === 1 ? errorSendOTP : errorVerifyOTP}</span>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="auth-form">
-              <div className="form-group">
-                <label htmlFor="name">Full Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your full name"
-                  required
-                />
-              </div>
+              {step === 1 ? (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="name">Full Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email Address</label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Create a password (min. 6 characters)"
-                  required
-                />
-              </div>
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      type="password"
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      required
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm your password"
-                  required
-                />
-              </div>
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm your password"
+                      required
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="form-group">
+                  <label htmlFor="otp">Verification Code</label>
+                  <input
+                    type="text"
+                    id="otp"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="Enter the 6-digit code"
+                    required
+                  />
+                  <button 
+                    type="button" 
+                    className="resend-link" 
+                    onClick={() => setStep(1)}
+                    style={{ background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', marginTop: '0.5rem', padding: 0, textDecoration: 'underline' }}
+                  >
+                    Change Email / Resend
+                  </button>
+                </div>
+              )}
 
-              <div className="form-options">
-                <label className="checkbox-label">
-                  <input type="checkbox" required />
-                  <span>I agree to the <Link to="/terms">Terms & Conditions</Link> and <Link to="/privacy">Privacy Policy</Link></span>
-                </label>
-              </div>
-
-              <button type="submit" className="auth-submit-btn" disabled={loading}>
-                {loading ? 'Creating Account...' : 'Sign Up'}
+              <button type="submit" className="auth-submit-btn" disabled={loadingSendOTP || loadingVerifyOTP}>
+                {loadingSendOTP || loadingVerifyOTP ? 'Processing...' : (step === 1 ? 'Sign Up' : 'Verify & Create Account')}
               </button>
             </form>
 
@@ -137,7 +166,7 @@ const SignUp = () => {
               <span>OR</span>
             </div>
 
-            <p className="auth-switch">
+            <p className="auth-redirect">
               Already have an account? <Link to="/signin">Sign In</Link>
             </p>
           </div>
@@ -149,4 +178,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
