@@ -7,7 +7,7 @@ import { addToCart } from '../redux/actions/cartActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useFavorites } from '../context/useFavorites';
-import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle } from "react-icons/fi";
+import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle, FiUser } from "react-icons/fi";
 import '../styles/pages.css';
 
 const Profile = () => {
@@ -22,7 +22,7 @@ const Profile = () => {
     const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
     const [activeTab, setActiveTab] = useState('profile');
-    const profileImage = 'https://i.pravatar.cc/150?u=' + (user?.email || 'user');
+    // const profileImage = 'https://i.pravatar.cc/150?u=' + (user?.email || 'user');
 
     // Edit state
     const [isEditing, setIsEditing] = useState(false);
@@ -109,7 +109,9 @@ const Profile = () => {
                     <aside className="profile-sidebar">
                         <div className="profile-user-summary">
                             <div className="profile-image-container">
-                                <img src={profileImage} alt="Profile" className="profile-image" />
+                                <div className="w-full h-full rounded-full border-4 border-slate-200 bg-slate-100 flex items-center justify-center text-slate-400">
+                                   <FiUser className="w-12 h-12" />
+                                </div>
                                 <button className="edit-avatar-btn" title="Change Avatar">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
