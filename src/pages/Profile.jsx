@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, updateUserProfile } from '../redux/actions/userActions';
-import { useCart } from '../context/CartContext';
+import { listMyOrders } from '../redux/actions/orderActions';
+import { addToCart } from '../redux/actions/cartActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useFavorites } from '../context/useFavorites';
+import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle } from "react-icons/fi";
 import '../styles/pages.css';
 
 const Profile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo: user } = userLogin;
 
-    const { addToCart } = useCart();
+    const orderListMy = useSelector((state) => state.orderListMy);
+    const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+
     const [activeTab, setActiveTab] = useState('profile');
     const profileImage = 'https://i.pravatar.cc/150?u=' + (user?.email || 'user');
 
@@ -28,13 +33,15 @@ const Profile = () => {
         address: user?.address || '123 Business Ave, Suite 100, New York, NY 10001'
     });
 
-    // Local UI state for favorites add-to-cart feedback
     const [addedToCart, setAddedToCart] = useState({});
 
     const { favorites, removeFavorite } = useFavorites();
 
     const handleAddToCart = (item) => {
-        addToCart({ ...item, quantity: 1 });
+        // Use either slug or id, assuming addToCart handles it (it expects idOrSlug)
+        // Check if item has slug, otherwise use id
+        dispatch(addToCart(item.slug || item.id, 1));
+        
         setAddedToCart(prev => ({ ...prev, [item.id]: true }));
         setTimeout(() => setAddedToCart(prev => {
             const copy = { ...prev };
@@ -57,8 +64,17 @@ const Profile = () => {
                 phone: '+1 (555) 000-0000',
                 address: '123 Business Ave, Suite 100, New York, NY 10001'
             });
+            // Check for passed state from Navbar
+            if (location.state?.activeTab) {
+                setActiveTab(location.state.activeTab);
+                // Clear the state so it doesn't get stuck if they click away and back
+                window.history.replaceState({}, document.title);
+            }
+
+            // ALWAYS dispatch fetch orders when on profile, or just when tab is active
+            dispatch(listMyOrders());
         }
-    }, [user, navigate]);
+    }, [user, navigate, dispatch, location]);
 
     if (!user) return null;
 
@@ -80,29 +96,6 @@ const Profile = () => {
         console.log('Profile updated:', formData);
     };
 
-    // Mock Data for Orders
-    const mockOrders = [
-        {
-            id: 'ORD-7721',
-            date: 'Oct 12, 2025',
-            status: 'shipped',
-            total: '$539.00',
-            trackingStep: 2, // 0: Ordered, 1: Processing, 2: Shipped, 3: Delivered
-            items: [
-                { id: 1, name: 'HP LaserJet Pro M404', price: '$539', image: 'https://i.imgur.com/2nCt3Sbl.jpg', qty: 1 }
-            ]
-        },
-        {
-            id: 'ORD-6540',
-            date: 'Sep 28, 2025',
-            status: 'delivered',
-            total: '$159.00',
-            trackingStep: 3,
-            items: [
-                { id: 2, name: 'Canon Pixma G3000', price: '$159', image: 'https://i.imgur.com/FYFZ5PZ.jpg', qty: 1 }
-            ]
-        }
-    ];
 
     // Favorites will be sourced from FavoritesContext
     // (persisted to localStorage by the provider)
@@ -254,55 +247,133 @@ const Profile = () => {
                             <div className="profile-section">
                                 <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                                     <h2 style={{ margin: 0 }}>My Orders</h2>
-                                    <button className="category-btn" onClick={() => navigate('/my-orders')}>View All Orders</button>
                                 </div>
-
-                                <div className="orders-list">
-                                    {mockOrders.map((order) => (
-                                        <div key={order.id} className="order-card">
-                                            <div className="order-header">
+                                
+                                {loadingOrders ? (
+                                    <div className="flex flex-col items-center justify-center py-20">
+                                        <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                                        <p className="text-slate-500 font-medium">Loading your orders...</p>
+                                    </div>
+                                ) : errorOrders ? (
+                                    <div className="bg-red-50 border border-red-100 rounded-2xl p-6 text-center">
+                                        <FiAlertCircle className="mx-auto text-red-500 text-3xl mb-2" />
+                                        <h3 className="text-red-800 font-bold text-lg mb-1">Error Loading Orders</h3>
+                                        <p className="text-red-600">{errorOrders}</p>
+                                        <button 
+                                            onClick={() => dispatch(listMyOrders())}
+                                            className="mt-4 px-6 py-2 bg-white border border-red-200 text-red-600 font-bold rounded-lg hover:bg-red-50 transition"
+                                        >
+                                            Try Again
+                                        </button>
+                                    </div>
+                                ) : orders && orders.length === 0 ? (
+                                    <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-sm">
+                                        <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                            <FiPackage className="text-slate-400 text-4xl" />
+                                        </div>
+                                        <h2 className="text-2xl font-bold text-slate-800 mb-2">No orders found</h2>
+                                        <p className="text-slate-500 mb-8 max-w-md mx-auto">Looks like you haven't bought anything from us yet.</p>
+                                        <Link 
+                                            to="/printers" 
+                                            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-200"
+                                        >
+                                            Start Shopping
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-6">
+                                    {orders.map((order) => (
+                                        <div
+                                        key={order._id}
+                                        className="rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all overflow-hidden group"
+                                        >
+                                        {/* Order Header */}
+                                        <div className="flex flex-wrap items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
                                                 <div>
-                                                    <span className="order-id">#{order.id}</span>
-                                                    <span className="order-date"> • {order.date}</span>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Order Placed</p>
+                                                <p className="text-sm font-bold text-slate-700">
+                                                    {new Date(order.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                                                </p>
                                                 </div>
-                                                <span className={`order-status ${order.status}`}>{order.status}</span>
+                                                <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total</p>
+                                                <p className="text-sm font-bold text-slate-900">${order.totalPrice.toFixed(2)}</p>
+                                                </div>
+                                                <div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Order #</p>
+                                                <p className="text-sm font-mono text-slate-600">{order._id.substring(order._id.length - 8).toUpperCase()}</p>
+                                                </div>
                                             </div>
 
-                                            <div className="order-items">
-                                                {order.items.map(item => (
-                                                    <div key={item.id} className="order-item">
-                                                        <img src={item.image} alt={item.name} className="order-item-img" />
-                                                        <div className="order-item-info">
-                                                            <h4>{item.name}</h4>
-                                                            <p>Quantity: {item.qty} • {item.price}</p>
+                                            <div className="mt-4 sm:mt-0 flex items-center gap-3">
+                                                {/* Status Badge */}
+                                                {order.isDelivered ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                                        <FiCheckCircle /> Delivered
+                                                    </span>
+                                                ) : order.isPaid ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                                        <FiTruck /> Processing
+                                                    </span>
+                                                ) : (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                                        <FiClock /> Pending
+                                                    </span>
+                                                )}
+                                                
+                                                {/* Details Button */}
+                                                <Link 
+                                                    to={`/order/${order._id}`}
+                                                    className="hidden sm:inline-block px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
+                                                >
+                                                    View Details
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                        {/* Order Body */}
+                                        <div className="p-6">
+                                            <div className="flex flex-col md:flex-row gap-6">
+                                            {/* Preview Items (First 2) */}
+                                            <div className="flex-1 space-y-4">
+                                                {order.orderItems.slice(0, 2).map((item, index) => (
+                                                    <div key={index} className="flex items-start gap-4">
+                                                        <div className="w-16 h-16 bg-white border border-slate-100 rounded-lg p-2 flex-shrink-0">
+                                                            <img 
+                                                                src={item.image.startsWith('http') ? item.image : `${import.meta.env.VITE_API_URL.replace('/api', '')}${item.image}`} 
+                                                                alt={item.name} 
+                                                                className="w-full h-full object-contain mix-blend-multiply"
+                                                            />
+                                                        </div>
+                                                        <div className='flex-1 min-w-0'>
+                                                            <Link to={`/product/${item.slug || item.product}`} className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-2">
+                                                                {item.name}
+                                                            </Link>
+                                                            <p className="text-xs text-slate-500 mt-1">Qty: {item.qty} × ${item.price}</p>
                                                         </div>
                                                     </div>
                                                 ))}
+                                                {order.orderItems.length > 2 && (
+                                                    <p className="text-xs text-slate-400 font-medium pl-20">+ {order.orderItems.length - 2} more items</p>
+                                                )}
                                             </div>
-
-                                            <div className="tracking-container">
-                                                <div className="tracking-bar">
-                                                    <div className={`tracking-step ${order.trackingStep >= 0 ? (order.trackingStep > 0 ? 'completed' : 'active') : ''}`}>
-                                                        <div className="step-circle">{order.trackingStep > 0 ? '✓' : ''}</div>
-                                                        <span className="step-label">Ordered</span>
-                                                    </div>
-                                                    <div className={`tracking-step ${order.trackingStep >= 1 ? (order.trackingStep > 1 ? 'completed' : 'active') : ''}`}>
-                                                        <div className="step-circle">{order.trackingStep > 1 ? '✓' : ''}</div>
-                                                        <span className="step-label">Processing</span>
-                                                    </div>
-                                                    <div className={`tracking-step ${order.trackingStep >= 2 ? (order.trackingStep > 2 ? 'completed' : 'active') : ''}`}>
-                                                        <div className="step-circle">{order.trackingStep > 2 ? '✓' : ''}</div>
-                                                        <span className="step-label">Shipped</span>
-                                                    </div>
-                                                    <div className={`tracking-step ${order.trackingStep >= 3 ? (order.trackingStep > 3 ? 'completed' : 'active') : ''}`}>
-                                                        <div className="step-circle">{order.trackingStep > 3 ? '✓' : ''}</div>
-                                                        <span className="step-label">Delivered</span>
-                                                    </div>
-                                                </div>
+                                            
+                                            {/* Mobile Details Button */}
+                                            <div className="sm:hidden mt-2">
+                                                    <Link 
+                                                        to={`/order/${order._id}`}
+                                                        className="w-full block text-center px-4 py-3 bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-100 transition-colors"
+                                                    >
+                                                        View Order Details
+                                                    </Link>
+                                            </div>
                                             </div>
                                         </div>
+                                        </div>
                                     ))}
-                                </div>
+                                    </div>
+                                )}
                             </div>
                         )}
 

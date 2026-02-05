@@ -5,6 +5,7 @@ import {
     CART_SAVE_PAYMENT_METHOD,
     CART_CLEAR_ITEMS,
 } from '../constants/cartConstants';
+import { USER_LOGOUT } from '../constants/userConstants';
 
 export const cartReducer = (
     state = { cartItems: [], shippingAddress: {} },
@@ -48,6 +49,13 @@ export const cartReducer = (
             return {
                 ...state,
                 cartItems: [],
+            };
+        case USER_LOGOUT:
+            localStorage.removeItem('cartItems'); // Clear from local storage
+            return {
+                ...state,
+                cartItems: [], // Clear state
+                shippingAddress: {} // Optional: clear shipping address too
             };
         default:
             return state;

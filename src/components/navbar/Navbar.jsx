@@ -225,7 +225,7 @@ const Navbar = () => {
                       <Link to="/profile" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
                         My Profile
                       </Link>
-                      <Link to="/myorders" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
+                      <Link to="/profile" state={{ activeTab: 'orders' }} className="user-menu-item" onClick={() => setShowUserMenu(false)}>
                         My Orders
                       </Link>
 
@@ -300,7 +300,7 @@ const Navbar = () => {
                               Admin Dashboard
                           </Link>
                        )}
-                       <Link to="/myorders" className="mobile-link" onClick={closeMobileMenu}>My Orders</Link>
+                       <Link to="/profile" state={{ activeTab: 'orders' }} className="mobile-link" onClick={closeMobileMenu}>My Orders</Link>
                        <button className="mobile-link logout-btn" onClick={handleSignOut}>Logout</button>
                    </div>
                 </>

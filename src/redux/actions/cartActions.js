@@ -7,6 +7,22 @@ import {
 } from '../constants/cartConstants';
 
 export const addToCart = (idOrSlug, qty) => async (dispatch, getState) => {
+    
+    // Check if user is logged in
+    const {
+        userLogin: { userInfo },
+    } = getState();
+
+    if (!userInfo) {
+        // Option 1: Alert the user (simple)
+        alert("Please sign in to add items to your cart.");
+        
+        // Option 2: Redirect to login (requires window.location since we are in Redux)
+        window.location.href = '/signin';
+        
+        return;
+    }
+
     const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products/${idOrSlug}`);
 
     dispatch({
