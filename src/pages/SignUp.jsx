@@ -40,7 +40,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (successVerifyOTP) {
-      navigate('/signin?message=Verification successful. Please login.');
+      navigate('/signin?message=Successfully Verified, Please Login');
     }
   }, [successVerifyOTP, navigate]);
 

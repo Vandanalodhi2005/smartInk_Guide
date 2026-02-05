@@ -185,36 +185,50 @@ const Navbar = () => {
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </Link>
             <div className="user-menu-container" ref={menuRef}>
-              <button
-                className="icon-btn user-btn"
-                aria-label="User Account"
-                onClick={() => setShowUserMenu(!showUserMenu)}
-              >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="7" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+              {user ? (
+                 <button className="user-profile-trigger" onClick={() => setShowUserMenu(!showUserMenu)}>
+                    <div className="user-avatar-circle">
+                       {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <span className="user-name-text">{user.name}</span>
+                 </button>
+              ) : (
+                <button
+                    className="icon-btn user-btn"
+                    aria-label="User Account"
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="7" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 17C5 14 7 12 10 12C13 12 15 14 15 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </button>
+              )}
+              
               {showUserMenu && (
                 <div className="user-menu">
                   {user ? (
                     <>
-                      <div className="user-info">
-                        <div className="user-name">{user.name || user.email}</div>
-                        <div className="user-email">{user.email}</div>
+                      <div className="user-menu-header">
+                        <p className="signed-in-label">Signed in as</p>
+                        <p className="signed-in-email">{user.email}</p>
                       </div>
+                      
                       <div className="user-menu-divider"></div>
-                      <Link to="/profile" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
-                        My Profile
-                      </Link>
-                      <Link to="/orders" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
-                        My Orders
-                      </Link>
+                      
                       {isAdmin && (
-                        <Link to="/dashboard" className="user-menu-item admin-link" onClick={() => setShowUserMenu(false)}>
+                        <Link to="/admin/dashboard" className="user-menu-item admin-link" onClick={() => setShowUserMenu(false)}>
                           Admin Dashboard
                         </Link>
                       )}
+                      
+                      <Link to="/profile" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
+                        My Profile
+                      </Link>
+                      <Link to="/myorders" className="user-menu-item" onClick={() => setShowUserMenu(false)}>
+                        My Orders
+                      </Link>
+
                       <button className="user-menu-item sign-out" onClick={handleSignOut}>
                         Sign Out
                       </button>
@@ -262,6 +276,41 @@ const Navbar = () => {
             <li><Link to="/faqs" onClick={closeMobileMenu}>FAQs</Link></li>
             <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
           </ul>
+
+          <div className="mobile-auth-section">
+             {user ? (
+                <>
+                   <Link to="/profile" className="mobile-user-header profile-link" onClick={closeMobileMenu}>
+                      <div className="user-avatar-circle small">
+                          {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      </div>
+                      <div className="mobile-user-details">
+                          <span className="mobile-user-name">{user.name}</span>
+                          <span className="mobile-user-email">{user.email}</span>
+                      </div>
+                      <div className="mobile-user-arrow">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="9 18 15 12 9 6"></polyline>
+                          </svg>
+                      </div>
+                   </Link>
+                   <div className="mobile-user-links">
+                       {isAdmin && (
+                          <Link to="/admin/dashboard" className="mobile-link admin" onClick={closeMobileMenu}>
+                              Admin Dashboard
+                          </Link>
+                       )}
+                       <Link to="/myorders" className="mobile-link" onClick={closeMobileMenu}>My Orders</Link>
+                       <button className="mobile-link logout-btn" onClick={handleSignOut}>Logout</button>
+                   </div>
+                </>
+             ) : (
+                <div className="mobile-auth-buttons">
+                    <Link to="/signin" className="mobile-auth-btn signin" onClick={closeMobileMenu}>Sign In</Link>
+                    <Link to="/signup" className="mobile-auth-btn signup" onClick={closeMobileMenu}>Sign Up</Link>
+                </div>
+             )}
+          </div>
         </div>
       </nav>
 
@@ -390,49 +439,89 @@ const Navbar = () => {
         .user-menu-container {
           position: relative;
         }
+        
+        /* New Profile Trigger Style */
+        .user-profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px 12px 4px 4px;
+            border-radius: 50px;
+            transition: background 0.2s;
+        }
+        .user-profile-trigger:hover {
+            background: #f3f4f6;
+        }
+        .user-avatar-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #0f3d91;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        .user-name-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4b5563;
+        }
 
         .user-menu {
           position: absolute;
-          top: calc(100% + 8px);
+          top: calc(100% + 12px);
           right: 0;
           background: #fff;
-          border-radius: 8px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-          min-width: 200px;
+          border-radius: 12px;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+          min-width: 220px;
           z-index: 1000;
-          animation: fadeInDown 0.3s ease-out;
+          border: 1px solid #f3f4f6;
+          padding: 8px 0;
+          animation: fadeInDown 0.2s ease-out;
         }
 
-        .user-info {
-          padding: 16px;
-          border-bottom: 1px solid #e0e0e0;
+        .user-menu-header {
+           padding: 12px 16px;
+           background-color: #f9fafb;
+           border-bottom: 1px solid #e5e7eb;
+           margin-bottom: 4px;
         }
-
-        .user-name {
-          font-size: 14px;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 4px;
+        .signed-in-label {
+           font-size: 11px;
+           color: #6b7280;
+           margin: 0;
         }
-
-        .user-email {
-          font-size: 12px;
-          color: #666;
+        .signed-in-email {
+           font-size: 13px;
+           font-weight: 600;
+           color: #1f2937;
+           margin: 0;
+           white-space: nowrap;
+           overflow: hidden;
+           text-overflow: ellipsis;
         }
 
         .user-menu-divider {
           height: 1px;
-          background: #e0e0e0;
-          margin: 8px 0;
+          background: #e5e7eb;
+          margin: 4px 0;
         }
 
         .user-menu-item {
           display: block;
-          padding: 12px 16px;
-          color: #333;
+          padding: 10px 16px;
+          color: #374151;
           text-decoration: none;
           font-size: 14px;
-          transition: background 0.3s;
+          transition: background 0.2s;
           border: none;
           background: none;
           width: 100%;
@@ -441,19 +530,126 @@ const Navbar = () => {
         }
 
         .user-menu-item:hover {
-          background: #f8f9fa;
+          background: #f3f4f6;
+          color: #111827;
         }
 
         .user-menu-item.admin-link {
           color: #0f3d91;
-          font-weight: 600;
+          font-weight: 700;
         }
 
         .user-menu-item.sign-out {
           color: #ef4444;
-          border-top: 1px solid #e0e0e0;
+          margin-top: 4px;
+          border-top: 1px solid #f3f4f6;
         }
         
+        /* Mobile Auth Section Styles */
+        .mobile-auth-section {
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+            background: #fcfcfc;
+        }
+        .mobile-user-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            text-decoration: none; /* Ensure Link doesn't have underline */
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .mobile-user-header:hover {
+            border-color: #0f3d91;
+            background: #fcfcfc;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .user-avatar-circle.small {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .mobile-user-details {
+            display: flex;
+            flex-direction: column;
+            flex: 1; /* Take remaining width */
+        }
+        .mobile-user-arrow {
+            color: #9ca3af;
+        }
+        .mobile-user-name {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 15px;
+        }
+        .mobile-user-email {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .mobile-user-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .mobile-link {
+            padding: 10px 12px;
+            font-size: 14px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+        .mobile-link:hover {
+            background: #f3f4f6;
+            color: #0f3d91;
+        }
+        .mobile-link.admin {
+            color: #0f3d91;
+            font-weight: 700;
+            background: #eff6ff;
+        }
+        .mobile-link.logout-btn {
+            background: none;
+            border: none;
+            text-align: left;
+            color: #ef4444;
+            cursor: pointer;
+            margin-top: 8px;
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+        }
+        
+        .mobile-auth-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .mobile-auth-btn {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .mobile-auth-btn.signin {
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+        }
+        .mobile-auth-btn.signup {
+            background: #0f3d91;
+            color: white;
+            border: 1px solid #0f3d91;
+        }
+
         /* Search Styles */
         .search-container {
             position: relative;
@@ -617,6 +813,11 @@ const Navbar = () => {
 
           .mobile-nav-links a:hover {
             color: #0f3d91;
+          }
+          
+          /* Hide desktop user menu on mobile */
+          .user-menu-container {
+             display: none;
           }
         }
       `}</style>

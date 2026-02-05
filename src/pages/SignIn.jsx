@@ -18,17 +18,34 @@ const SignIn = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
-  const redirect = location.search ? location.search.split('=')[1] : null;
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // Parse query params safely
+  const queryParams = new URLSearchParams(location.search);
+  const redirect = queryParams.get('redirect');
+  const messageParam = queryParams.get('message');
+
+  useEffect(() => {
+      if (messageParam) {
+          setSuccessMessage(messageParam);
+      }
+  }, [messageParam]);
 
   useEffect(() => {
     if (userInfo) {
-        if (redirect) {
-            navigate(`/${redirect}`);
-        } else if (userInfo.isAdmin) {
-          navigate('/admin/dashboard');
-        } else {
-          navigate('/');
-        }
+        setSuccessMessage('Logged In Successfully');
+        
+        const timer = setTimeout(() => {
+            if (redirect) {
+                navigate(`/${redirect}`);
+            } else if (userInfo.isAdmin) {
+              navigate('/admin/dashboard');
+            } else {
+              navigate('/');
+            }
+        }, 1500);
+        
+        return () => clearTimeout(timer);
     }
   }, [userInfo, navigate, redirect]);
 
@@ -49,6 +66,15 @@ const SignIn = () => {
           <div className="auth-card">
             <h1>{isAdminLogin ? 'Admin Sign In' : 'Sign In'}</h1>
             <p className="auth-subtitle">Welcome back! Please sign in to your account.</p>
+
+            {successMessage && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{successMessage}</span>
+              </div>
+            )}
 
             {error && (
               <div className="error-message">

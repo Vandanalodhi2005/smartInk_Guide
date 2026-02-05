@@ -13,6 +13,7 @@ import {
   PRODUCT_CREATE_REVIEW_RESET,
   PRODUCT_UPDATE_REVIEW_RESET // eslint-disable-line no-unused-vars
 } from "../redux/constants/productConstants";
+import { ShoppingCart, CreditCard } from 'lucide-react';
 
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
@@ -37,6 +38,9 @@ const ProductDetails = () => {
   const [comment, setComment] = useState("");
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  
+  // Toaster State
+  const [showLoginToast, setShowLoginToast] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -145,12 +149,22 @@ const ProductDetails = () => {
   const activeImgSrc = images[activeImageIndex];
 
   const handleAddToCart = () => {
+    if (!userInfo) {
+       setShowLoginToast(true);
+       setTimeout(() => setShowLoginToast(false), 3000);
+       return;
+    }
     dispatch(addToCart(product.slug || product._id, qty));
     // Optional feedback like smarteprinting redirect to cart
     navigate('/cart');
   };
 
   const buyNowHandler = () => {
+      if (!userInfo) {
+        setShowLoginToast(true);
+        setTimeout(() => setShowLoginToast(false), 3000);
+        return;
+      }
       dispatch(addToCart(product.slug || product._id, qty));
       navigate('/cart?redirect=shipping');
   };
@@ -165,6 +179,19 @@ const ProductDetails = () => {
   return (
     <>
       <Navbar />
+
+      {/* Login Toast Notification */}
+      {showLoginToast && (
+        <div className="fixed top-24 right-5 bg-red-600 text-white px-6 py-4 rounded-lg shadow-xl z-50 flex items-center gap-3 animate-fade-in-down">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <div>
+            <h4 className="font-bold">Access Denied</h4>
+            <p className="text-sm">Please login to add items to cart</p>
+          </div>
+        </div>
+      )}
 
       <div className="pd-wrapper">
         <div className="pd-layout">
@@ -255,6 +282,7 @@ const ProductDetails = () => {
                 onClick={handleAddToCart}
                 disabled={product.countInStock === 0}
               >
+                <ShoppingCart size={20} strokeWidth={2.5} />
                 {product.countInStock === 0 ? "OUT OF STOCK" : "ADD TO CART"}
               </button>
               <button 
@@ -262,6 +290,7 @@ const ProductDetails = () => {
                 disabled={product.countInStock === 0}
                 onClick={buyNowHandler}
               >
+                <CreditCard size={20} strokeWidth={2.5} />
                 BUY NOW
               </button>
             </div>
@@ -580,14 +609,59 @@ const ProductDetails = () => {
           .qty-controls button:disabled { color: #cbd5e1; cursor: not-allowed; }
           .qty-controls input { width: 60px; text-align: center; border: none; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; height: 44px; font-weight: 700; font-size: 16px; color: #0f172a; }
 
-          .actions { display: flex; gap: 16px; margin-bottom: 40px; }
-          .actions button { flex: 1; height: 56px; border-radius: 12px; font-weight: 800; font-size: 14px; letter-spacing: 1px; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s; text-transform: uppercase; }
-          .actions button:active { transform: scale(0.98); }
-          .btn-cart { background: #fff; border: 2px solid #0f3d91; color: #0f3d91; }
-          .btn-cart:hover { background: #f0f7ff; box-shadow: 0 4px 12px rgba(15, 61, 145, 0.1); }
-          .btn-buy { background: #0f3d91; border: none; color: white; shadow: 0 4px 12px rgba(15, 61, 145, 0.3); }
-          .btn-buy:hover { background: #0a2a66; box-shadow: 0 6px 16px rgba(15, 61, 145, 0.4); }
-          .btn-cart:disabled, .btn-buy:disabled { border-color: #e2e8f0; background: #f1f5f9; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+          .actions { display: flex; gap: 20px; margin-bottom: 40px; }
+          .actions button { 
+             flex: 1; 
+             height: 54px; 
+             border-radius: 16px; /* Increased rounding to match style */
+             font-weight: 800; /* Black font weight */
+             font-size: 13px; /* Slightly smaller for uppercase tracking */
+             letter-spacing: 1px; /* Widest tracking */
+             cursor: pointer; 
+             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+             text-transform: uppercase; 
+             display: flex; 
+             align-items: center; 
+             justify-content: center; 
+             gap: 12px; 
+             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          }
+          .actions button:active { transform: scale(0.95); }
+          
+          /* Dark Button (Add to Cart) */
+          .btn-cart { 
+             background: #1e293b; 
+             border: 1px solid #1e293b; 
+             color: white; 
+          }
+          .btn-cart:hover { 
+             background: #0f172a; 
+             border-color: #0f172a;
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+          }
+          
+          /* Brand Button (Buy Now) */
+          .btn-buy { 
+             background: #0f3d91; 
+             border: 1px solid #0f3d91; 
+             color: white; 
+             box-shadow: 0 4px 6px -1px rgba(15, 61, 145, 0.3); 
+          }
+          .btn-buy:hover { 
+             background: #0a2a66; 
+             border-color: #0a2a66; 
+             box-shadow: 0 10px 15px -3px rgba(15, 61, 145, 0.4), 0 4px 6px -2px rgba(15, 61, 145, 0.2); 
+             transform: translateY(-2px); 
+          }
+          
+          .btn-cart:disabled, .btn-buy:disabled { 
+             border-color: #f1f5f9; 
+             background: #f1f5f9; 
+             color: #cbd5e1; 
+             cursor: not-allowed; 
+             box-shadow: none; 
+             transform: none; 
+          }
 
           /* TABS */
           .tabs-container { margin-top: 80px; border-top: 1px solid #e2e8f0; padding-top: 40px; }

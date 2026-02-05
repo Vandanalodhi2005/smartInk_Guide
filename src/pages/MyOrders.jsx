@@ -1,180 +1,174 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { listMyOrders } from '../redux/actions/orderActions';
 import PageContainer from "../components/common/PageContainer";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
-import { FiPackage, FiTruck, FiCheckCircle } from "react-icons/fi";
-
-const statusStyles = {
-  shipped: "bg-indigo-100 text-indigo-700",
-  delivered: "bg-emerald-100 text-emerald-700",
-};
-
-const steps = [
-  { label: "Ordered", icon: <FiPackage /> },
-  { label: "Processing", icon: <FiPackage /> },
-  { label: "Shipped", icon: <FiTruck /> },
-  { label: "Delivered", icon: <FiCheckCircle /> },
-];
+import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle } from "react-icons/fi";
 
 const MyOrders = () => {
-  const mockOrders = [
-    {
-      id: "ORD-7721",
-      date: "Oct 12, 2025",
-      status: "shipped",
-      total: "$539.00",
-      trackingStep: 2,
-      items: [
-        {
-          id: 1,
-          name: "HP LaserJet Pro M404",
-          price: "$539",
-          image: "https://i.imgur.com/2nCt3Sbl.jpg",
-          qty: 1,
-        },
-      ],
-    },
-    {
-      id: "ORD-6540",
-      date: "Sep 28, 2025",
-      status: "delivered",
-      total: "$159.00",
-      trackingStep: 3,
-      items: [
-        {
-          id: 2,
-          name: "Canon Pixma G3000",
-          price: "$159",
-          image: "https://i.imgur.com/FYFZ5PZ.jpg",
-          qty: 1,
-        },
-      ],
-    },
-  ];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const orderListMy = useSelector((state) => state.orderListMy);
+  const { loading, error, orders } = orderListMy;
+
+  useEffect(() => {
+      if (!userInfo) {
+          navigate('/signin');
+      } else {
+          dispatch(listMyOrders());
+      }
+  }, [dispatch, navigate, userInfo]);
 
   return (
     <>
       <Navbar />
-      <PageContainer>
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-4xl font-extrabold text-gray-900">My Orders</h1>
-          <p className="text-gray-500 mt-2">
-            Track your recent purchases and order progress
-          </p>
-        </div>
+      <div className="bg-slate-50 min-h-screen pt-24 pb-12">
+        <PageContainer>
+          {/* Header */}
+          <div className="mb-10">
+            <h1 className="text-4xl font-extrabold text-slate-900">My Orders</h1>
+            <p className="text-slate-500 mt-2 text-lg">
+              Track your recent purchases and order progress
+            </p>
+          </div>
 
-        {/* Orders */}
-        <div className="space-y-8">
-          {mockOrders.map((order) => (
-            <div
-              key={order.id}
-              className="rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition"
-            >
-              {/* Order Header */}
-              <div className="flex flex-wrap items-center justify-between px-6 py-4 border-b">
-                <div>
-                  <p className="text-sm text-gray-500">Order ID</p>
-                  <p className="text-lg font-bold text-gray-800">
-                    {order.id}
-                    <span className="text-gray-400 font-medium">
-                      {" "}
-                      • {order.date}
-                    </span>
-                  </p>
-                </div>
-
-                <span
-                  className={`px-4 py-1.5 rounded-full text-xs font-semibold capitalize ${statusStyles[order.status]}`}
+          {loading ? (
+             <div className="flex flex-col items-center justify-center py-20">
+                 <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                 <p className="text-slate-500 font-medium">Loading your orders...</p>
+             </div>
+          ) : error ? (
+             <div className="bg-red-50 border border-red-100 rounded-2xl p-6 text-center">
+                 <FiAlertCircle className="mx-auto text-red-500 text-3xl mb-2" />
+                 <h3 className="text-red-800 font-bold text-lg mb-1">Error Loading Orders</h3>
+                 <p className="text-red-600">{error}</p>
+                 <button 
+                    onClick={() => dispatch(listMyOrders())}
+                    className="mt-4 px-6 py-2 bg-white border border-red-200 text-red-600 font-bold rounded-lg hover:bg-red-50 transition"
+                 >
+                    Try Again
+                 </button>
+             </div>
+          ) : orders && orders.length === 0 ? (
+             <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-sm">
+                 <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                     <FiPackage className="text-slate-400 text-4xl" />
+                 </div>
+                 <h2 className="text-2xl font-bold text-slate-800 mb-2">No orders found</h2>
+                 <p className="text-slate-500 mb-8 max-w-md mx-auto">Looks like you haven't bought anything from us yet. Browse our products and find something you love!</p>
+                 <Link 
+                    to="/printers" 
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-200"
+                 >
+                    Start Shopping
+                 </Link>
+             </div>
+          ) : (
+            /* Orders List */
+            <div className="space-y-6">
+              {orders.map((order) => (
+                <div
+                  key={order._id}
+                  className="rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all overflow-hidden group"
                 >
-                  {order.status}
-                </span>
-              </div>
-
-              {/* Body */}
-              <div className="grid md:grid-cols-3 gap-6 p-6">
-                {/* Items */}
-                <div className="space-y-4">
-                  {order.items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center gap-4"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-20 h-20 rounded-xl object-cover border"
-                      />
-                      <div>
-                        <p className="font-semibold text-gray-800">
-                          {item.name}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          Qty {item.qty} • {item.price}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Tracking */}
-                <div className="md:col-span-2">
-                  <p className="text-sm font-semibold text-gray-500 mb-4">
-                    Order Progress
-                  </p>
-
-                  <div className="grid grid-cols-4 gap-3">
-                    {steps.map((step, idx) => {
-                      const active = idx <= order.trackingStep;
-                      return (
-                        <div
-                          key={step.label}
-                          className={`rounded-xl p-3 text-center border transition ${
-                            active
-                              ? "bg-emerald-50 border-emerald-200"
-                              : "bg-gray-50 border-gray-200"
-                          }`}
-                        >
-                          <div
-                            className={`mx-auto mb-2 text-lg ${
-                              active
-                                ? "text-emerald-600"
-                                : "text-gray-400"
-                            }`}
-                          >
-                            {step.icon}
-                          </div>
-                          <p
-                            className={`text-xs font-semibold ${
-                              active
-                                ? "text-emerald-700"
-                                : "text-gray-400"
-                            }`}
-                          >
-                            {step.label}
+                  {/* Order Header */}
+                  <div className="flex flex-wrap items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+                        <div>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Order Placed</p>
+                          <p className="text-sm font-bold text-slate-700">
+                             {new Date(order.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                           </p>
                         </div>
-                      );
-                    })}
+                        <div>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total</p>
+                          <p className="text-sm font-bold text-slate-900">${order.totalPrice.toFixed(2)}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Order #</p>
+                          <p className="text-sm font-mono text-slate-600">{order._id.substring(order._id.length - 8).toUpperCase()}</p>
+                        </div>
+                    </div>
+
+                    <div className="mt-4 sm:mt-0 flex items-center gap-3">
+                         {/* Status Badge */}
+                         {order.isDelivered ? (
+                             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                <FiCheckCircle /> Delivered
+                             </span>
+                         ) : order.isPaid ? (
+                             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                <FiTruck /> Processing
+                             </span>
+                         ) : (
+                             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                <FiClock /> Pending
+                             </span>
+                         )}
+                         
+                         {/* Details Button */}
+                         <Link 
+                            to={`/order/${order._id}`}
+                            className="hidden sm:inline-block px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
+                         >
+                            View Details
+                         </Link>
+                    </div>
                   </div>
 
-                  {/* Total */}
-                  <div className="mt-6 flex justify-end">
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500">Order Total</p>
-                      <p className="text-2xl font-extrabold text-gray-900">
-                        {order.total}
-                      </p>
+                  {/* Order Body */}
+                  <div className="p-6">
+                    <div className="flex flex-col md:flex-row gap-6">
+                       {/* Preview Items (First 2) */}
+                       <div className="flex-1 space-y-4">
+                           {order.orderItems.slice(0, 2).map((item, index) => (
+                               <div key={index} className="flex items-start gap-4">
+                                   <div className="w-16 h-16 bg-white border border-slate-100 rounded-lg p-2 flex-shrink-0">
+                                       <img 
+                                          src={item.image.startsWith('http') ? item.image : `${import.meta.env.VITE_API_URL.replace('/api', '')}${item.image}`} 
+                                          alt={item.name} 
+                                          className="w-full h-full object-contain mix-blend-multiply"
+                                       />
+                                   </div>
+                                   <div className='flex-1 min-w-0'>
+                                       <Link to={`/product/${item.slug || item.product}`} className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-2">
+                                           {item.name}
+                                       </Link>
+                                       <p className="text-xs text-slate-500 mt-1">Qty: {item.qty} × ${item.price}</p>
+                                   </div>
+                               </div>
+                           ))}
+                           {order.orderItems.length > 2 && (
+                               <p className="text-xs text-slate-400 font-medium pl-20">+ {order.orderItems.length - 2} more items</p>
+                           )}
+                       </div>
+                       
+                       {/* Mobile Details Button */}
+                       <div className="sm:hidden mt-2">
+                            <Link 
+                                to={`/order/${order._id}`}
+                                className="w-full block text-center px-4 py-3 bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-100 transition-colors"
+                            >
+                                View Order Details
+                            </Link>
+                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </PageContainer>
+          )}
+        </PageContainer>
+      </div>
       <Footer />
     </>
   );
 };
-
 export default MyOrders;
+
