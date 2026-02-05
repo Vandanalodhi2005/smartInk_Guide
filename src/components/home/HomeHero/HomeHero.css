@@ -21,6 +21,8 @@
     z-index: -1;
 }
 
+
+
 .home-hero-content {
     max-width: 1300px;
     margin: 0 auto;
@@ -45,6 +47,7 @@
     margin: 0 0 16px 0;
     font-size: 22px;
     font-weight: 600;
+    color: white;
     opacity: 0.95;
     line-height: 1.4;
     animation: fadeInUp 0.8s ease-out 0.2s both;

@@ -11,7 +11,7 @@ const HomeHero = () => {
                     <h1>
                         Print Smart. Choose Better. Shop with Confidence.
                     </h1>
-                    <p className="hero-description">
+                    <p className="hero-mission ">
                         Find reliable printers, ink, toner, and printing essentials for home and office needs.
                     </p>
                     <p className="hero-mission">
