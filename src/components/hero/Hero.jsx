@@ -31,7 +31,7 @@ const Hero = () => {
 
       <style>{`
         .hero {
-          padding-top: 100px;
+          padding-top: 40px;
           position: relative;
           color: #fff;
           overflow: hidden;

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './Footer.css';
+import logo from '../../assets/logo/PrintsCartslogo.png';
 
 const Footer = () => {
   return (
@@ -8,7 +9,9 @@ const Footer = () => {
         <div className="footer-content">
           {/* Company Info */}
           <div className="footer-section">
-            <h3 className="footer-heading">Prints Carts</h3>
+            <Link to="/" className="inline-block mb-4">
+               <img src={logo} alt="PrintsCarts" className="h-12 md:h-24 w-auto object-contain brightness-0 invert opacity-90" />
+            </Link>
             <p className="footer-description">
               Your trusted source for printers, ink, toner, and printing supplies.
               We're committed to providing quality products with transparent service.

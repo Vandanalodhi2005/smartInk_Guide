@@ -17,6 +17,9 @@ import {
 
 const AdminCustomers = () => {
     const [customers, setCustomers] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalCustomers, setTotalCustomers] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -27,28 +30,37 @@ const AdminCustomers = () => {
 
     useEffect(() => {
         if (userInfo) {
-            fetchCustomers();
+            const delaySearch = setTimeout(() => {
+                setPage(1);
+                fetchCustomers(1, false, searchTerm);
+            }, 500);
+            return () => clearTimeout(delaySearch);
         }
-    }, [userInfo]);
+    }, [userInfo, searchTerm]);
 
-    const fetchCustomers = async () => {
+    const fetchCustomers = async (pageNum = 1, append = false, search = '') => {
         if (!userInfo) return;
 
         try {
             setLoading(true);
             setError(null);
-            const { data: users } = await axios.get(`${import.meta.env.VITE_API_URL}/auth/users`, {
+            const { data: userData } = await axios.get(`${import.meta.env.VITE_API_URL}/auth/users?page=${pageNum}&search=${search}`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
+            
+            const users = userData.users || (Array.isArray(userData) ? userData : []);
+            const fetchedPages = userData.pages || 1;
+            const count = userData.count || users.length;
 
-            // Fetch orders to calculate customer stats
-            const { data: orders } = await axios.get(`${import.meta.env.VITE_API_URL}/orders`, {
+            // Fetch orders to calculate customer stats (fetching all for accurate stats)
+            const { data: orderData } = await axios.get(`${import.meta.env.VITE_API_URL}/orders?fetchAll=true`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
-
+            const orders = orderData.orders || (Array.isArray(orderData) ? orderData : []);
+            
             // Calculate stats for each customer
             const customersWithStats = users.filter(user => !user.isAdmin).map(user => {
-                const userOrders = orders.filter(order => order.user && order.user._id === user._id);
+                const userOrders = orders.filter(order => order.user && (order.user._id === user._id || order.user === user._id));
                 const totalSpent = userOrders.reduce((acc, order) => acc + (order.totalPrice || 0), 0);
                 const totalItems = userOrders.reduce((acc, order) =>
                     acc + (order.orderItems ? order.orderItems.reduce((sum, item) => sum + (item.qty || 0), 0) : 0), 0
@@ -66,13 +78,28 @@ const AdminCustomers = () => {
                 };
             });
 
-            setCustomers(customersWithStats);
+            if (append) {
+                 setCustomers(prev => [...prev, ...customersWithStats]);
+            } else {
+                 setCustomers(customersWithStats);
+            }
+            setTotalPages(fetchedPages);
+            setTotalCustomers(count);
             setLoading(false);
         } catch (err) {
             setError(err.response?.data?.message || err.message);
             setLoading(false);
         }
     };
+
+    const handleLoadMore = () => {
+        if (page < totalPages) {
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchCustomers(nextPage, true, searchTerm);
+        }
+    };
+
 
     const handleDeleteUser = async (userId) => {
         const user = customers.find(c => c._id === userId);
@@ -143,10 +170,7 @@ const AdminCustomers = () => {
         else if (confirmModal.type === 'unblock') await confirmUnblock();
     };
 
-    const filteredCustomers = customers.filter(c =>
-        c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredCustomers = customers;
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500 pb-20">
@@ -165,7 +189,7 @@ const AdminCustomers = () => {
                         <Users size={18} />
                         <span className="font-semibold text-sm">All Customers</span>
                         <span className="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-xs font-bold">
-                            {filteredCustomers.length}
+                            {totalCustomers || filteredCustomers.length}
                         </span>
                     </div>
                     {/* Search */}
@@ -195,7 +219,7 @@ const AdminCustomers = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {loading ? (
+                            {loading && page === 1 ? (
                                 <tr><td colSpan="7" className="py-10 text-center text-slate-400 font-bold uppercase tracking-widest text-xs">Loading Customers...</td></tr>
                             ) : error ? (
                                 <tr><td colSpan="7" className="py-10 text-center text-red-500 font-bold uppercase tracking-widest text-xs">{error}</td></tr>
@@ -272,6 +296,25 @@ const AdminCustomers = () => {
                         </tbody>
                     </table>
                 </div>
+
+                {loading && page > 1 && (
+                     <div className="p-4 border-t border-slate-50 flex justify-center sticky bottom-0 bg-white/95 backdrop-blur-sm z-10 space-x-2">
+                             <div className="w-5 h-5 border-2 border-slate-600 border-t-transparent rounded-full animate-spin"></div>
+                             <span className="text-slate-500 font-bold text-sm">Loading more customers...</span>
+                     </div>
+                 )}
+
+                {(page < totalPages) && !loading && (
+                    <div className="p-4 border-t border-slate-100 flex justify-center">
+                        <button 
+                            onClick={handleLoadMore}
+                            disabled={loading}
+                             className="px-6 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 flex items-center gap-2"
+                        >
+                              See More Customers
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Confirmation Modal */}

@@ -28,16 +28,12 @@ const Printers = () => {
   // Sync state with URL params changes
   useEffect(() => {
     const catParam = searchParams.get('category');
-    if (catParam) {
-      setSelectedCategory(catParam);
-    }
+    setSelectedCategory(catParam || 'all');
   }, [searchParams]);
 
   useEffect(() => {
      const searchParam = searchParams.get('search');
-     if (searchParam) {
-       setSearchQuery(searchParam);
-     }
+     setSearchQuery(searchParam || '');
   }, [searchParams]);
 
   // Initial Fetch & Reset on Filter Change
@@ -235,7 +231,7 @@ const Printers = () => {
           </div>
 
           {/* Loading State or No Products */}
-          {loading && (
+          {loading && currPage === 1 && (
              <div className="flex justify-center py-12">
                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-900"></div>
              </div>
@@ -265,6 +261,12 @@ const Printers = () => {
                     </svg>
                 </button>
             </div>
+          )}
+
+          {loading && currPage > 1 && (
+              <div className="flex justify-center pt-4 pb-12">
+                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900"></div>
+             </div>
           )}
 
           {/* Info Section */}

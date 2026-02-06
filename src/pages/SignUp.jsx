@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendRegistrationOTP, verifyRegistrationOTP } from '../redux/actions/userActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
+import logo from '../assets/logo/PrintsCartslogo.png';
 import '../styles/pages.css';
 
 const SignUp = () => {
@@ -67,6 +68,9 @@ const SignUp = () => {
       <div className="auth-page">
         <div className="auth-container">
           <div className="auth-card">
+            <div className="flex justify-center mb-6">
+                <img src={logo} alt="PrintsCarts" className="h-12 md:h-24 w-auto object-contain" />
+            </div>
             <h1>{step === 1 ? 'Sign Up' : 'Verify Email'}</h1>
             <p className="auth-subtitle">
               {step === 1 

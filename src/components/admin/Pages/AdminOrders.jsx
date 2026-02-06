@@ -19,19 +19,35 @@ import {
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalOrders, setTotalOrders] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    const fetchOrders = async () => {
+    const fetchOrders = async (pageNum = 1, append = false, search = '') => {
         try {
             setLoading(true);
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/orders`, {
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/orders?page=${pageNum}&search=${search}`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
-            setOrders(data);
+            
+            // Handle if data is array (legacy/old api) or object
+            const newOrders = Array.isArray(data) ? data : data.orders;
+            const newPages = Array.isArray(data) ? 1 : data.pages;
+            const count = Array.isArray(data) ? data.length : data.count;
+
+            if (append) {
+                setOrders(prev => [...prev, ...newOrders]);
+            } else {
+                setOrders(newOrders);
+            }
+            setTotalPages(newPages);
+            setTotalOrders(count);
             setLoading(false);
         } catch (err) {
             setError(err.response?.data?.message || err.message);
@@ -41,11 +57,22 @@ const AdminOrders = () => {
 
     React.useEffect(() => {
         if (userInfo) {
-            fetchOrders();
+            const delaySearch = setTimeout(() => {
+                setPage(1);
+                fetchOrders(1, false, searchTerm);
+            }, 500);
+            return () => clearTimeout(delaySearch);
         }
-    }, [userInfo]);
+    }, [userInfo, searchTerm]);
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const handleLoadMore = () => {
+        if (page < totalPages) {
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchOrders(nextPage, true, searchTerm);
+        }
+    };
+
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -99,10 +126,8 @@ const AdminOrders = () => {
         }
     };
 
-    const filteredOrders = orders.filter(order =>
-        order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (order.user && order.user.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    // Use backend filtered orders directly
+    const filteredOrders = orders;
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500 pb-20">
@@ -119,7 +144,7 @@ const AdminOrders = () => {
                         <ShoppingBag size={18} />
                         <span className="font-semibold text-sm">All Orders</span>
                         <span className="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-xs font-bold">
-                            {filteredOrders.length}
+                            {totalOrders || filteredOrders.length}
                         </span>
                     </div>
                     {/* Search Bar */}
@@ -148,7 +173,7 @@ const AdminOrders = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {loading ? (
+                            {loading && page === 1 ? (
                                 <tr><td colSpan="6" className="py-10 text-center text-slate-400 font-bold uppercase tracking-widest text-xs">Synchronizing Inventory Data...</td></tr>
                             ) : error ? (
                                 <tr><td colSpan="6" className="py-10 text-center text-red-500 font-bold uppercase tracking-widest text-xs">{error}</td></tr>
@@ -219,6 +244,25 @@ const AdminOrders = () => {
                         </tbody>
                     </table>
                 </div>
+
+                 {loading && page > 1 && (
+                     <div className="p-4 border-t border-slate-50 flex justify-center sticky bottom-0 bg-white/95 backdrop-blur-sm z-10 space-x-2">
+                             <div className="w-5 h-5 border-2 border-slate-600 border-t-transparent rounded-full animate-spin"></div>
+                             <span className="text-slate-500 font-bold text-sm">Loading more orders...</span>
+                     </div>
+                 )}
+
+                {(page < totalPages) && !loading && (
+                    <div className="p-4 border-t border-slate-100 flex justify-center">
+                        <button 
+                            onClick={handleLoadMore}
+                            disabled={loading}
+                            className="px-6 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 flex items-center gap-2"
+                        >
+                           See More Orders
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Update Status Modal */}

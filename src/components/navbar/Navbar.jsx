@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/actions/userActions';
 import axios from 'axios';
+import logo from '../../assets/logo/PrintsCartslogo.png';
 
 const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -117,16 +118,7 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/" className="nav-logo" onClick={closeMobileMenu}>
-            <div className="logo-icon">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="4" fill="#0f3d91" />
-                <path d="M12 14H28V26H12V14Z" fill="white" opacity="0.9" />
-                <path d="M14 16H26V20H14V16Z" fill="#0f3d91" />
-                <circle cx="20" cy="18" r="1.5" fill="white" />
-                <rect x="16" y="22" width="8" height="2" rx="1" fill="white" opacity="0.7" />
-              </svg>
-            </div>
-            <span className="logo-text">Prints Carts</span>
+            <img src={logo} alt="PrintsCarts Logo" className="h-10 md:h-20 w-auto object-contain" />
           </Link>
 
           <ul className="nav-links">
@@ -314,7 +306,18 @@ const Navbar = () => {
         </div>
       </nav>
 
+      <div className="navbar-spacer"></div>
+
       <style>{`
+        .navbar-spacer {
+          height: 72px;
+        }
+        @media (min-width: 768px) {
+          .navbar-spacer {
+            height: 112px;
+          }
+        }
+
         .navbar {
           background: #fff;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

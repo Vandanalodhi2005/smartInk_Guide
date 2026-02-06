@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
 import { login } from '../../../redux/actions/userActions';
+import logo from '../../../assets/logo/PrintsCartslogo.png';
 
 const AdminLogin = () => {
     const [email, setEmail] = useState('');
@@ -33,8 +34,8 @@ const AdminLogin = () => {
             <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-300">
                 {/* Header */}
                 <div className="bg-blue-600 p-8 text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                        <Lock className="text-white" size={32} />
+                    <div className="w-32 h-20 md:w-64 md:h-40 flex items-center justify-center mx-auto mb-4">
+                        <img src={logo} alt="PrintsCarts Logo" className="w-full h-full object-contain brightness-0 invert" />
                     </div>
                     <h2 className="text-2xl font-bold text-white">Admin Portal</h2>
                     <p className="text-blue-100 mt-2 text-sm">Sign in to manage your store</p>

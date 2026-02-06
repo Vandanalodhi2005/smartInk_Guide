@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserProfile, logout } from '../../../redux/actions/userActions';
 import AdminSidebar from './AdminSidebar';
+import { io } from 'socket.io-client';
 import {
     Bell,
     User,
@@ -91,16 +92,40 @@ const AdminLayout = () => {
         }
     };
 
-    // Dummy Notifications
-    const [notifications, setNotifications] = useState([
-        { id: 1, type: 'order', message: 'New order #ORD-7785 placed', time: '2 min ago', path: '/admin/orders', read: false },
-        { id: 2, type: 'chat', message: 'Sarah sent a new message', time: '15 min ago', path: '/admin/chat', read: false },
-        { id: 3, type: 'stock', message: 'Low stock warning: Printer X', time: '1 hr ago', path: '/admin/products', read: true },
-    ]);
+    // Notifications State
+    const [notifications, setNotifications] = useState([]);
+    const [socket, setSocket] = useState(null);
+
+    // Socket Initialization
+    useEffect(() => {
+        if (userInfo && userInfo.isAdmin) {
+            const newSocket = io(import.meta.env.VITE_API_URL.replace('/api', ''), {
+                auth: { token: userInfo.token }
+            });
+            setSocket(newSocket);
+
+            newSocket.on('new-order', (data) => {
+                setNotifications(prev => [{ ...data, read: false }, ...prev]);
+            });
+
+            newSocket.on('new-user', (data) => {
+                setNotifications(prev => [{ ...data, read: false }, ...prev]);
+            });
+
+            newSocket.on('new-chat', (data) => {
+                setNotifications(prev => [{ ...data, read: false }, ...prev]);
+            });
+
+            return () => newSocket.close();
+        }
+    }, [userInfo]);
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
-    const handleNotifClick = (path) => {
+    const handleNotifClick = (path, id) => {
+        setNotifications(notifications.map(n => 
+            n.id === id ? { ...n, read: true } : n
+        ));
         navigate(path);
         setIsNotifOpen(false);
     };
@@ -164,22 +189,24 @@ const AdminLayout = () => {
                                         <span className="text-xs text-blue-600 font-medium cursor-pointer">Mark all read</span>
                                     </div>
                                     <div className="max-h-80 overflow-y-auto">
-                                        {notifications.map(notif => (
+                                        {notifications.length > 0 ? notifications.map(notif => (
                                             <div
                                                 key={notif.id}
-                                                onClick={() => handleNotifClick(notif.path)}
+                                                onClick={() => handleNotifClick(notif.path, notif.id)}
                                                 className={`px-4 py-3 hover:bg-slate-50 cursor-pointer border-b border-slate-50 flex gap-3 ${!notif.read ? 'bg-blue-50/30' : ''}`}
                                             >
                                                 <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${!notif.read ? 'bg-blue-500' : 'bg-transparent'}`} />
                                                 <div>
                                                     <p className="text-sm text-slate-700 leading-tight">{notif.message}</p>
-                                                    <span className="text-xs text-slate-400 mt-1 block">{notif.time}</span>
+                                                    <span className="text-xs text-slate-400 mt-1 block">{notif.time instanceof Date ? notif.time.toLocaleTimeString() : notif.time}</span>
                                                 </div>
                                             </div>
-                                        ))}
+                                        )) : (
+                                            <div className="p-8 text-center text-slate-500 text-sm">No new notifications</div>
+                                        )}
                                     </div>
                                     <div className="px-4 py-2 border-t border-slate-100 text-center">
-                                        <button className="text-xs font-bold text-slate-500 hover:text-slate-800">View All Updates</button>
+                                        <button onClick={() => setNotifications(notifications.map(n => ({...n, read: true })))} className="text-xs font-bold text-slate-500 hover:text-slate-800">Mark All Read</button>
                                     </div>
                                 </div>
                             )}

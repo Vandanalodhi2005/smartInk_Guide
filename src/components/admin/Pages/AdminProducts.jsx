@@ -22,10 +22,29 @@ const AdminProducts = () => {
     const dispatch = useDispatch();
 
     const productList = useSelector((state) => state.productList);
-    const { loading, error, products } = productList;
+    const { loading, error, products, page, pages, total } = productList;
 
     const categoryList = useSelector((state) => state.categoryList);
     const { categories } = categoryList;
+
+    const [allProducts, setAllProducts] = useState([]);
+    
+    // Accumulate products when redux state changes
+    useEffect(() => {
+        if (products) {
+            if (page === 1) {
+                setAllProducts(products);
+            } else {
+                setAllProducts(prev => {
+                    // Safety check to ensure prev is array
+                    const safePrev = Array.isArray(prev) ? prev : [];
+                    const existingIds = new Set(safePrev.map(p => p._id));
+                    const newProducts = products.filter(p => !existingIds.has(p._id));
+                    return [...safePrev, ...newProducts];
+                });
+            }
+        }
+    }, [products, page]);
 
     const productDelete = useSelector((state) => state.productDelete);
     const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete;
@@ -72,23 +91,35 @@ const AdminProducts = () => {
     const [specRows, setSpecRows] = useState([{ key: '', value: '' }]);
 
     useEffect(() => {
-        dispatch(listProducts());
+        // dispatch(listProducts()); // Handled by search effect
         dispatch(listCategories());
 
         if (successCreate) {
             dispatch({ type: PRODUCT_CREATE_RESET });
             closeForm();
+            dispatch(listProducts(searchTerm, '', 1)); // Reload
         }
 
         if (successUpdate) {
             dispatch({ type: PRODUCT_UPDATE_RESET });
             closeForm();
+            dispatch(listProducts(searchTerm, '', 1)); // Reload
         }
 
         if (successDelete) {
-            dispatch(listProducts());
+            dispatch(listProducts(searchTerm, '', 1)); // Reload
         }
     }, [dispatch, successCreate, successUpdate, successDelete]);
+
+    // Handle Search & Initial Load
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            // Reset is handled by page=1 check in accumulation effect
+            setAllProducts([]); // Clear local products to trigger full loader
+            dispatch(listProducts(searchTerm, '', 1));
+        }, 500);
+        return () => clearTimeout(handler);
+    }, [dispatch, searchTerm]);
 
     const closeForm = () => {
         setIsFormOpen(false);
@@ -321,10 +352,13 @@ const AdminProducts = () => {
         }
     };
 
-    const filteredProducts = products?.filter(p =>
-        p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.brand.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredProducts = allProducts;
+
+    const handleLoadMore = () => {
+        if (page < pages && !loading) {
+            dispatch(listProducts(searchTerm, '', page + 1));
+        }
+    };
 
     const quillModules = {
         toolbar: [
@@ -827,7 +861,7 @@ const AdminProducts = () => {
                         </div>
                         <span className="font-black text-slate-800 uppercase tracking-widest">Active Stock</span>
                         <span className="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-xs font-black">
-                            {products?.length || 0}
+                            {total || products?.length || 0}
                         </span>
                     </div>
                     <div className="relative group">
@@ -854,7 +888,7 @@ const AdminProducts = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
-                            {loading ? (
+                            {loading && allProducts.length === 0 ? (
                                 <tr><td colSpan="5" className="p-20 text-center text-slate-400 font-black uppercase text-xs tracking-widest">SYNCHRONIZING INVENTORY...</td></tr>
                             ) : filteredProducts?.map((p) => (
                                 <tr key={p._id} className="hover:bg-blue-50/30 transition-all group">
@@ -904,6 +938,25 @@ const AdminProducts = () => {
                         </tbody>
                     </table>
                 </div>
+                
+                 {loading && allProducts.length > 0 && (
+                     <div className="p-4 border-t border-slate-50 flex justify-center sticky bottom-0 bg-white/95 backdrop-blur-sm z-10 space-x-2">
+                             <div className="w-5 h-5 border-2 border-slate-600 border-t-transparent rounded-full animate-spin"></div>
+                             <span className="text-slate-500 font-bold text-sm">Loading more products...</span>
+                     </div>
+                 )}
+
+                {(page < pages) && filteredProducts?.length > 0 && !loading && (
+                     <div className="p-8 flex justify-center border-t border-slate-100">
+                        <button 
+                            onClick={handleLoadMore}
+                            disabled={loading}
+                             className="px-8 py-3 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-2xl text-sm font-black uppercase tracking-widest transition-all disabled:opacity-50 flex items-center gap-3 active:scale-95 shadow-sm"
+                        >
+                           See More Products
+                        </button>
+                    </div>
+                )}
 
                 {!loading && filteredProducts?.length === 0 && (
                     <div className="p-32 text-center space-y-4">

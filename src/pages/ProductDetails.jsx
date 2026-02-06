@@ -534,7 +534,7 @@ const ProductDetails = () => {
 
         {/* CSS STYLES */}
         <style>{`
-          .pd-wrapper { padding: 100px 20px 40px; max-width: 1400px; margin: 0 auto; font-family: 'Inter', sans-serif; color: #333; }
+          .pd-wrapper { padding: 10px 20px 40px; max-width: 1400px; margin: 0 auto; font-family: 'Inter', sans-serif; color: #333; }
           
           /* LAYOUT */
           .pd-layout { display: grid; grid-template-columns: 100px 1fr 400px; gap: 40px; position: relative; }
@@ -716,7 +716,7 @@ const ProductDetails = () => {
 
           /* RESPONSIVE */
           @media (max-width: 1024px) {
-            .pd-wrapper { padding-top: 100px; }
+            .pd-wrapper { padding-top: 10px; }
             .pd-layout { grid-template-columns: 1fr; gap: 30px; }
             
             .pd-image-container { order: 1; height: 450px; }

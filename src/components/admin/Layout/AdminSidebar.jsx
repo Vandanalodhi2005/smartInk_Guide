@@ -14,6 +14,7 @@ import {
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../redux/actions/userActions';
+import logo from '../../../assets/logo/PrintsCartslogo.png';
 
 const AdminSidebar = ({ isOpen, setIsOpen }) => {
     const dispatch = useDispatch();
@@ -51,10 +52,8 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
             `}>
                 <div className="h-16 flex items-center gap-2 px-6 border-b border-slate-100 shrink-0">
                     <div className="flex-1 flex items-center gap-2">
-                        <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                            A
-                        </div>
-                        <span className="text-xl font-bold text-slate-900 tracking-tight">AdminPanel</span>
+                        <img src={logo} alt="Admin Panel" className="h-10 md:h-16 w-auto object-contain" />
+                        <span className="text-lg font-bold text-slate-900 tracking-tight">Admin</span>
                     </div>
                     {/* Mobile Close Button */}
                     <button
