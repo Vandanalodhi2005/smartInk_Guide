@@ -20,7 +20,7 @@ const HomeHero = () => {
                     </p>
 
                     <div className="home-hero-actions">
-                        <Link to="/browse-printers" className="home-btn primary">Shop Now</Link>
+                        <Link to="/printers" className="home-btn primary">Shop Now</Link>
                     </div>
                 </div>
 

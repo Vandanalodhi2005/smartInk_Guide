@@ -9,13 +9,17 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleAddToCart = (e) => {
-    e.preventDefault(); // Prevent navigation if clicked on card link
+  const handleDetails = (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    
-    // Add to cart with quantity 1
+    navigate(`/product/${product.slug || product._id}`);
+  };
+
+  const handleBuyNow = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     dispatch(addToCart(product.slug || product._id, 1));
-    // Optional: Show toast or feedback
+    navigate('/cart?redirect=shipping');
   };
 
   const imageUrl = product.image 
@@ -27,35 +31,38 @@ const ProductCard = ({ product }) => {
   const price = typeof product.price === 'number' ? product.price.toFixed(2) : product.price;
 
   return (
-    <Link 
-      to={`/product/${product.slug || product._id}`} 
+    <div 
       className="product-card"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="product-image-container">
+      <Link to={`/product/${product.slug || product._id}`} className="product-image-container">
         <img 
           src={imageUrl} 
           alt={product.title || product.name} 
           onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image'; }}
           className="product-image"
         />
-        {isHovered && (
-          <button className="quick-add-btn" onClick={handleAddToCart}>
-             Add to Cart
-          </button>
-        )}
-      </div>
+      </Link>
       
       <div className="product-info">
         <div className="product-category">
             {product.category?.name || product.category || 'Printer'}
         </div>
-        <h3 className="product-title" title={product.title || product.name}>
+        <Link to={`/product/${product.slug || product._id}`} className="product-title" title={product.title || product.name}>
           {product.title || product.name}
-        </h3>
+        </Link>
         <div className="product-price">
            ${price}
+        </div>
+
+        <div className="product-card-buttons">
+            <button className="card-btn details-btn" onClick={handleDetails}>
+                See Details
+            </button>
+            <button className="card-btn buy-btn" onClick={handleBuyNow}>
+                Buy Now
+            </button>
         </div>
       </div>
 
@@ -82,6 +89,7 @@ const ProductCard = ({ product }) => {
           padding-top: 100%; /* 1:1 Aspect Ratio */
           background: #f9fafb;
           overflow: hidden;
+          display: block;
         }
         .product-image {
           position: absolute;
@@ -95,26 +103,6 @@ const ProductCard = ({ product }) => {
         }
         .product-card:hover .product-image {
           transform: scale(1.05);
-        }
-        .quick-add-btn {
-          position: absolute;
-          bottom: 10px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: #0f3d91;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 0.85rem;
-          font-weight: 600;
-          cursor: pointer;
-          opacity: 0;
-          animation: fadeIn 0.3s forwards;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        @keyframes fadeIn {
-            to { opacity: 1; bottom: 20px; }
         }
         .product-info {
           padding: 16px;
@@ -139,16 +127,57 @@ const ProductCard = ({ product }) => {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
-          flex: 1;
+          text-decoration: none;
+        }
+        .product-title:hover {
+          color: #0f3d91;
         }
         .product-price {
           font-size: 1.1rem;
           font-weight: 700;
           color: #0f3d91;
           margin-top: auto;
+          margin-bottom: 12px;
+        }
+        .product-card-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        @media (max-width: 640px) {
+            .product-card-buttons {
+                flex-direction: column;
+            }
+        }
+        .card-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .details-btn {
+            background: #fff;
+            color: #0f3d91;
+            border: 1px solid #0f3d91;
+        }
+        .details-btn:hover {
+            background: #f0f7ff;
+        }
+        .buy-btn {
+            background: #0f3d91;
+            color: white;
+            border: 1px solid #0f3d91;
+        }
+        .buy-btn:hover {
+            background: #092a69;
+            border-color: #092a69;
         }
       `}</style>
-    </Link>
+    </div>
   );
 };
 

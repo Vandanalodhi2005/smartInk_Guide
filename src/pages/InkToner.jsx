@@ -1,274 +1,359 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { listProducts } from '../redux/actions/productActions';
+import { listCategories } from '../redux/actions/categoryActions';
+import { addToCart } from '../redux/actions/cartActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useCart } from '../context/CartContext';
-import { useFavorites } from '../context/useFavorites';
 import '../styles/pages.css';
 
 const InkToner = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const { addToCart } = useCart();
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products, page: reduxPage, pages: totalPages } = productList;
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    const notification = document.createElement('div');
-    notification.className = 'cart-notification';
-    notification.textContent = `${product.name} added to cart!`;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-      notification.classList.add('show');
-    }, 10);
-    setTimeout(() => {
-      notification.classList.remove('show');
-      setTimeout(() => document.body.removeChild(notification), 300);
-    }, 2000);
+  // Clear products on mount to prevent old state
+  useEffect(() => {
+     return () => {
+         setAllProducts([]);
+     }
+  }, []);
+
+  // Use 'Ink' as default category if not specified
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'Ink');
+  const [sortBy, setSortBy] = useState('featured');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 2000 });
+  
+  // Local state
+  const [allProducts, setAllProducts] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+  const { addToCart: contextAddToCart } = useCart();
+
+  const categoryListState = useSelector((state) => state.categoryList);
+  const { categories: allCategories } = categoryListState || {};
+
+  // Filter categories to only matching "Ink" or "Toner" but exclude "Printer"
+  const relevantCategories = useMemo(() => {
+    if (!allCategories) return [];
+    return allCategories.filter(c => 
+      /Ink|Toner/i.test(c.name) && !/Printer/i.test(c.name)
+    ).map(c => ({ id: c.name, label: c.name })); // Use name as ID since backend lookup expects name
+  }, [allCategories]);
+
+  useEffect(() => {
+      dispatch(listCategories());
+  }, [dispatch]);
+
+  // Sync state with URL params changes
+  useEffect(() => {
+    const catParam = searchParams.get('category');
+    if (catParam) {
+        setSelectedCategory(catParam);
+    } else if (relevantCategories.length > 0 && selectedCategory === 'Ink' && !relevantCategories.find(c => c.id === 'Ink')) {
+        // Only if default 'Ink' is not in list, pick first available
+        // But if user meant generic search, we might keep it.
+        // Let's default to the first relevant category if available and no param
+        setSelectedCategory(relevantCategories[0].id);
+    }
+  }, [searchParams, relevantCategories]);
+
+  useEffect(() => {
+     const searchParam = searchParams.get('search');
+     setSearchQuery(searchParam || '');
+  }, [searchParams]);
+
+  // Initial Fetch & Reset on Filter Change
+  useEffect(() => {
+     // Reset local state
+     setAllProducts([]);
+     setCurrPage(1);
+     
+     // Fetch products based on category
+     // If we have categories, ensure selectedCategory is valid or at least passed
+     if (selectedCategory) {
+         dispatch(listProducts(searchQuery, selectedCategory, 1));
+     }
+  }, [dispatch, selectedCategory, searchQuery]);
+
+  // Handle Accumulation
+  useEffect(() => {
+    // Only update if we have new products and not in loading state (unless it's a fresh load)
+    if (products && Array.isArray(products) && !loading) {
+        if (reduxPage === 1) {
+            setAllProducts(products);
+        } else if (reduxPage > 1) {
+            setAllProducts(prev => {
+                // Prevent duplicates
+                const existingIds = new Set(prev.map(p => p._id));
+                const uniqueNew = products.filter(p => !existingIds.has(p._id));
+                return [...prev, ...uniqueNew];
+            });
+        }
+    }
+  }, [products, reduxPage, loading]);
+
+  const handleLoadMore = () => {
+      // Ensure we don't fetch if already loading or at end
+      const maxPages = totalPages || 1;
+      if (currPage < maxPages && !loading) {
+          const nextPage = currPage + 1;
+          setCurrPage(nextPage);
+          dispatch(listProducts(searchQuery, selectedCategory, nextPage));
+      }
   };
 
-  const categories = [
-    { id: 'all', label: 'All Products' },
-    { id: 'ink', label: 'Ink Cartridges' },
-    { id: 'toner', label: 'Toner Cartridges' },
-    { id: 'combo', label: 'Combo Packs' },
-    { id: 'photo', label: 'Photo Ink' }
-  ];
+  const handleCategoryClick = (catId) => {
+      setSelectedCategory(catId);
+      // Update URL without reloading
+      setSearchParams({ category: catId });
+  };
 
-  // Sample products
-  const products = [
-    {
-      id: 1,
-      name: 'HP 305 Black & Tri-Color Ink Cartridge Combo Pack',
-      category: 'combo',
-      price: 39.99,
-      originalPrice: 49.99,
-      image: 'https://images.unsplash.com/photo-1606756790136-261ff86dd101?w=400',
-      compatible: 'HP DeskJet 2620, 2630, 3755',
-      yield: 'Up to 120 pages (black), 100 pages (color)'
-    },
-    {
-      id: 2,
-      name: 'Canon PGI-280XL Black Ink Cartridge',
-      category: 'ink',
-      price: 24.99,
-      originalPrice: 29.99,
-      image: 'https://images.unsplash.com/photo-1606756790136-261ff86dd101?w=400',
-      compatible: 'Canon PIXMA TR8620, MG3620',
-      yield: 'Up to 300 pages'
-    },
-    {
-      id: 3,
-      name: 'HP 206A Black Laser Toner Cartridge',
-      category: 'toner',
-      price: 89.99,
-      originalPrice: 109.99,
-      image: 'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400',
-      compatible: 'HP LaserJet Pro MFP 3301fdw',
-      yield: 'Up to 1,200 pages'
-    },
-    {
-      id: 4,
-      name: 'Epson 103 Black Ink Cartridge (2-Pack)',
-      category: 'ink',
-      price: 19.99,
-      originalPrice: 24.99,
-      image: 'https://images.unsplash.com/photo-1606756790136-261ff86dd101?w=400',
-      compatible: 'Epson EcoTank ET-2720, ET-2750',
-      yield: 'Up to 450 pages per cartridge'
-    },
-    {
-      id: 5,
-      name: 'Brother TN760 High-Yield Black Toner',
-      category: 'toner',
-      price: 54.99,
-      originalPrice: 64.99,
-      image: 'https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400',
-      compatible: 'Brother HL-L2350DW, HL-L2370DW',
-      yield: 'Up to 2,600 pages'
-    },
-    {
-      id: 6,
-      name: 'Canon CLI-281 5-Color Photo Ink Set',
-      category: 'photo',
-      price: 69.99,
-      originalPrice: 79.99,
-      image: 'https://images.unsplash.com/photo-1606756790136-261ff86dd101?w=400',
-      compatible: 'Canon PIXMA Photo Printers',
-      yield: 'Up to 300 photos'
+  const handleBuyNow = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(addToCart(product.slug || product._id, 1));
+    navigate('/cart?redirect=shipping');
+  };
+
+  const handleDetails = (e, product) => {
+    e.preventDefault();
+    
+    // Strict Client-Side Filter for Ink/Toner vs Printers
+    filtered = filtered.filter(p => {
+        const catName = p.category?.name || p.category || '';
+        // Include only if category has Ink or Toner (case insensitive)
+        const hasInkToner = /Ink|Toner/i.test(catName);
+        // Exclude if category has Printer
+        const isPrinter = /Printer/i.test(catName);
+        
+        return hasInkToner && !isPrinter;
+    });
+    e.stopPropagation();
+    navigate(`/product/${product.slug || product._id}`);
+  };
+
+  // Filter and sort logic
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = allProducts || [];
+
+    // Price range filter
+    filtered = filtered.filter(p =>
+      p.price >= priceRange.min && p.price <= priceRange.max
+    );
+
+    // Sort
+    const sorted = [...filtered];
+    switch (sortBy) {
+      case 'price-low':
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        sorted.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        break;
+      case 'name':
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      default:
+        break;
     }
-  ];
 
-  const filteredProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(p => p.category === selectedCategory);
+    return sorted;
+  }, [allProducts, priceRange, sortBy]);
 
   return (
     <>
       <Navbar />
-      <div className="ink-toner-page">
-        <div className="ink-toner-container">
-          <h1 className="page-title">Ink & Toner</h1>
-          <p className="page-subtitle">
-            Find genuine-quality ink and toner cartridges for your printer. Each product includes
-            detailed compatibility information to help you choose the right cartridge.
-          </p>
+      <div className="ink-toner-page bg-slate-50 min-h-screen">
+        <div className="printers-container mx-auto max-w-7xl px-4 py-8">
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Ink & Toner</h1>
+            <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+                Premium quality ink and toner for all your printing needs.
+            </p>
+          </div>
 
-          <div className="ink-hero grid md:grid-cols-2 gap-8 items-center mb-8">
-            <div className="hero-left">
-              <h2 className="hero-title text-2xl md:text-3xl font-bold text-gray-800">Genuine Ink & Toner for Your Printer</h2>
-              <p className="hero-text text-gray-600 mt-3">High-quality cartridges, clear compatibility details, and bulk options to keep your business printing smoothly. Select a category to get started or view the featured cartridge to the right.</p>
-            </div>
+          {/* Filters Top Bar */}
+          <div className="bg-white p-4 rounded-xl border border-slate-200 mb-8 flex flex-col md:flex-row items-center gap-4 shadow-sm transition-shadow duration-300">
+             
+             {/* Category Filter Buttons */}
+             <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto no-scrollbar">
+                {relevantCategories && relevantCategories.length > 0 ? (
+                    relevantCategories.map(cat => (
+                        <button
+                            key={cat.id}
+                            onClick={() => handleCategoryClick(cat.id)}
+                            className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
+                                selectedCategory === cat.id 
+                                ? 'bg-blue-900 text-white shadow-md transform scale-105' 
+                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            }`}
+                        >
+                            {cat.label}
+                        </button>
+                    ))
+                ) : (
+                    <span className="text-sm text-slate-400 italic px-2">
+                        {categoryListState?.loading ? "Loading categories..." : "No ink/toner categories found."}
+                    </span>
+                )}
+             </div>
 
-            <div className="hero-right">
-              {/* Featured product (first item) */}
-              {products[0] && (
-                <div className="product-card featured-product">
-                  <div className="product-image">
-                    <img src={products[0].image} alt={products[0].name} />
-                  </div>
-                  <div className="product-info">
-                    <h3>{products[0].name}</h3>
-                    <div className="product-price">
-                      <span className="current-price">${products[0].price}</span>
-                      {products[0].originalPrice && (
-                        <span className="original-price">${products[0].originalPrice}</span>
-                      )}
-                    </div>
+             {/* Search */}
+             <div className="flex-1 w-full relative">
+                <input
+                    type="text"
+                    placeholder="Search ink or toner..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all font-medium"
+                />
+                <svg className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+             </div>
 
-                    <div className="product-actions mt-4">
-                      <button className="add-to-cart-btn" onClick={() => handleAddToCart(products[0])}>Add to Cart</button>
-                      <Link to={`/ink-toner/${products[0].id}`} className="view-details-btn-sm">View Details</Link>
-                    </div>
-                  </div>
-                </div>
-              )}
+             {/* Sort & Price Filter */}
+             <div className="flex items-center gap-4 w-full md:w-auto">
+                 <select 
+                    value={sortBy} 
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="py-3 px-4 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 focus:outline-none cursor-pointer hover:bg-slate-100 transition-colors"
+                 >
+                    <option value="featured">Recommended</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Top Rated</option>
+                 </select>
             </div>
           </div>
 
-          <div className="category-filters">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.label}
-              </button>
-            ))}
+          {/* Results Count */}
+          <div className="results-count mb-4 flex justify-between items-center">
+            <p className="text-slate-500 font-medium text-sm">
+              Showing <strong>{filteredAndSortedProducts.length}</strong> items
+            </p>
           </div>
 
-          <div className="products-grid">
-            {filteredProducts.map((product, index) => (
+          {/* Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 pb-8">
+            {filteredAndSortedProducts.map((product, index) => (
               <div
-                key={product.id}
-                className="product-card"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                key={product._id || index}
+                className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group relative h-full transform hover:-translate-y-1 block"
               >
-                <div className="product-image" style={{ position: 'relative' }}>
-                  <img src={product.image} alt={product.name} />
+                {/* Image */}
+                <Link to={`/product/${product.slug || product._id}`} className="relative w-full aspect-[4/3] bg-white p-6 flex items-center justify-center overflow-hidden border-b border-slate-50 block">
+                  <img 
+                     src={
+                        product.image || 
+                        (product.images && product.images.length > 0 
+                            ? (product.images[0].startsWith('http') 
+                                ? product.images[0] 
+                                : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${product.images[0]}`)
+                            : 'https://via.placeholder.com/300?text=No+Image')
+                      }
+                    alt={product.title || product.name}
+                    className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image'; }}
+                    loading="lazy"
+                  />
+                  {product.countInStock === 0 && (
+                     <div className="absolute top-2 right-2 bg-red-50 text-red-500 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wide border border-red-100">
+                        Out of Stock
+                     </div>
+                  )}
+                </Link>
 
-                  <button
-                    type="button"
-                    onClick={() => toggleFavorite(product)}
-                    className="fav-toggle"
-                    style={{
-                      position: 'absolute',
-                      top: 10,
-                      right: 10,
-                      background: 'white',
-                      borderRadius: 12,
-                      padding: 8,
-                      border: '1px solid rgba(0,0,0,0.06)',
-                      cursor: 'pointer',
-                      zIndex: 20
-                    }}
-                  >
-                    {isFavorite(product.id) ? (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#ef4444' }}>
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                      </svg>
-                    ) : (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                      </svg>
-                    )}
-                  </button>
+                {/* Info */}
+                <div className="p-4 flex flex-col flex-1 gap-1">
+                    {/* Brand */}
+                    <div className="flex items-center">
+                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider mb-1">
+                            {product.brand || 'Product'}
+                        </span>
+                    </div>
 
-                  {/* Discount badge removed */}
-                </div>
-                <div className="product-info">
-                  <h3>{product.name}</h3>
-                  <div className="compatibility-info">
-                    <strong>Compatible with:</strong>
-                    <p>{product.compatible}</p>
-                  </div>
-                  <div className="yield-info">
-                    <strong>Page Yield:</strong>
-                    <p>{product.yield}</p>
-                  </div>
-                  <div className="product-price">
-                    <span className="current-price">${product.price}</span>
-                    {product.originalPrice && (
-                      <span className="original-price">${product.originalPrice}</span>
-                    )}
-                  </div>
-                  <div className="product-actions">
-                    <button
-                      className="add-to-cart-btn"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      Add to Cart
-                    </button>
-                    <Link to={`/ink-toner/${product.id}`} className="view-details-btn-sm">View Details</Link>
-                  </div>
+                    {/* Title */}
+                    <Link to={`/product/${product.slug || product._id}`} className="text-sm font-bold text-slate-800 leading-snug group-hover:text-blue-700 transition-colors line-clamp-2 h-10 mb-1" title={product.title || product.name}>
+                        {product.title || product.name}
+                    </Link>
+                    
+                    {/* Price */}
+                    <div className="mt-auto flex items-end gap-2 pt-2 border-t border-dashed border-slate-100 mb-2">
+                        <span className="text-lg font-black text-slate-900">
+                            ${product.price?.toFixed(2)}
+                        </span>
+                        {(product.oldPrice > 0 || product.originalPrice > 0) && (
+                            <span className="text-xs text-slate-400 line-through mb-1">
+                                ${product.oldPrice?.toFixed(2) || product.originalPrice?.toFixed(2)}
+                            </span>
+                        )}
+                    </div>
+                    
+                    {/* Buttons */}
+                    <div className="flex gap-2 mt-auto flex-col sm:flex-row">
+                        <button 
+                            onClick={(e) => handleDetails(e, product)}
+                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold border border-blue-900 text-blue-900 bg-white hover:bg-blue-50 transition-colors"
+                        >
+                            See Details
+                        </button>
+                        <button 
+                            onClick={(e) => handleBuyNow(e, product)}
+                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold bg-blue-900 text-white border border-blue-900 hover:bg-blue-800 transition-colors"
+                        >
+                            Buy Now
+                        </button>
+                    </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {filteredProducts.length === 0 && (
-            <div className="no-products">
-              <p>No products found in this category.</p>
-            </div>
+          {/* Loading State or No Products */}
+          {loading && currPage === 1 && (
+             <div className="flex justify-center py-12">
+                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-900"></div>
+             </div>
           )}
 
-          <div className="compatibility-section">
-            <h2>Find Compatible Cartridges</h2>
-            <p>
-              Not sure which cartridge is right for your printer? Each product page includes
-              detailed compatibility information based on manufacturer specifications. You can also
-              check your printer model on the product label or user manual.
-            </p>
-            <div className="compatibility-features">
-              <div className="feature-item">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none" />
-                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span>Genuine Quality Products</span>
-              </div>
-              <div className="feature-item">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none" />
-                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span>Clear Compatibility Information</span>
-              </div>
-              <div className="feature-item">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="14" stroke="#0f3d91" strokeWidth="2" fill="none" />
-                  <path d="M12 16L15 19L20 13" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span>Manufacturer Specifications</span>
-              </div>
+          {!loading && filteredAndSortedProducts.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="mb-4">
+                <circle cx="32" cy="32" r="30" stroke="#e0e0e0" strokeWidth="2" />
+                <path d="M32 20V32M32 36H32.01" stroke="#e0e0e0" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <h3 className="text-lg font-bold text-slate-700">No products found</h3>
+              <p className="text-slate-500">Try adjusting your filters, category or search query</p>
             </div>
-          </div>
+          )}
+          
+          {/* Load More Trigger */}
+          {products && products.length > 0 && currPage < totalPages && !loading && (
+              <div className="flex justify-center pt-8">
+                  <button 
+                    onClick={handleLoadMore}
+                    className="px-8 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-full shadow-sm hover:shadow-md hover:border-slate-300 transition-all"
+                  >
+                      Load More Products
+                  </button>
+              </div>
+          )}
+      
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };
 
 export default InkToner;
-

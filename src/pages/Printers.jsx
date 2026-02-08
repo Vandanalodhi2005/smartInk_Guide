@@ -1,15 +1,16 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
+import { addToCart } from '../redux/actions/cartActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useCart } from '../context/CartContext';
-import { useFavorites } from '../context/useFavorites';
 import '../styles/pages.css';
 
 const Printers = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); 
   const [searchParams, setSearchParams] = useSearchParams();
   
   const productList = useSelector((state) => state.productList);
@@ -18,12 +19,12 @@ const Printers = () => {
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
   const [sortBy, setSortBy] = useState('featured');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 2000 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 5000 });
   
   // Local state for accumulated products
   const [allProducts, setAllProducts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
-  const { addToCart } = useCart();
+  const { addToCart: contextAddToCart } = useCart(); 
 
   // Sync state with URL params changes
   useEffect(() => {
@@ -72,6 +73,19 @@ const Printers = () => {
           let categoryArg = selectedCategory === 'all' ? '' : selectedCategory;
           dispatch(listProducts(searchQuery, categoryArg, nextPage));
       }
+  };
+
+  const handleBuyNow = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(addToCart(product.slug || product._id, 1));
+    navigate('/cart?redirect=shipping');
+  };
+
+  const handleDetails = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/product/${product.slug || product._id}`);
   };
 
   // Filter and sort logic
@@ -172,13 +186,12 @@ const Printers = () => {
           {/* Printers Grid - Responsive: 2(mobile), 3(sm), 4(md+) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 pb-8">
             {filteredAndSortedPrinters.map((printer, index) => (
-              <Link
-                to={`/product/${printer.slug || printer._id}`}
+              <div
                 key={printer._id || index}
-                className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group relative h-full transform hover:-translate-y-1"
+                className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group relative h-full transform hover:-translate-y-1 block"
               >
                 {/* Image */}
-                <div className="relative w-full aspect-[4/3] bg-white p-6 flex items-center justify-center overflow-hidden border-b border-slate-50">
+                <Link to={`/product/${printer.slug || printer._id}`} className="relative w-full aspect-[4/3] bg-white p-6 flex items-center justify-center overflow-hidden border-b border-slate-50 block">
                   <img 
                      src={
                         printer.image || 
@@ -198,7 +211,7 @@ const Printers = () => {
                         Out of Stock
                      </div>
                   )}
-                </div>
+                </Link>
 
                 {/* Info */}
                 <div className="p-4 flex flex-col flex-1 gap-1">
@@ -210,12 +223,12 @@ const Printers = () => {
                     </div>
 
                     {/* Title - Limit to 2 lines */}
-                    <h3 className="text-sm font-bold text-slate-800 leading-snug group-hover:text-blue-700 transition-colors line-clamp-2 h-10 mb-1" title={printer.title || printer.name}>
+                    <Link to={`/product/${printer.slug || printer._id}`} className="text-sm font-bold text-slate-800 leading-snug group-hover:text-blue-700 transition-colors line-clamp-2 h-10 mb-1" title={printer.title || printer.name}>
                         {printer.title || printer.name}
-                    </h3>
+                    </Link>
                     
                     {/* Price */}
-                    <div className="mt-auto flex items-end gap-2 pt-2 border-t border-dashed border-slate-100">
+                    <div className="mt-auto flex items-end gap-2 pt-2 border-t border-dashed border-slate-100 mb-2">
                         <span className="text-lg font-black text-slate-900">
                             ${printer.price?.toFixed(2)}
                         </span>
@@ -225,8 +238,24 @@ const Printers = () => {
                             </span>
                         )}
                     </div>
+                    
+                    {/* Buttons */}
+                    <div className="flex gap-2 mt-auto flex-col sm:flex-row">
+                        <button 
+                            onClick={(e) => handleDetails(e, printer)}
+                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold border border-blue-900 text-blue-900 bg-white hover:bg-blue-50 transition-colors"
+                        >
+                            See Details
+                        </button>
+                        <button 
+                            onClick={(e) => handleBuyNow(e, printer)}
+                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold bg-blue-900 text-white border border-blue-900 hover:bg-blue-800 transition-colors"
+                        >
+                            Buy Now
+                        </button>
+                    </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
 
@@ -247,58 +276,22 @@ const Printers = () => {
               <p className="text-slate-500">Try adjusting your filters or search query</p>
             </div>
           )}
-
-          {/* Load More Button */}
-          {!loading && reduxPage < (totalPages || 1) && (
-            <div className="flex justify-center pt-4 pb-12">
-                <button 
+          
+          {/* Load More Trigger */}
+          {products && products.length > 0 && currPage < totalPages && !loading && (
+              <div className="flex justify-center pt-8">
+                  <button 
                     onClick={handleLoadMore}
-                    className="px-8 py-3 bg-white border border-slate-300 hover:border-slate-800 text-slate-900 font-bold rounded-lg shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-2 group"
-                >
-                    Load More Printers
-                    <svg className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
-                    </svg>
-                </button>
-            </div>
+                    className="px-8 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-full shadow-sm hover:shadow-md hover:border-slate-300 transition-all"
+                  >
+                      Load More Products
+                  </button>
+              </div>
           )}
-
-          {loading && currPage > 1 && (
-              <div className="flex justify-center pt-4 pb-12">
-                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900"></div>
-             </div>
-          )}
-
-          {/* Info Section */}
-          <div className="mt-12 mb-8 bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <h2 className="text-2xl font-bold text-center text-slate-900 mb-8">Why Choose Our Printers?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center p-4">
-                <div className="w-12 h-12 bg-blue-50 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-100">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <h3 className="font-bold text-slate-900 mb-2">Genuine Quality</h3>
-                <p className="text-sm text-slate-500">All printers are genuine, original equipment from trusted manufacturers. We ensure every product meets high standards.</p>
-              </div>
-              <div className="text-center p-4">
-                <div className="w-12 h-12 bg-blue-50 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-100">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                </div>
-                <h3 className="font-bold text-slate-900 mb-2">Clear Compatibility</h3>
-                <p className="text-sm text-slate-500">Detailed compatibility information for all printer models and cartridges, so you never buy the wrong item.</p>
-              </div>
-              <div className="text-center p-4">
-                <div className="w-12 h-12 bg-blue-50 text-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-100">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                </div>
-                <h3 className="font-bold text-slate-900 mb-2">Fast Shipping</h3>
-                <p className="text-sm text-slate-500">Quick and reliable delivery across the United States and Canada with real-time tracking updates.</p>
-              </div>
-            </div>
-          </div>
+      
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };

@@ -5,7 +5,7 @@ const ShopByCategory = () => {
     {
       image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400",
       title: "Printers",
-      link: "/browse-printers"
+      link: "/printers"
     },
     {
       image: "https://images.unsplash.com/photo-1606756790136-261ff86dd101?w=400",

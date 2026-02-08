@@ -15,8 +15,8 @@ const Hero = () => {
             </p>
 
             <div className="hero-actions">
-              <Link to="/browse-printers" className="btn primary">Shop Now</Link>
-              <Link to="/browse-printers" className="btn outline">Browse Printers</Link>
+              <Link to="/printers" className="btn primary">Shop Now</Link>
+              <Link to="/printers" className="btn outline">Browse Printers</Link>
             </div>
           </div>
 

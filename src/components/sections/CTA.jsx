@@ -13,7 +13,7 @@ const CTA = () => {
             Browse our collections, explore detailed product information, and enjoy a smooth, transparent, and user-friendly shopping experience.
           </p>
           <div className="cta-buttons">
-            <Link to="/browse-printers" className="btn-primary">Browse Printers</Link>
+            <Link to="/printers" className="btn-primary">Browse Printers</Link>
             <Link to="/ink-toner" className="btn-outline">Shop Ink & Toner &gt;</Link>
           </div>
         </div>

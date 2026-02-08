@@ -124,6 +124,7 @@ const Navbar = () => {
           <ul className="nav-links">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/printers">Printers</Link></li>
+            <li><Link to="/ink-toner">Ink & Toner</Link></li>
             <li><Link to="/about">About Us</Link></li>
             <li><Link to="/faqs">FAQs</Link></li>
             <li><Link to="/contact">Contact</Link></li>
