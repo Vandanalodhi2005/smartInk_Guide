@@ -82,7 +82,7 @@ const Checkout = () => {
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
     const taxPrice = Number((0.15 * subtotal).toFixed(2));
-    const shippingPrice = subtotal > 500 ? 0 : 50;
+    const shippingPrice = 0;
     const totalPrice = subtotal + taxPrice + shippingPrice;
 
     const submitShippingHandler = (e) => {
