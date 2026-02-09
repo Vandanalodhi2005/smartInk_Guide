@@ -7,6 +7,7 @@ import { addToCart } from '../redux/actions/cartActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useCart } from '../context/CartContext';
+import { Eye, ShoppingBag } from 'lucide-react';
 import '../styles/pages.css';
 
 const InkToner = () => {
@@ -24,11 +25,13 @@ const InkToner = () => {
      }
   }, []);
 
-  // Use 'Ink' as default category if not specified
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'Ink');
+  // Use 'Ink & Toner' as default category if not specified
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'Ink & Toner');
+  const [selectedBrand, setSelectedBrand] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 2000 });
+  // Increased max price range to ensure all products are visible by default
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
   
   // Local state
   const [allProducts, setAllProducts] = useState([]);
@@ -55,13 +58,15 @@ const InkToner = () => {
     const catParam = searchParams.get('category');
     if (catParam) {
         setSelectedCategory(catParam);
-    } else if (relevantCategories.length > 0 && selectedCategory === 'Ink' && !relevantCategories.find(c => c.id === 'Ink')) {
-        // Only if default 'Ink' is not in list, pick first available
-        // But if user meant generic search, we might keep it.
-        // Let's default to the first relevant category if available and no param
-        setSelectedCategory(relevantCategories[0].id);
+    } else if (relevantCategories.length > 0) {
+        // If current selection is not found in loaded categories, default to 'Ink & Toner' or first available
+        const exists = relevantCategories.find(c => c.id === selectedCategory);
+        if (!exists) {
+            const defaultCat = relevantCategories.find(c => c.id === 'Ink & Toner');
+            setSelectedCategory(defaultCat ? defaultCat.id : relevantCategories[0].id);
+        }
     }
-  }, [searchParams, relevantCategories]);
+  }, [searchParams, relevantCategories, selectedCategory]);
 
   useEffect(() => {
      const searchParam = searchParams.get('search');
@@ -74,12 +79,12 @@ const InkToner = () => {
      setAllProducts([]);
      setCurrPage(1);
      
-     // Fetch products based on category
+     // Fetch products based on category and brand
      // If we have categories, ensure selectedCategory is valid or at least passed
      if (selectedCategory) {
-         dispatch(listProducts(searchQuery, selectedCategory, 1));
+         dispatch(listProducts(searchQuery, selectedCategory, 1, selectedBrand));
      }
-  }, [dispatch, selectedCategory, searchQuery]);
+  }, [dispatch, selectedCategory, searchQuery, selectedBrand]);
 
   // Handle Accumulation
   useEffect(() => {
@@ -104,7 +109,7 @@ const InkToner = () => {
       if (currPage < maxPages && !loading) {
           const nextPage = currPage + 1;
           setCurrPage(nextPage);
-          dispatch(listProducts(searchQuery, selectedCategory, nextPage));
+          dispatch(listProducts(searchQuery, selectedCategory, nextPage, selectedBrand));
       }
   };
 
@@ -113,6 +118,13 @@ const InkToner = () => {
       // Update URL without reloading
       setSearchParams({ category: catId });
   };
+
+  const uniqueBrands = useMemo(() => {
+      // User requested explicit list: HP, Canon, Brother, Epson. Removed Samsung.
+      const hardcodedBrands = ['HP', 'Canon', 'Brother', 'Epson'];
+      
+      return hardcodedBrands;
+  }, []);
 
   const handleBuyNow = (e, product) => {
     e.preventDefault();
@@ -123,17 +135,6 @@ const InkToner = () => {
 
   const handleDetails = (e, product) => {
     e.preventDefault();
-    
-    // Strict Client-Side Filter for Ink/Toner vs Printers
-    filtered = filtered.filter(p => {
-        const catName = p.category?.name || p.category || '';
-        // Include only if category has Ink or Toner (case insensitive)
-        const hasInkToner = /Ink|Toner/i.test(catName);
-        // Exclude if category has Printer
-        const isPrinter = /Printer/i.test(catName);
-        
-        return hasInkToner && !isPrinter;
-    });
     e.stopPropagation();
     navigate(`/product/${product.slug || product._id}`);
   };
@@ -142,6 +143,12 @@ const InkToner = () => {
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = allProducts || [];
 
+    // Client-side Brand filter removed as we now filter on backend
+    // But keeping safeguard just in case of mixed results if needed, 
+    // though backend filtering is cleaner.
+    // If backend works, this is redundant but harmless unless backend fails.
+    // Let's rely on backend result.
+    
     // Price range filter
     filtered = filtered.filter(p =>
       p.price >= priceRange.min && p.price <= priceRange.max
@@ -222,7 +229,19 @@ const InkToner = () => {
              </div>
 
              {/* Sort & Price Filter */}
-             <div className="flex items-center gap-4 w-full md:w-auto">
+             <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
+                 {/* Brand Filter */}
+                 <select
+                    value={selectedBrand}
+                    onChange={(e) => setSelectedBrand(e.target.value)}
+                    className="py-3 px-4 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 focus:outline-none cursor-pointer hover:bg-slate-100 transition-colors capitalize"
+                 >
+                    <option value="all">All Brands</option>
+                    {uniqueBrands.map(brand => (
+                        <option key={brand} value={brand}>{brand}</option>
+                    ))}
+                 </select>
+
                  <select 
                     value={sortBy} 
                     onChange={(e) => setSortBy(e.target.value)}
@@ -300,17 +319,19 @@ const InkToner = () => {
                     </div>
                     
                     {/* Buttons */}
-                    <div className="flex gap-2 mt-auto flex-col sm:flex-row">
+                    <div className="grid grid-cols-2 gap-3 mt-auto">
                         <button 
                             onClick={(e) => handleDetails(e, product)}
-                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold border border-blue-900 text-blue-900 bg-white hover:bg-blue-50 transition-colors"
+                            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 bg-white hover:border-blue-600 hover:text-blue-600 transition-all shadow-sm hover:shadow-md"
                         >
-                            See Details
+                            <Eye size={14} />
+                            Details
                         </button>
                         <button 
                             onClick={(e) => handleBuyNow(e, product)}
-                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold bg-blue-900 text-white border border-blue-900 hover:bg-blue-800 transition-colors"
+                            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold bg-blue-900 text-white border border-blue-900 hover:bg-blue-800 hover:border-blue-800 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5"
                         >
+                            <ShoppingBag size={14} />
                             Buy Now
                         </button>
                     </div>

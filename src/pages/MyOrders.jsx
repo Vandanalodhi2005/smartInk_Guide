@@ -56,15 +56,15 @@ const MyOrders = () => {
                  </button>
              </div>
           ) : orders && orders.length === 0 ? (
-             <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-sm">
-                 <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                     <FiPackage className="text-slate-400 text-4xl" />
+             <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-12 text-center shadow-sm">
+                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                     <FiPackage className="text-slate-400 text-3xl sm:text-4xl" />
                  </div>
-                 <h2 className="text-2xl font-bold text-slate-800 mb-2">No orders found</h2>
-                 <p className="text-slate-500 mb-8 max-w-md mx-auto">Looks like you haven't bought anything from us yet. Browse our products and find something you love!</p>
+                 <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">No orders found</h2>
+                 <p className="text-slate-500 mb-6 sm:mb-8 max-w-md mx-auto text-sm sm:text-base">Looks like you haven't bought anything from us yet. Browse our products and find something you love!</p>
                  <Link 
                     to="/printers" 
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-200"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 sm:px-8 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-200 text-sm sm:text-base"
                  >
                     Start Shopping
                  </Link>
@@ -98,7 +98,11 @@ const MyOrders = () => {
 
                     <div className="mt-4 sm:mt-0 flex items-center gap-3">
                          {/* Status Badge */}
-                         {order.isDelivered ? (
+                         {order.status === 'Failed' ? (
+                             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                <FiAlertCircle /> Failed
+                             </span>
+                         ) : order.isDelivered ? (
                              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wide">
                                 <FiCheckCircle /> Delivered
                              </span>

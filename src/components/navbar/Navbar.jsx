@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/actions/userActions';
 import axios from 'axios';
-import logo from '../../assets/logo/PrintsCartslogo.png';
+const logo = "/PrintsCartslogo.png"; // Ensure you have a logo image in the same directory or adjust the path accordingly
 
 const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);

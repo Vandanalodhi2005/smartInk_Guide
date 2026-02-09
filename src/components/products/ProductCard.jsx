@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/actions/cartActions';
-import printerImg from '../../assets/logo/PrintsCartsLogo.png'; // Fallback
+const printerImg = "/PrintsCartslogo.png"; // Fallback
+import { Eye, ShoppingBag } from 'lucide-react';
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
@@ -58,9 +59,11 @@ const ProductCard = ({ product }) => {
 
         <div className="product-card-buttons">
             <button className="card-btn details-btn" onClick={handleDetails}>
-                See Details
+                <Eye size={14} />
+                Details
             </button>
             <button className="card-btn buy-btn" onClick={handleBuyNow}>
+                <ShoppingBag size={14} />
                 Buy Now
             </button>
         </div>
@@ -135,46 +138,50 @@ const ProductCard = ({ product }) => {
         .product-price {
           font-size: 1.1rem;
           font-weight: 700;
-          color: #0f3d91;
+          color: #0f172a;
           margin-top: auto;
           margin-bottom: 12px;
         }
         .product-card-buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-top: 8px;
         }
-        @media (max-width: 640px) {
-            .product-card-buttons {
-                flex-direction: column;
-            }
-        }
         .card-btn {
-            flex: 1;
-            padding: 8px;
-            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 0;
+            border-radius: 8px;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
+            border: none;
+            text-transform: uppercase;
         }
         .details-btn {
             background: #fff;
-            color: #0f3d91;
-            border: 1px solid #0f3d91;
+            color: #475569;
+            border: 1px solid #e2e8f0;
         }
         .details-btn:hover {
-            background: #f0f7ff;
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            color: #0f172a;
         }
         .buy-btn {
             background: #0f3d91;
             color: white;
-            border: 1px solid #0f3d91;
+            box-shadow: 0 2px 4px -1px rgba(15, 61, 145, 0.1);
         }
         .buy-btn:hover {
-            background: #092a69;
-            border-color: #092a69;
+            background: #0a2a66;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(15, 61, 145, 0.2);
         }
       `}</style>
     </div>

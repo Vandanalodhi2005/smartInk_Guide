@@ -91,6 +91,7 @@ const AdminOrders = () => {
         'Out for Delivery': 'bg-orange-100 text-orange-800',
         'Delivered': 'bg-green-100 text-green-800',
         'Cancelled': 'bg-red-100 text-red-800',
+        'Failed': 'bg-red-100 text-red-800',
     };
 
     const handleOpenUpdate = (order) => {

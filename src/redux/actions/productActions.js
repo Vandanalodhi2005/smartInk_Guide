@@ -26,11 +26,21 @@ import {
     PRODUCT_DELETE_REVIEW_FAIL,
 } from '../constants/productConstants';
 
-export const listProducts = (search = '', category = '', pageNumber = 1) => async (dispatch) => {
+export const listProducts = (search = '', category = '', pageNumber = 1, brand = '') => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
 
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products?search=${search}&category=${category}&page=${pageNumber}`);
+        // Encode parameters to handle special characters like '&' in category names
+        const searchParam = encodeURIComponent(search);
+        const categoryParam = encodeURIComponent(category);
+        const brandParam = encodeURIComponent(brand);
+        
+        let url = `${import.meta.env.VITE_API_URL}/products?search=${searchParam}&category=${categoryParam}&page=${pageNumber}`;
+        if (brand && brand !== 'all') {
+            url += `&brand=${brandParam}`;
+        }
+        
+        const { data } = await axios.get(url);
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,

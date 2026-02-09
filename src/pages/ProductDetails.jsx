@@ -609,49 +609,48 @@ const ProductDetails = () => {
           .qty-controls button:disabled { color: #cbd5e1; cursor: not-allowed; }
           .qty-controls input { width: 60px; text-align: center; border: none; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; height: 44px; font-weight: 700; font-size: 16px; color: #0f172a; }
 
-          .actions { display: flex; gap: 20px; margin-bottom: 40px; }
+          .actions { display: flex; gap: 16px; margin-bottom: 40px; }
           .actions button { 
              flex: 1; 
-             height: 54px; 
-             border-radius: 16px; /* Increased rounding to match style */
-             font-weight: 800; /* Black font weight */
-             font-size: 13px; /* Slightly smaller for uppercase tracking */
-             letter-spacing: 1px; /* Widest tracking */
+             height: 56px; 
+             border-radius: 12px; 
+             font-weight: 700; 
+             font-size: 14px; 
+             letter-spacing: 0.5px; 
              cursor: pointer; 
-             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+             transition: all 0.2s ease; 
              text-transform: uppercase; 
              display: flex; 
              align-items: center; 
              justify-content: center; 
-             gap: 12px; 
-             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+             gap: 10px; 
           }
-          .actions button:active { transform: scale(0.95); }
+          .actions button:active { transform: scale(0.98); }
           
           /* Dark Button (Add to Cart) */
           .btn-cart { 
-             background: #1e293b; 
-             border: 1px solid #1e293b; 
-             color: white; 
+             background: white; 
+             border: 2px solid #e2e8f0; 
+             color: #1e293b; 
           }
           .btn-cart:hover { 
-             background: #0f172a; 
-             border-color: #0f172a;
-             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+             border-color: #1e293b;
+             background: #f8fafc;
+             color: #0f172a;
           }
           
           /* Brand Button (Buy Now) */
           .btn-buy { 
              background: #0f3d91; 
-             border: 1px solid #0f3d91; 
+             border: 2px solid #0f3d91; 
              color: white; 
-             box-shadow: 0 4px 6px -1px rgba(15, 61, 145, 0.3); 
+             box-shadow: 0 4px 6px -1px rgba(15, 61, 145, 0.2); 
           }
           .btn-buy:hover { 
              background: #0a2a66; 
              border-color: #0a2a66; 
-             box-shadow: 0 10px 15px -3px rgba(15, 61, 145, 0.4), 0 4px 6px -2px rgba(15, 61, 145, 0.2); 
-             transform: translateY(-2px); 
+             box-shadow: 0 10px 15px -3px rgba(15, 61, 145, 0.3); 
+             transform: translateY(-1px);
           }
           
           .btn-cart:disabled, .btn-buy:disabled { 
@@ -726,12 +725,15 @@ const ProductDetails = () => {
             
             /* Disable zoom on touch devices */
             .pd-image-wrapper img { transform: none !important; }
-            .actions { flex-direction: column; }
+            /* .actions { flex-direction: column; } Removed to keep side-by-side */
           }
           
           @media (max-width: 600px) {
              .review-card { flex-direction: column; gap: 12px; }
              .review-avatar { width: 40px; height: 40px; font-size: 16px; }
+             /* Stack buttons only on very small screens if needed, otherwise share width */
+             .actions { margin-bottom: 24px; gap: 12px; }
+             .actions button { height: 48px; font-size: 13px; padding: 0 10px; }
           }
           
           @media (max-width: 480px) {

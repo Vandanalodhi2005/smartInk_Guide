@@ -7,7 +7,8 @@ import { addToCart } from '../redux/actions/cartActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useFavorites } from '../context/useFavorites';
-import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle, FiUser } from "react-icons/fi";
+import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle } from "react-icons/fi";
+import { FaUserCircle } from "react-icons/fa";
 import '../styles/pages.css';
 
 const Profile = () => {
@@ -50,9 +51,7 @@ const Profile = () => {
         }), 2000);
     };
 
-    const handleManagePreferences = () => {
-        navigate('/settings');
-    };
+
 
     useEffect(() => {
         if (!user) {
@@ -109,14 +108,7 @@ const Profile = () => {
                     <aside className="profile-sidebar">
                         <div className="profile-user-summary">
                             <div className="profile-image-container">
-                                <div className="w-full h-full rounded-full border-4 border-slate-200 bg-slate-100 flex items-center justify-center text-slate-400">
-                                   <FiUser className="w-12 h-12" />
-                                </div>
-                                <button className="edit-avatar-btn" title="Change Avatar">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                                    </svg>
-                                </button>
+                                <FaUserCircle className="w-full h-full text-slate-300" />
                             </div>
                             <h2>{formData.name || 'TechnoSky User'}</h2>
                             <p>{formData.email}</p>
@@ -141,15 +133,7 @@ const Profile = () => {
                                 </svg>
                                 Order History
                             </button>
-                            <button
-                                className={`profile-nav-item ${activeTab === 'favorites' ? 'active' : ''}`}
-                                onClick={() => setActiveTab('favorites')}
-                            >
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                                </svg>
-                                My Favorites
-                            </button>
+
                             <button onClick={handleSignOut} className="profile-nav-item danger">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
@@ -237,11 +221,7 @@ const Profile = () => {
                                     </div>
                                 </div>
 
-                                <div style={{ marginTop: '40px' }}>
-                                    <h3>Newsletter Subscription</h3>
-                                    <p style={{ color: '#666', fontSize: '14px', marginBottom: '16px' }}>You are currently subscribed to all promotional emails.</p>
-                                    <button className="category-btn" style={{ padding: '8px 16px', fontSize: '14px' }} onClick={handleManagePreferences}>Manage Preferences</button>
-                                </div>
+
                             </div>
                         )}
 
@@ -269,12 +249,12 @@ const Profile = () => {
                                         </button>
                                     </div>
                                 ) : orders && orders.length === 0 ? (
-                                    <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-sm">
-                                        <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <div className="bg-white rounded-2xl border border-slate-200 p-8 sm:p-12 flex flex-col items-center text-center shadow-sm">
+                                        <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
                                             <FiPackage className="text-slate-400 text-4xl" />
                                         </div>
                                         <h2 className="text-2xl font-bold text-slate-800 mb-2">No orders found</h2>
-                                        <p className="text-slate-500 mb-8 max-w-md mx-auto">Looks like you haven't bought anything from us yet.</p>
+                                        <p className="text-slate-500 mb-8 max-w-md">Looks like you haven't bought anything from us yet.</p>
                                         <Link 
                                             to="/printers" 
                                             className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-200"
@@ -310,7 +290,11 @@ const Profile = () => {
 
                                             <div className="mt-4 sm:mt-0 flex items-center gap-3">
                                                 {/* Status Badge */}
-                                                {order.isDelivered ? (
+                                                {order.status === 'Failed' ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold uppercase tracking-wide">
+                                                        <FiAlertCircle /> Failed
+                                                    </span>
+                                                ) : order.isDelivered ? (
                                                     <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wide">
                                                         <FiCheckCircle /> Delivered
                                                     </span>
@@ -379,39 +363,7 @@ const Profile = () => {
                             </div>
                         )}
 
-                        {activeTab === 'favorites' && (
-                            <div className="profile-section">
-                                <h2>My Favorites</h2>
-                                <div className="favorites-grid">
-                                    {favorites.length === 0 ? (
-                                        <div className="text-sm text-gray-500">You have no favorites yet — add products using the heart icon.</div>
-                                    ) : (
-                                        favorites.map((item) => (
-                                            <div key={item.id} className="favorite-card">
-                                                <div className="fav-img-container">
-                                                    <img src={item.image} alt={item.name} />
-                                                    <button className="remove-fav-btn" onClick={() => removeFavorite(item.id)}>
-                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                                <div className="fav-info">
-                                                    <h3>{item.name}</h3>
-                                                    <div className="fav-price">${item.price}</div>
-                                                    <button
-                                                        className="add-to-cart-sm add-to-cart-btn"
-                                                        onClick={() => handleAddToCart(item)}
-                                                    >
-                                                        {addedToCart[item.id] ? 'Added' : 'Add to Cart'}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
-                            </div>
-                        )}
+
                     </main>
                 </div>
             </div>

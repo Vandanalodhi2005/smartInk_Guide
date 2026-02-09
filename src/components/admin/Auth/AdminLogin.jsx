@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
 import { login } from '../../../redux/actions/userActions';
-import logo from '../../../assets/logo/PrintsCartslogo.png';
+const logo = "/PrintsCartslogo.png";
 
 const AdminLogin = () => {
     const [email, setEmail] = useState('');

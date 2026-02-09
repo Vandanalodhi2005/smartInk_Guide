@@ -6,6 +6,7 @@ import { addToCart } from '../redux/actions/cartActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import { useCart } from '../context/CartContext';
+import { Eye, ShoppingBag } from 'lucide-react';
 import '../styles/pages.css';
 
 const Printers = () => {
@@ -240,17 +241,19 @@ const Printers = () => {
                     </div>
                     
                     {/* Buttons */}
-                    <div className="flex gap-2 mt-auto flex-col sm:flex-row">
+                    <div className="grid grid-cols-2 gap-3 mt-auto">
                         <button 
                             onClick={(e) => handleDetails(e, printer)}
-                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold border border-blue-900 text-blue-900 bg-white hover:bg-blue-50 transition-colors"
+                            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 bg-white hover:border-blue-600 hover:text-blue-600 transition-all shadow-sm hover:shadow-md"
                         >
-                            See Details
+                            <Eye size={14} />
+                            Details
                         </button>
                         <button 
                             onClick={(e) => handleBuyNow(e, printer)}
-                            className="flex-1 py-1.5 px-2 rounded-lg text-xs font-bold bg-blue-900 text-white border border-blue-900 hover:bg-blue-800 transition-colors"
+                            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold bg-blue-900 text-white border border-blue-900 hover:bg-blue-800 hover:border-blue-800 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5"
                         >
+                            <ShoppingBag size={14} />
                             Buy Now
                         </button>
                     </div>

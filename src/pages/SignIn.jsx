@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/actions/userActions';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
-import logo from '../assets/logo/PrintsCartslogo.png';
+const logo = "/PrintsCartslogo.png";
 import '../styles/pages.css';
 
 const SignIn = () => {
