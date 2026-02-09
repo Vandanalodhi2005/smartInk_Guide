@@ -17,16 +17,19 @@ const AdminSettings = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-2">Store Name</label>
-                            <input type="text" defaultValue="TechStore" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <input type="text" defaultValue="Prints Carts" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                         </div>
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-2">Support Email</label>
-                            <input type="email" defaultValue="support@techstore.com" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <input type="email" defaultValue="support@printscarts.com" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                         </div>
                     </div>
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Address</label>
-                        <input type="text" defaultValue="123 Commerce St, Tech City" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <input type="text" defaultValue="Prints Carts
+7181 Beacon Dr 15
+Reno, NV 89506
+United States" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                     </div>
                 </div>
                 <div className="p-6 bg-slate-50 border-t border-slate-100 text-right">
