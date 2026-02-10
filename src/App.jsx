@@ -94,7 +94,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/orders" element={<MyOrders />} />
 
               {/* Admin */}
