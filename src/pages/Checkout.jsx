@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { saveShippingAddress } from '../redux/actions/cartActions';
 import axios from 'axios';
-import { Loader2, ShieldCheck, Truck, CreditCard, ChevronRight, Lock, MapPin, Phone, Globe } from 'lucide-react';
+import { Loader2, Truck, CreditCard, ChevronRight, Lock, Package, CheckCircle } from 'lucide-react';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 
@@ -19,15 +19,21 @@ const Checkout = () => {
 
     const [address, setAddress] = useState(shippingAddress.address || '');
     const [city, setCity] = useState(shippingAddress.city || '');
+    const [province, setProvince] = useState(shippingAddress.state || '');
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
     const [country, setCountry] = useState(shippingAddress.country || '');
     const [phone, setPhone] = useState(shippingAddress.phone || '');
+
+    const [shippingRates, setShippingRates] = useState([]);
+    const [selectedRate, setSelectedRate] = useState(null);
+    const [loadingShipping, setLoadingShipping] = useState(false);
+    const [shippingError, setShippingError] = useState(null);
 
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [clover, setClover] = useState(null);
 
-    // Style configuration to differentiate from smartEprinting
+    // Style configuration
     const inputStyle = "w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400";
     const labelStyle = "block text-sm font-medium text-slate-700 mb-2";
 
@@ -82,12 +88,49 @@ const Checkout = () => {
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
     const taxPrice = Number((0.15 * subtotal).toFixed(2));
-    const shippingPrice = 0;
+    const shippingPrice = selectedRate ? Number(selectedRate.rate) : 0;
     const totalPrice = subtotal + taxPrice + shippingPrice;
 
-    const submitShippingHandler = (e) => {
+    // Calculate Shipping Rates
+    const calculateShipping = async (e) => {
         e.preventDefault();
-        dispatch(saveShippingAddress({ address, city, postalCode, country, phone }));
+        setLoadingShipping(true);
+        setShippingError(null);
+        setShippingRates([]);
+        setSelectedRate(null);
+
+        try {
+            const { data } = await axios.post(
+                `${import.meta.env.VITE_API_URL}/shipping/rates`,
+                {
+                    shippingAddress: { address, city, state: province, postalCode, country, phone },
+                    cartItems
+                },
+                { headers: { Authorization: `Bearer ${userInfo.token}` } }
+            );
+            
+            setShippingRates(data);
+            if (data.length > 0) {
+                // Auto-select the cheapest option by default
+                 const sortedRates = [...data].sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate));
+                 setSelectedRate(sortedRates[0]);
+            } else {
+                setShippingError("No shipping rates found for this address.");
+            }
+        } catch (error) {
+            console.error(error);
+            setShippingError(error.response?.data?.message || "Failed to calculate shipping rates.");
+        } finally {
+            setLoadingShipping(false);
+        }
+    };
+
+    const submitShippingHandler = () => {
+        if (!selectedRate) {
+            alert("Please select a shipping method.");
+            return;
+        }
+        dispatch(saveShippingAddress({ address, city, state: province, postalCode, country, phone }));
         setStep(2);
         window.scrollTo(0, 0);
     };
@@ -110,7 +153,7 @@ const Checkout = () => {
 
             const orderData = {
                 orderItems: cartItems,
-                shippingAddress: { address, city, postalCode, country, phone },
+                shippingAddress: { address, city, state: province, postalCode, country, phone },
                 paymentMethod: 'Clover',
                 itemsPrice: subtotal,
                 taxPrice,
@@ -174,7 +217,7 @@ const Checkout = () => {
                                     <h2 className="text-xl font-semibold text-gray-900">Shipping Address</h2>
                                 </div>
 
-                                <form onSubmit={submitShippingHandler} className="space-y-6">
+                                <form onSubmit={calculateShipping} className="space-y-6">
                                     <div>
                                         <label className={labelStyle}>Street Address</label>
                                         <input 
@@ -198,6 +241,19 @@ const Checkout = () => {
                                             />
                                         </div>
                                         <div>
+                                            <label className={labelStyle}>State / Province</label>
+                                            <input 
+                                                value={province} 
+                                                onChange={(e) => setProvince(e.target.value)} 
+                                                required 
+                                                placeholder="NY" 
+                                                className={inputStyle}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
                                             <label className={labelStyle}>Postal Code</label>
                                             <input 
                                                 value={postalCode} 
@@ -207,34 +263,85 @@ const Checkout = () => {
                                                 className={inputStyle}
                                             />
                                         </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
                                             <label className={labelStyle}>Country</label>
                                             <input 
                                                 value={country} 
                                                 onChange={(e) => setCountry(e.target.value)} 
                                                 required 
-                                                placeholder="United States" 
+                                                placeholder="US" 
                                                 className={inputStyle} 
                                             />
                                         </div>
-                                        <div>
-                                            <label className={labelStyle}>Phone Number</label>
-                                            <input 
-                                                value={phone} 
-                                                onChange={(e) => setPhone(e.target.value)} 
-                                                required 
-                                                placeholder="+1 (555) 000-0000" 
-                                                className={inputStyle}
-                                            />
-                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label className={labelStyle}>Phone Number</label>
+                                        <input 
+                                            value={phone} 
+                                            onChange={(e) => setPhone(e.target.value)} 
+                                            required 
+                                            placeholder="+1 (555) 000-0000" 
+                                            className={inputStyle}
+                                        />
                                     </div>
 
-                                    <button type="submit" className="w-full mt-6 bg-blue-900 text-white py-4 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2">
-                                        Continue to Payment <ChevronRight size={18} />
-                                    </button>
+                                    {/* Action Buttons */}
+                                    {shippingRates.length === 0 ? (
+                                        <button 
+                                            type="submit" 
+                                            disabled={loadingShipping}
+                                            className="w-full mt-6 bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                                        >
+                                            {loadingShipping ? <Loader2 className="animate-spin" /> : 'Calculate Shipping'}
+                                        </button>
+                                    ) : (
+                                        <div className="mt-8 pt-6 border-t border-gray-100">
+                                            <h3 className="text-lg font-medium text-gray-900 mb-4">Select Shipping Method</h3>
+                                            <div className="space-y-3">
+                                                {shippingRates.map((rate) => (
+                                                    <div 
+                                                        key={rate.id}
+                                                        onClick={() => setSelectedRate(rate)}
+                                                        className={`p-4 border rounded-lg cursor-pointer flex items-center justify-between transition-all ${selectedRate?.id === rate.id ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-gray-200 hover:border-blue-300'}`}
+                                                    >
+                                                        <div className="flex items-center gap-3">
+                                                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedRate?.id === rate.id ? 'border-blue-600' : 'border-gray-300'}`}>
+                                                                {selectedRate?.id === rate.id && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-medium text-gray-900">{rate.service}</p>
+                                                                <p className="text-sm text-gray-500">{rate.carrier} • {rate.est_delivery_days ? `${rate.est_delivery_days} days` : 'Standard Delivery'}</p>
+                                                            </div>
+                                                        </div>
+                                                        <span className="font-semibold text-gray-900">${parseFloat(rate.rate).toFixed(2)}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            
+                                            <div className="flex gap-4 mt-6">
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => setShippingRates([])}
+                                                    className="flex-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50"
+                                                >
+                                                    Change Address
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    onClick={submitShippingHandler}
+                                                    className="flex-1 bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
+                                                >
+                                                    Continue to Payment <ChevronRight size={18} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {shippingError && (
+                                        <div className="p-4 mt-4 bg-red-50 text-red-600 rounded-lg border border-red-100 text-sm">
+                                            {shippingError}
+                                        </div>
+                                    )}
                                 </form>
                             </div>
                         ) : (
@@ -253,8 +360,11 @@ const Checkout = () => {
 
                                 <div className="space-y-6">
                                     <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                        <p className="text-sm text-gray-600 mb-2">Total Amount</p>
-                                        <p className="text-2xl font-bold text-gray-900">${totalPrice.toFixed(2)}</p>
+                                        <div className="flex justify-between items-center mb-2">
+                                            <p className="text-sm text-gray-600">Total Amount</p>
+                                            <p className="text-2xl font-bold text-gray-900">${totalPrice.toFixed(2)}</p>
+                                        </div>
+                                        <p className="text-xs text-gray-500">Including shipping: {selectedRate ? `${selectedRate.carrier} ${selectedRate.service}` : 'Free'}</p>
                                     </div>
 
                                     <div className="space-y-4">
@@ -330,7 +440,7 @@ const Checkout = () => {
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600">
                                     <span>Shipping</span>
-                                    <span>{shippingPrice === 0 ? 'Free' : `$${shippingPrice.toFixed(2)}`}</span>
+                                    <span>{shippingPrice === 0 ? 'calculated at next step' : `$${shippingPrice.toFixed(2)}`}</span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-600">
                                     <span>Tax (Est. 15%)</span>
@@ -354,4 +464,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-
