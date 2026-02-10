@@ -60,10 +60,6 @@ const Checkout = () => {
                                 fontSize: '16px',
                                 color: '#334155', 
                                 fontWeight: '400', 
-                            },
-                            input: {
-                                padding: '12px',
-                                borderRadius: '8px',
                             }
                         };
     
@@ -206,6 +202,54 @@ const Checkout = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     
+                    {/* Sidebar */}
+                    <div className="lg:col-span-5 lg:order-last">
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 lg:sticky lg:top-24">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-6">Order Summary</h3>
+                            
+                            <div className="space-y-4 mb-6 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
+                                {cartItems.map((item, i) => (
+                                    <div key={i} className="flex gap-4 py-2">
+                                        <div className="h-16 w-16 bg-gray-50 rounded-md border border-gray-100 p-1 flex-shrink-0">
+                                            <img
+                                                src={item.image ? (item.image.startsWith('http') ? item.image : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${item.image}`) : "https://placehold.co/100"}
+                                                alt={item.title}
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-medium text-gray-900 line-clamp-2">{item.title}</p>
+                                            <p className="text-sm text-gray-500 mt-1">Qty: {item.qty}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-sm font-semibold text-gray-900">${(item.price * item.qty).toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="space-y-3 pt-6 border-t border-gray-100">
+                                <div className="flex justify-between text-sm text-gray-600">
+                                    <span>Subtotal</span>
+                                    <span>${subtotal.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between text-sm text-gray-600">
+                                    <span>Shipping</span>
+                                    <span>{shippingPrice === 0 ? 'calculated at next step' : `$${shippingPrice.toFixed(2)}`}</span>
+                                </div>
+                                <div className="flex justify-between text-sm text-gray-600">
+                                    <span>Tax (Est. 15%)</span>
+                                    <span>${taxPrice.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            
+                            <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-100">
+                                <span className="text-base font-bold text-gray-900">Total</span>
+                                <span className="text-2xl font-bold text-blue-900">${totalPrice.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Main Content */}
                     <div className="lg:col-span-7">
                         {step === 1 ? (
@@ -367,26 +411,34 @@ const Checkout = () => {
                                         <p className="text-xs text-gray-500">Including shipping: {selectedRate ? `${selectedRate.carrier} ${selectedRate.service}` : 'Free'}</p>
                                     </div>
 
-                                    <div className="space-y-4">
-                                        <div className="border border-gray-300 rounded-lg p-3 sm:p-4 focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent">
-                                            <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Card Number</label>
-                                            <div id="card-number" className="h-6"></div>
+                                    <div className="space-y-6">
+                                        <div>
+                                            <label className={labelStyle}>Card Number</label>
+                                            <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent outline-none transition-all">
+                                                <div id="card-number" className="h-6"></div>
+                                            </div>
                                         </div>
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div className="border border-gray-300 rounded-lg p-3 sm:p-4 focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent">
-                                                <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Expires</label>
-                                                <div id="card-date" className="h-6"></div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div>
+                                                <label className={labelStyle}>Expiration Date</label>
+                                                <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent outline-none transition-all">
+                                                    <div id="card-date" className="h-6"></div>
+                                                </div>
                                             </div>
-                                            <div className="border border-gray-300 rounded-lg p-3 sm:p-4 focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent">
-                                                <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">CVV</label>
-                                                <div id="card-cvv" className="h-6"></div>
+                                            <div>
+                                                <label className={labelStyle}>CVV</label>
+                                                <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent outline-none transition-all">
+                                                    <div id="card-cvv" className="h-6"></div>
+                                                </div>
                                             </div>
                                         </div>
                                         
-                                        <div className="border border-gray-300 rounded-lg p-3 sm:p-4 focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent">
-                                            <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Zip Code</label>
-                                            <div id="card-postal-code" className="h-6"></div>
+                                        <div>
+                                            <label className={labelStyle}>Zip Code</label>
+                                            <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent outline-none transition-all">
+                                                <div id="card-postal-code" className="h-6"></div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -406,55 +458,6 @@ const Checkout = () => {
                             </div>
                         )}
                     </div>
-
-                    {/* Sidebar */}
-                    <div className="lg:col-span-5">
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 lg:sticky lg:top-24">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-6">Order Summary</h3>
-                            
-                            <div className="space-y-4 mb-6 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
-                                {cartItems.map((item, i) => (
-                                    <div key={i} className="flex gap-4 py-2">
-                                        <div className="h-16 w-16 bg-gray-50 rounded-md border border-gray-100 p-1 flex-shrink-0">
-                                            <img
-                                                src={item.image ? (item.image.startsWith('http') ? item.image : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${item.image}`) : "https://placehold.co/100"}
-                                                alt={item.title}
-                                                className="w-full h-full object-contain"
-                                            />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-gray-900 line-clamp-2">{item.title}</p>
-                                            <p className="text-sm text-gray-500 mt-1">Qty: {item.qty}</p>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="text-sm font-semibold text-gray-900">${(item.price * item.qty).toFixed(2)}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="space-y-3 pt-6 border-t border-gray-100">
-                                <div className="flex justify-between text-sm text-gray-600">
-                                    <span>Subtotal</span>
-                                    <span>${subtotal.toFixed(2)}</span>
-                                </div>
-                                <div className="flex justify-between text-sm text-gray-600">
-                                    <span>Shipping</span>
-                                    <span>{shippingPrice === 0 ? 'calculated at next step' : `$${shippingPrice.toFixed(2)}`}</span>
-                                </div>
-                                <div className="flex justify-between text-sm text-gray-600">
-                                    <span>Tax (Est. 15%)</span>
-                                    <span>${taxPrice.toFixed(2)}</span>
-                                </div>
-                            </div>
-                            
-                            <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-100">
-                                <span className="text-base font-bold text-gray-900">Total</span>
-                                <span className="text-2xl font-bold text-blue-900">${totalPrice.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
