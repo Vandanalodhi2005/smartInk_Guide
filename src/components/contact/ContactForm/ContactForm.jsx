@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './ContactForm.css';
 
 const ContactForm = () => {
@@ -12,6 +13,7 @@ const ContactForm = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
 
     const subjects = [
         'Product Inquiry',
@@ -25,12 +27,14 @@ const ContactForm = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitError(null);
 
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/contact`, formData);
+
             setIsSubmitting(false);
             setShowSuccess(true);
             setFormData({
@@ -42,7 +46,11 @@ const ContactForm = () => {
                 message: ''
             });
             setTimeout(() => setShowSuccess(false), 5000);
-        }, 1500);
+        } catch (error) {
+            console.error(error);
+            setSubmitError(error.response?.data?.message || "Failed to send message. Please try again.");
+            setIsSubmitting(false);
+        }
     };
 
     if (showSuccess) {
@@ -64,6 +72,11 @@ const ContactForm = () => {
     return (
         <div className="contact-form-card">
             <h2>Send a Message</h2>
+            {submitError && (
+                <div style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '10px', borderRadius: '5px', marginBottom: '15px', border: '1px solid #fecaca' }}>
+                    {submitError}
+                </div>
+            )}
             <form onSubmit={handleSubmit} className="contact-form-grid">
                 <div className="form-group">
                     <label htmlFor="name">Name*</label>

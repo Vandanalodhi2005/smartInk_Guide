@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './ReturnForm.css';
 
 const ReturnForm = () => {
     const [formData, setFormData] = useState({
+        fullName: '',
+        email: '',
+        phone: '',
         orderNumber: '',
         reason: '',
         otherReason: '',
@@ -11,6 +15,7 @@ const ReturnForm = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [error, setError] = useState(null);
 
     const reasons = [
         'Wrong item received',
@@ -32,21 +37,35 @@ const ReturnForm = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        // Simulate API call
-        setTimeout(() => {
+        setError(null);
+
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/contact`, {
+                type: 'return-exchange',
+                ...formData,
+                reason: formData.reason === 'Other (please specify)' ? formData.otherReason : formData.reason
+            });
+
             setIsSubmitting(false);
             setIsSuccess(true);
             setFormData({
+                fullName: '',
+                email: '',
+                phone: '',
                 orderNumber: '',
                 reason: '',
                 otherReason: '',
                 resolution: '',
                 additionalDetails: ''
             });
-        }, 1500);
+        } catch (err) {
+            console.error(err);
+            setError(err.response?.data?.message || 'Failed to submit request. Please try again.');
+            setIsSubmitting(false);
+        }
     };
 
     if (isSuccess) {
@@ -68,7 +87,46 @@ const ReturnForm = () => {
     return (
         <div className="return-form-container">
             <h2>Start a Return or Exchange</h2>
+            {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleSubmit} className="return-form">
+                <div className="form-group">
+                    <label htmlFor="fullName">Full Name*</label>
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        placeholder="Enter your full name"
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="email">Email Address*</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter your email address"
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="phone">Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="Enter your phone number"
+                    />
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="orderNumber">Order Number*</label>
                     <input
