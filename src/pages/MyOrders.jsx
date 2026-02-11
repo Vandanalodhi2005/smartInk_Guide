@@ -5,7 +5,7 @@ import { listMyOrders } from '../redux/actions/orderActions';
 import PageContainer from "../components/common/PageContainer";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
-import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle } from "react-icons/fi";
+import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiAlertCircle, FiCopy } from "react-icons/fi";
 
 const MyOrders = () => {
   const dispatch = useDispatch();
@@ -92,7 +92,18 @@ const MyOrders = () => {
                         </div>
                         <div>
                           <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Order #</p>
-                          <p className="text-sm font-mono text-slate-600">{order._id.substring(order._id.length - 8).toUpperCase()}</p>
+                          <div className="flex items-center gap-2">
+                              <p className="text-sm font-mono text-slate-600 truncate max-w-[120px] md:max-w-none" title={order._id}>{order._id}</p>
+                              <button 
+                                  onClick={() => {
+                                      navigator.clipboard.writeText(order._id);
+                                  }}
+                                  className="text-slate-400 hover:text-blue-600 transition-colors cursor-pointer"
+                                  title={`Copy Full Order ID: ${order._id}`}
+                              >
+                                  <FiCopy size={14} />
+                              </button>
+                          </div>
                         </div>
                     </div>
 
@@ -117,12 +128,20 @@ const MyOrders = () => {
                          )}
                          
                          {/* Details Button */}
-                         <Link 
-                            to={`/order/${order._id}`}
-                            className="hidden sm:inline-block px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
-                         >
-                            View Details
-                         </Link>
+                         <div className="hidden sm:flex items-center gap-2">
+                            <Link 
+                                to={`/order/${order._id}`}
+                                className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
+                            >
+                                View Details
+                            </Link>
+                            <Link 
+                                to={`/track-order?id=${order._id}`}
+                                className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                            >
+                                Track
+                            </Link>
+                         </div>
                     </div>
                   </div>
 

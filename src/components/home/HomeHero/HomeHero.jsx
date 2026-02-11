@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomeHero.css';
 
+import heroImage from '../../../assets/hero.jpeg';
+
 const HomeHero = () => {
     return (
         <section className="home-hero">
@@ -24,12 +26,12 @@ const HomeHero = () => {
                     </div>
                 </div>
 
-                <div className="home-hero-image">
+                    <div className="home-hero-image">
                     <img
-                        src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600"
+                        src={heroImage}
                         alt="Modern printer setup"
                     />
-                </div>
+                    </div>
             </div>
         </section>
     );

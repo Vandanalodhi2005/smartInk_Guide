@@ -20,6 +20,11 @@ import AboutUs from "./pages/AboutUs";
 import ProductDetails from "./pages/ProductDetails";
 import RefundReturnPolicy from "./pages/RefundReturnPolicy";
 import PolicyHub from "./pages/PolicyHub";
+import Blogs from "./pages/Blogs";
+import TopHomePrinters2026 from "./pages/blogs/TopHomePrinters2026";
+import InkjetVsLaserGuide from "./pages/blogs/InkjetVsLaserGuide";import PrinterOfflineFixGuide from './pages/blogs/PrinterOfflineFixGuide';import SaveMoneyInkGuide from "./pages/blogs/SaveMoneyInkGuide";
+import PrinterSetupGuide from "./pages/blogs/PrinterSetupGuide";
+import EcoFriendlyPrintingGuide from "./pages/blogs/EcoFriendlyPrintingGuide";
 
 // Auth pages
 import SignIn from "./pages/SignIn";
@@ -48,6 +53,8 @@ import Settings from "./pages/Settings";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import MyOrders from "./pages/MyOrders";
+import OrderDetails from "./pages/OrderDetails";
+import TrackOrder from "./pages/TrackOrder";
 
 import AdminRoute from "./components/admin/AdminRoute";
 import ScrollToTop from "./components/common/ScrollToTop";
@@ -69,6 +76,13 @@ function App() {
               <Route path="/ink-toner" element={<InkToner />} />
               <Route path="/ink-toner/:id" element={<ProductDetails />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/blogs/top-10-home-printers-2026" element={<TopHomePrinters2026 />} />
+              <Route path="/blogs/inkjet-vs-laser-printers-2026" element={<InkjetVsLaserGuide />} />
+              <Route path="/blogs/printer-offline-fix-guide-2026" element={<PrinterOfflineFixGuide />} />
+              <Route path="/blogs/save-money-on-ink-toner-2026" element={<SaveMoneyInkGuide />} />
+              <Route path="/blogs/printer-setup-guide-2026" element={<PrinterSetupGuide />} />
+              <Route path="/blogs/eco-friendly-printing-guide-2026" element={<EcoFriendlyPrintingGuide />} />
               <Route path="/faqs" element={<FAQs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/policies" element={<PolicyHub />} />
@@ -96,6 +110,8 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/orders" element={<MyOrders />} />
+              <Route path="/order/:id" element={<OrderDetails />} />
+              <Route path="/track-order" element={<TrackOrder />} />
 
               {/* Admin */}
             <Route path="/admin" element={

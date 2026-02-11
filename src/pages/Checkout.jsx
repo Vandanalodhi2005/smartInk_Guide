@@ -104,12 +104,23 @@ const Checkout = () => {
                 },
                 { headers: { Authorization: `Bearer ${userInfo.token}` } }
             );
-            
-            setShippingRates(data);
-            if (data.length > 0) {
+
+            // Filter rates by allowed EasyPost account IDs
+            const allowedAccounts = [
+                'ca_e3cbd16a6eb84914985d90875a6ec074', // Canada Post
+                'ca_76d0939dc1ce4c99870bbc2844d8d02b', // FedEx
+                'ca_c5f03a14c10d4fbab837e8a35b01c7df', // UPS
+                'ca_b82a2962176446d09a48bc649977f467'  // USPS
+            ];
+            const filteredRates = Array.isArray(data)
+                ? data.filter(rate => allowedAccounts.includes(rate.carrier_account_id))
+                : [];
+
+            setShippingRates(filteredRates);
+            if (filteredRates.length > 0) {
                 // Auto-select the cheapest option by default
-                 const sortedRates = [...data].sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate));
-                 setSelectedRate(sortedRates[0]);
+                const sortedRates = [...filteredRates].sort((a, b) => parseFloat(a.rate) - parseFloat(b.rate));
+                setSelectedRate(sortedRates[0]);
             } else {
                 setShippingError("No shipping rates found for this address.");
             }

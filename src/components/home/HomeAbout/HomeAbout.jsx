@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './HomeAbout.css';
 
+import homeAboutImage from '../../../assets/homeAboutImage.jpg';
+
 const HomeAbout = () => {
     return (
         <section className="home-about">
@@ -23,7 +25,7 @@ const HomeAbout = () => {
                 </div>
                 <div className="home-about-image">
                     <img
-                        src="https://images.unsplash.com/photo-1591405351990-4726e331f141?w=800"
+                        src={homeAboutImage}
                         alt="Printing supplies and office setup"
                     />
                     <div className="experience-badge">

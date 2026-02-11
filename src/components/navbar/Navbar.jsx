@@ -8,6 +8,15 @@ const logo = "/PrintsCartslogo.png"; // Ensure you have a logo image in the same
 const Navbar = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Responsive state
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   // Search State
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -125,6 +134,7 @@ const Navbar = () => {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/printers">Printers</Link></li>
             <li><Link to="/ink-toner">Ink & Toner</Link></li>
+            <li><Link to="/blogs">Blogs</Link></li>
             <li><Link to="/about">About Us</Link></li>
             <li><Link to="/faqs">FAQs</Link></li>
             <li><Link to="/contact">Contact</Link></li>
@@ -179,12 +189,12 @@ const Navbar = () => {
             </Link>
             <div className="user-menu-container" ref={menuRef}>
               {user ? (
-                 <button className="user-profile-trigger" onClick={() => setShowUserMenu(!showUserMenu)}>
-                    <div className="user-avatar-circle">
-                       {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  <button className="user-profile-trigger flex items-center gap-2 px-3 py-1 rounded-full border border-slate-200 bg-white hover:shadow-md transition-all" onClick={() => setShowUserMenu(!showUserMenu)}>
+                    <div className="user-avatar-circle bg-blue-100 text-blue-700 font-bold flex items-center justify-center w-8 h-8 rounded-full text-lg">
+                      {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                     </div>
-                    <span className="user-name-text">{user.name}</span>
-                 </button>
+                    <span className="user-name-text font-semibold text-slate-800 text-base">{user.name?.split(' ')[0]}</span>
+                  </button>
               ) : (
                 <button
                     className="icon-btn user-btn"
@@ -261,50 +271,68 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`} ref={mobileMenuRef}>
-          <ul className="mobile-nav-links">
-            <li><Link to="/" onClick={closeMobileMenu}>Home</Link></li>
-            <li><Link to="/printers" onClick={closeMobileMenu}>Printers</Link></li>
-            <li><Link to="/about" onClick={closeMobileMenu}>About Us</Link></li>
-            <li><Link to="/faqs" onClick={closeMobileMenu}>FAQs</Link></li>
-            <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
-          </ul>
-
-          <div className="mobile-auth-section">
-             {user ? (
-                <>
-                   <Link to="/profile" className="mobile-user-header profile-link" onClick={closeMobileMenu}>
-                      <div className="user-avatar-circle small">
-                          {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                      </div>
-                      <div className="mobile-user-details">
-                          <span className="mobile-user-name">{user.name}</span>
-                          <span className="mobile-user-email">{user.email}</span>
-                      </div>
-                      <div className="mobile-user-arrow">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="9 18 15 12 9 6"></polyline>
-                          </svg>
-                      </div>
-                   </Link>
-                   <div className="mobile-user-links">
-                       {isAdmin && (
-                          <Link to="/admin/dashboard" className="mobile-link admin" onClick={closeMobileMenu}>
-                              Admin Dashboard
-                          </Link>
-                       )}
-                       <Link to="/profile" state={{ activeTab: 'orders' }} className="mobile-link" onClick={closeMobileMenu}>My Orders</Link>
-                       <button className="mobile-link logout-btn" onClick={handleSignOut}>Logout</button>
-                   </div>
-                </>
-             ) : (
-                <div className="mobile-auth-buttons">
-                    <Link to="/signin" className="mobile-auth-btn signin" onClick={closeMobileMenu}>Sign In</Link>
-                    <Link to="/signup" className="mobile-auth-btn signup" onClick={closeMobileMenu}>Sign Up</Link>
-                </div>
-             )}
+        {/* Only render mobile menu and profile bottom on mobile screens */}
+        {windowWidth <= 1024 && (
+          <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`} ref={mobileMenuRef} style={{display:'flex', flexDirection:'column', height:'100vh', minHeight:'100dvh'}}>
+            <div style={{flex:'1 1 auto', overflowY:'auto', display:'flex', flexDirection:'column'}}>
+              <ul className="mobile-nav-links">
+                <li><Link to="/" onClick={closeMobileMenu}>Home</Link></li>
+                <li><Link to="/printers" onClick={closeMobileMenu}>Printers</Link></li>
+                <li><Link to="/ink-toner" onClick={closeMobileMenu}>Ink & Toner</Link></li>
+                <li><Link to="/blogs" onClick={closeMobileMenu}>Blogs</Link></li>
+                <li><Link to="/about" onClick={closeMobileMenu}>About Us</Link></li>
+                <li><Link to="/faqs" onClick={closeMobileMenu}>FAQs</Link></li>
+                <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
+              </ul>
+              <div className="mobile-auth-section">
+                 {user ? (
+                    <>
+                       <Link to="/profile" className="mobile-user-header profile-link flex items-center gap-3 p-2 rounded-lg border border-slate-200 bg-white mb-2" onClick={closeMobileMenu}>
+                          <div className="user-avatar-circle small bg-blue-100 text-blue-700 font-bold flex items-center justify-center w-8 h-8 rounded-full text-lg">
+                              {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                          </div>
+                          <div className="mobile-user-details flex flex-col">
+                              <span className="mobile-user-name font-semibold text-slate-800">{user.name?.split(' ')[0]}</span>
+                              <span className="mobile-user-email text-xs text-slate-500">{user.email}</span>
+                          </div>
+                          <div className="mobile-user-arrow ml-auto">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="9 18 15 12 9 6"></polyline>
+                              </svg>
+                          </div>
+                       </Link>
+                       <div className="mobile-user-links">
+                           {isAdmin && (
+                              <Link to="/admin/dashboard" className="mobile-link admin" onClick={closeMobileMenu}>
+                                  Admin Dashboard
+                              </Link>
+                           )}
+                           <Link to="/profile" state={{ activeTab: 'orders' }} className="mobile-link" onClick={closeMobileMenu}>My Orders</Link>
+                           <button className="mobile-link logout-btn" onClick={handleSignOut}>Logout</button>
+                       </div>
+                    </>
+                 ) : (
+                    <div className="mobile-auth-buttons">
+                        <Link to="/signin" className="mobile-auth-btn signin" onClick={closeMobileMenu}>Sign In</Link>
+                        <Link to="/signup" className="mobile-auth-btn signup" onClick={closeMobileMenu}>Sign Up</Link>
+                    </div>
+                 )}
+              </div>
+            </div>
+            {/* Profile icon always at the bottom */}
+            {user && (
+              <div className="mobile-profile-bottom w-full bg-white border-t border-slate-200 flex items-center gap-3 px-4 py-3" style={{boxShadow:'0 -2px 8px rgba(0,0,0,0.04)'}}>
+                <Link to="/profile" className="flex items-center gap-2 w-full" onClick={closeMobileMenu}>
+                  <div className="user-avatar-circle bg-blue-100 text-blue-700 font-bold flex items-center justify-center w-9 h-9 rounded-full text-lg">
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <span className="font-semibold text-slate-800 text-base">{user.name?.split(' ')[0]}</span>
+                  <span className="ml-auto text-xs text-slate-400">Profile</span>
+                </Link>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </nav>
 
       <div className="navbar-spacer"></div>
@@ -683,6 +711,20 @@ const Navbar = () => {
             border: 1px solid #e5e7eb;
             margin-top: 8px;
         }
+        @media (max-width: 640px) {
+          .search-dropdown {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            max-width: 100vw;
+            border-radius: 0 0 12px 12px;
+            margin-top: 0;
+            padding: 16px 12px 16px 12px;
+            box-shadow: 0 8px 24px 0 rgba(0,0,0,0.10);
+          }
+        }
         .search-dropdown form {
             display: flex;
             gap: 8px;
@@ -768,6 +810,11 @@ const Navbar = () => {
         }
 
         @media (max-width: 1024px) {
+                  @media (min-width: 1025px) {
+                    .mobile-menu, .mobile-profile-bottom {
+                      display: none !important;
+                    }
+                  }
           .nav-links {
             display: none;
           }

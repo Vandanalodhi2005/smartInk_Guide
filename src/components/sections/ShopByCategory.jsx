@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom';
 
+import i1 from '../../assets/i1.jpg';
+import i2 from '../../assets/i2.jpg';
+import i3 from '../../assets/i3.jpg';
+
 const ShopByCategory = () => {
   const categories = [
     {
-      image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400",
+      image: i1,
       title: "Printers",
       link: "/printers"
     },
     {
-      image: "https://images.unsplash.com/photo-1606756790136-261ff86dd101?w=400",
+      image: i3,
       title: "Ink Cartridges",
       link: "/ink-toner"
     },
     {
-      image: "https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?w=400",
+      image: i2,
       title: "Toner & Supplies",
       link: "/ink-toner"
     }

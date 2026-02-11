@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"; // eslint-disable-line no-unused-vars
 import { useParams, Link, useNavigate } from "react-router-dom"; // eslint-disable-line no-unused-vars
 import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios';
 import { 
   listProductDetails, 
   listProducts,
@@ -38,6 +39,8 @@ const ProductDetails = () => {
   const [comment, setComment] = useState("");
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [canReview, setCanReview] = useState(false);
+  const [showEligibilityToast, setShowEligibilityToast] = useState(false);
   
   // Toaster State
   const [showLoginToast, setShowLoginToast] = useState(false);
@@ -55,7 +58,29 @@ const ProductDetails = () => {
         const categoryName = product.category.name || product.category;
         dispatch(listProducts('', categoryName, 1));
     }
-  }, [dispatch, product]);
+    
+    const checkEligibility = async () => {
+        if (userInfo && product && product._id) {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${userInfo.token}`,
+                    },
+                };
+                const { data } = await axios.get(
+                    `${import.meta.env.VITE_API_URL}/orders/check-review-eligibility/${product._id}`,
+                    config
+                );
+                setCanReview(data.canReview);
+            } catch (error) {
+                console.error("Error checking review eligibility", error);
+                setCanReview(false);
+            }
+        }
+    };
+    checkEligibility();
+
+  }, [dispatch, product, userInfo]);
 
   useEffect(() => {
     if (successProductReview) {
@@ -94,7 +119,21 @@ const ProductDetails = () => {
       setEditingReviewId(review._id);
       window.scrollTo({ top: document.querySelector('.tabs-container').offsetTop, behavior: 'smooth' });
   };
+const handleReviewClick = () => {
+    if (showReviewForm) {
+      setShowReviewForm(false);
+      return;
+    }
+    
+    if (canReview) {
+      setShowReviewForm(true);
+    } else {
+      setShowEligibilityToast(true);
+      setTimeout(() => setShowEligibilityToast(false), 3000);
+    }
+  };
 
+  
   // Zoom state
   const [isHovered, setIsHovered] = useState(false);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
@@ -179,6 +218,18 @@ const ProductDetails = () => {
   return (
     <>
       <Navbar />
+
+      {showEligibilityToast && (
+        <div className="fixed top-24 right-5 bg-orange-500 text-white px-6 py-4 rounded-lg shadow-xl z-50 flex items-center gap-3 animate-fade-in-down">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <h4 className="font-bold">Verification Failed</h4>
+            <p className="text-sm">Please purchase and receive this item to review.</p>
+          </div>
+        </div>
+      )}
 
       {/* Login Toast Notification */}
       {showLoginToast && (
@@ -392,10 +443,10 @@ const ProductDetails = () => {
           {userInfo ? (
             !userHasReviewed ? (
                 <button
-                onClick={() => setShowReviewForm(!showReviewForm)}
-                className="px-6 py-3 border-2 border-slate-900 rounded-xl font-bold text-xs uppercase hover:bg-slate-900 hover:text-white transition"
+                    onClick={handleReviewClick}
+                    className="px-6 py-3 border-2 border-slate-900 rounded-xl font-bold text-xs uppercase hover:bg-slate-900 hover:text-white transition"
                 >
-                {showReviewForm ? "Cancel" : "Write Review"}
+                    {showReviewForm ? "Cancel" : "Write Review"}
                 </button>
             ) : (
                 <div className="px-6 py-3 border border-emerald-100 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-xs uppercase tracking-wider">

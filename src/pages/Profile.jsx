@@ -110,7 +110,7 @@ const Profile = () => {
                             <div className="profile-image-container">
                                 <FaUserCircle className="w-full h-full text-slate-300" />
                             </div>
-                            <h2>{formData.name || 'TechnoSky User'}</h2>
+                            <h2>{(formData.name?.split(' ')[0]) || 'TechnoSky User'}</h2>
                             <p>{formData.email}</p>
                         </div>
 
