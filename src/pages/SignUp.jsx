@@ -69,7 +69,7 @@ const SignUp = () => {
         <div className="auth-container">
           <div className="auth-card">
             <div className="flex justify-center mb-6">
-                <img src={logo} alt="PrintsCarts" className="h-12 md:h-24 w-auto object-contain" />
+                <img src={logo} alt="SmartInk Guide" className="h-12 md:h-24 w-auto object-contain" />
             </div>
             <h1>{step === 1 ? 'Sign Up' : 'Verify Email'}</h1>
             <p className="auth-subtitle">

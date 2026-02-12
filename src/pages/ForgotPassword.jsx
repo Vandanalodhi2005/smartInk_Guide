@@ -130,7 +130,7 @@ const ForgotPassword = () => {
 
 .form-group input:focus {
   outline: none;
-  border-color: #0f3d91;
+  border-color: #60a5fa;
 }
 
 /* Button */
@@ -139,7 +139,7 @@ const ForgotPassword = () => {
   padding: 14px;
   border-radius: 12px;
   border: none;
-  background: #0f3d91;
+  background: #60a5fa;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
@@ -151,7 +151,7 @@ const ForgotPassword = () => {
 }
 
 .auth-submit-btn:hover:not(:disabled) {
-  background: #0f3d91;
+  background: #60a5fa;
 }
 
 /* Links */
@@ -162,7 +162,7 @@ const ForgotPassword = () => {
 }
 
 .auth-switch a {
-  color: #0f3d91;
+  color: #60a5fa;
   font-weight: 500;
   text-decoration: none;
 }
@@ -203,7 +203,7 @@ const ForgotPassword = () => {
 .reset-link {
   display: inline-block;
   margin-top: 14px;
-  color: #0f3d91;
+  color: #60a5fa;
   font-weight: 600;
 }
 `}

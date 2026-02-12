@@ -30,7 +30,7 @@ const InkjetVsLaserGuide = () => {
               Inkjet vs Laser Printers (2026 Buying Guide) — Which One Is Right for You?
             </h1>
             <div className="flex items-center text-gray-500 text-sm">
-              <span className="font-semibold text-gray-900 mr-2">By PrintsCarts Team</span>
+              <span className="font-semibold text-gray-900 mr-2">By SmartInk Guide Team</span>
               <span className="mx-2">•</span>
               <span>February 11, 2026</span>
               <span className="mx-2">•</span>
@@ -220,13 +220,13 @@ const InkjetVsLaserGuide = () => {
             <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">Which Printer Should YOU Choose in 2026?</h2>
             
             <div className="space-y-6 mb-12">
-                <div className="border-l-4 border-blue-500 pl-4">
+                <div className="border-l-4 border-blue-400 pl-4">
                     <h3 className="font-bold text-lg text-gray-900">1. Home Users & Families → Inkjet Printer</h3>
                     <p className="text-sm text-gray-600 mb-1">Good for homework, kids’ projects, and photo printing with an affordable upfront cost.</p>
                     <p className="text-xs font-semibold text-primary">Recommended: Canon PIXMA, HP DeskJet</p>
                 </div>
                 
-                <div className="border-l-4 border-blue-500 pl-4">
+                <div className="border-l-4 border-blue-400 pl-4">
                     <h3 className="font-bold text-lg text-gray-900">2. Students → Inkjet / Smart Tank</h3>
                     <p className="text-sm text-gray-600 mb-1">Perfect for color assignments and photo projects. Tank printers lower costs significantly.</p>
                      <p className="text-xs font-semibold text-primary">Recommended: Epson EcoTank, Hp Smart Tank</p>

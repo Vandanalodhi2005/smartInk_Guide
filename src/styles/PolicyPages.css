@@ -14,7 +14,7 @@
 
 /* Hero Section - Modern & Eye-catching */
 .policy-hero {
-    background: linear-gradient(135deg, #0f3d91 0%, #1e5bb8 50%, #0b2c66 100%);
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
     color: #fff;
     padding: 40px 20px 80px;
     text-align: center;
@@ -98,13 +98,13 @@
 .policy-info-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 40px rgba(15, 61, 145, 0.15);
-    border-color: #0f3d91;
+    border-color: #60a5fa;
 }
 
 .policy-info-card .icon-wrapper {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, #0f3d91, #1e5bb8);
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -121,7 +121,7 @@
 .policy-info-card h3 {
     font-size: 20px;
     font-weight: 700;
-    color: #0f3d91;
+    color: #60a5fa;
     margin: 0 0 12px 0;
 }
 
@@ -154,10 +154,10 @@
 .policy-section h2 {
     font-size: 32px;
     font-weight: 800;
-    color: #0f3d91;
+    color: #60a5fa;
     margin: 0 0 24px 0;
     padding-bottom: 16px;
-    border-bottom: 4px solid #0f3d91;
+    border-bottom: 4px solid #60a5fa;
     position: relative;
     display: inline-block;
 }
@@ -169,7 +169,7 @@
     left: 0;
     width: 80px;
     height: 4px;
-    background: linear-gradient(90deg, #4a90e2, #64b5f6);
+    background: linear-gradient(90deg, #60a5fa, #64b5f6);
 }
 
 .policy-section h3 {
@@ -186,7 +186,7 @@
     content: '';
     width: 6px;
     height: 24px;
-    background: linear-gradient(135deg, #0f3d91, #4a90e2);
+    background: linear-gradient(135deg, #60a5fa, #60a5fa);
     border-radius: 3px;
 }
 
@@ -217,7 +217,7 @@
     position: absolute;
     left: 0;
     color: #fff;
-    background: linear-gradient(135deg, #0f3d91, #4a90e2);
+    background: linear-gradient(135deg, #60a5fa, #60a5fa);
     width: 22px;
     height: 22px;
     border-radius: 50%;
@@ -231,12 +231,12 @@
 
 /* Special Text Styles */
 .policy-section strong {
-    color: #0f3d91;
+    color: #60a5fa;
     font-weight: 700;
 }
 
 .policy-section a {
-    color: #0f3d91;
+    color: #60a5fa;
     text-decoration: none;
     font-weight: 600;
     border-bottom: 2px solid transparent;
@@ -244,14 +244,14 @@
 }
 
 .policy-section a:hover {
-    border-bottom-color: #0f3d91;
+    border-bottom-color: #60a5fa;
 }
 
 /* Note/Alert Boxes */
 .policy-note,
 .note {
     background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-    border-left: 5px solid #0f3d91;
+    border-left: 5px solid #60a5fa;
     padding: 20px 24px;
     margin: 28px 0;
     border-radius: 12px;
@@ -291,7 +291,7 @@
 }
 
 .feature-item:hover {
-    border-color: #0f3d91;
+    border-color: #60a5fa;
     background: #fff;
     box-shadow: 0 8px 24px rgba(15, 61, 145, 0.1);
 }
@@ -299,7 +299,7 @@
 .feature-item h4 {
     font-size: 18px;
     font-weight: 700;
-    color: #0f3d91;
+    color: #60a5fa;
     margin: 0 0 12px 0;
 }
 
@@ -334,18 +334,18 @@
     left: 0;
     right: 0;
     height: 6px;
-    background: linear-gradient(90deg, #0f3d91, #4a90e2);
+    background: linear-gradient(90deg, #60a5fa, #60a5fa);
 }
 
 .delivery-table:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 32px rgba(15, 61, 145, 0.15);
-    border-color: #0f3d91;
+    border-color: #60a5fa;
 }
 
 .delivery-table h3 {
     font-size: 22px;
-    color: #0f3d91;
+    color: #60a5fa;
     margin: 0 0 20px 0;
     font-weight: 800;
 }
@@ -370,7 +370,7 @@
 .browser-instructions h4 {
     font-size: 20px;
     font-weight: 700;
-    color: #0f3d91;
+    color: #60a5fa;
     margin: 0 0 24px 0;
 }
 
@@ -379,7 +379,7 @@
     padding: 20px;
     margin-bottom: 16px;
     border-radius: 12px;
-    border-left: 4px solid #0f3d91;
+    border-left: 4px solid #60a5fa;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
@@ -396,7 +396,7 @@
 .browser-instructions .browser-item strong {
     display: block;
     font-size: 17px;
-    color: #0f3d91;
+    color: #60a5fa;
     margin-bottom: 8px;
 }
 
@@ -408,7 +408,7 @@
 
 /* Contact Section */
 .contact-info-box {
-    background: linear-gradient(135deg, #0f3d91, #1e5bb8);
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
     color: #fff;
     padding: 40px;
     border-radius: 16px;

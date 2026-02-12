@@ -1,6 +1,6 @@
 .home-why-choose {
     padding: 100px 20px;
-    background: #f8faff;
+    background: #f0f9ff;
 }
 
 .why-choose-container {
@@ -15,7 +15,7 @@
 .home-why-choose .section-title {
     font-size: 36px;
     font-weight: 800;
-    color: #0f3d91;
+    color: #60a5fa;
     margin-bottom: 60px;
 }
 
@@ -31,22 +31,22 @@
     border-radius: 20px;
     display: flex;
     gap: 24px;
-    box-shadow: 0 10px 30px rgba(15, 61, 145, 0.05);
+    box-shadow: 0 10px 30px rgba(96, 165, 250, 0.05);
     transition: all 0.3s ease;
     border: 1px solid transparent;
 }
 
 .why-card:hover {
     transform: translateY(-5px);
-    border-color: #0f3d91;
-    box-shadow: 0 15px 40px rgba(15, 61, 145, 0.1);
+    border-color: #60a5fa;
+    box-shadow: 0 15px 40px rgba(96, 165, 250, 0.1);
 }
 
 .why-icon-container {
     width: 60px;
     height: 60px;
-    background: rgba(15, 61, 145, 0.1);
-    color: #0f3d91;
+    background: rgba(96, 165, 250, 0.1);
+    color: #60a5fa;
     border-radius: 12px;
     display: flex;
     align-items: center;

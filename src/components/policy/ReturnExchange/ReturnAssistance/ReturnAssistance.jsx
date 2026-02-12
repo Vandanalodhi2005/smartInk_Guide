@@ -30,13 +30,13 @@ const ReturnAssistance = () => {
 
                 <div className="assistance-links">
                     {/* Email */}
-                    <a href="mailto:support@printscarts.com" className="assistance-item">
+                    <a href="mailto:support@smartinkguide.com" className="assistance-item">
                         <div className="assistance-icon">
                             📧
                         </div>
                         <div className="assistance-text">
                             <h3>Email Support</h3>
-                            <p>support@printscarts.com</p>
+                            <p>support@smartinkguide.com</p>
                         </div>
                     </a>
 

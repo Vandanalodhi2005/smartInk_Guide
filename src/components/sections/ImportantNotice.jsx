@@ -35,7 +35,7 @@ const ImportantNotice = () => {
         .notice-container h2 {
           font-size: 32px;
           font-weight: 700;
-          color: #0f3d91;
+          color: #60a5fa;
           margin: 0 0 32px 0;
           text-align: center;
         }
@@ -52,7 +52,7 @@ const ImportantNotice = () => {
         .notice-list li {
           padding: 20px 24px;
           background: #fff;
-          border-left: 4px solid #0f3d91;
+          border-left: 4px solid #60a5fa;
           border-radius: 8px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
           transition: transform 0.3s, box-shadow 0.3s;

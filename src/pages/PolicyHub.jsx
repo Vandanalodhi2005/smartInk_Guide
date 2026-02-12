@@ -174,7 +174,7 @@ const PolicyHub = () => {
                         </div>
                         <div className="policy-info-box">
                             <h3>📧 Questions?</h3>
-                            <p>Contact us at <a href="mailto:support@printscarts.com">support@printscarts.com</a> for any policy-related inquiries</p>
+                            <p>Contact us at <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a> for any policy-related inquiries</p>
                         </div>
                         <div className="policy-info-box">
                             <h3>🔔 Stay Informed</h3>

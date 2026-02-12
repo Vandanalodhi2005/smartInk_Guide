@@ -1,10 +1,10 @@
 /* Enhanced Footer Styles */
 
 .footer-enhanced {
-    background: linear-gradient(135deg, #0f3d91, #0b2c66);
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
     color: #fff;
     padding: 60px 20px 20px;
-    border-top: 4px solid #4a90e2;
+    border-top: 4px solid #93c5fd;
 }
 
 .footer-container {
@@ -81,7 +81,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background: #4a90e2;
+    background: #93c5fd;
     transition: width 0.3s ease;
 }
 

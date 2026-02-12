@@ -11,6 +11,7 @@ import HomeNotice from "../components/home/HomeNotice/HomeNotice";
 import Footer from "../components/footer/Footer";
 
 const Home = () => {
+  console.log ("API URL: ", import.meta.env.VITE_API_URL);
   return (
     <>
       <Navbar />

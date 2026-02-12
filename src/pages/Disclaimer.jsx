@@ -242,9 +242,9 @@ const Disclaimer = () => {
                         {/* Contact Section */}
                         <div className="contact-info-box">
                             <h3>Questions About This Disclaimer?</h3>
-                            <p>📧 Email: <a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
+                            <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                             <p>📍 Address: 7181 Beacon Dr 15, Reno, NV 89506</p>
-                            <p>🌐 Website: <a href="https://www.printscarts.com">www.printscarts.com</a></p>
+                            <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
                             <p>We're happy to provide clarity on any of the information listed above.</p>
                         </div>
                     </div>

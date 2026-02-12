@@ -165,7 +165,7 @@ const Accessibility = () => {
                             <div className="feature-grid">
                                 <div className="feature-item">
                                     <h4>📧 Email Support</h4>
-                                    <p><a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
+                                    <p><a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                                 </div>
                                 <div className="feature-item">
                                     <h4>📍 Mailing Address</h4>
@@ -195,9 +195,9 @@ const Accessibility = () => {
                         {/* Contact Section */}
                         <div className="contact-info-box">
                             <h3>Let's Work Together for Better Accessibility</h3>
-                            <p>📧 Email: <a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
+                            <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                             <p>📍 Address: 7181 Beacon Dr 15, Reno, NV 89506</p>
-                            <p>🌐 Website: <a href="https://www.printscarts.com">www.printscarts.com</a></p>
+                            <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
                             <p>We're committed to providing all customers with a comfortable, inclusive, and user-friendly shopping experience.</p>
                         </div>
                     </div>

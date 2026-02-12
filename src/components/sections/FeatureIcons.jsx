@@ -4,7 +4,7 @@ const FeatureIcons = () => {
       icon: (
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-          <path d="M24 12L28 20H36L29 26L32 34L24 28L16 34L19 26L12 20H20L24 12Z" fill="#0f3d91"/>
+          <path d="M24 12L28 20H36L29 26L32 34L24 28L16 34L19 26L12 20H20L24 12Z" fill="#60a5fa"/>
         </svg>
       ),
       title: "Genuine-Quality Products",
@@ -14,9 +14,9 @@ const FeatureIcons = () => {
       icon: (
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-          <path d="M24 14C18.48 14 14 18.48 14 24C14 29.52 18.48 34 24 34C29.52 34 34 29.52 34 24C34 18.48 29.52 14 24 14ZM24 30C20.69 30 18 27.31 18 24C18 20.69 20.69 18 24 18C27.31 18 30 20.69 30 24C30 27.31 27.31 30 24 30Z" fill="#0f3d91"/>
-          <path d="M24 20C23.45 20 23 20.45 23 21V23C23 23.55 23.45 24 24 24C24.55 24 25 23.55 25 23V21C25 20.45 24.55 20 24 20Z" fill="#0f3d91"/>
-          <path d="M24 25C23.45 25 23 25.45 23 26V27C23 27.55 23.45 28 24 28C24.55 28 25 27.55 25 27V26C25 25.45 24.55 25 24 25Z" fill="#0f3d91"/>
+          <path d="M24 14C18.48 14 14 18.48 14 24C14 29.52 18.48 34 24 34C29.52 34 34 29.52 34 24C34 18.48 29.52 14 24 14ZM24 30C20.69 30 18 27.31 18 24C18 20.69 20.69 18 24 18C27.31 18 30 20.69 30 24C30 27.31 27.31 30 24 30Z" fill="#60a5fa"/>
+          <path d="M24 20C23.45 20 23 20.45 23 21V23C23 23.55 23.45 24 24 24C24.55 24 25 23.55 25 23V21C25 20.45 24.55 20 24 20Z" fill="#60a5fa"/>
+          <path d="M24 25C23.45 25 23 25.45 23 26V27C23 27.55 23.45 28 24 28C24.55 28 25 27.55 25 27V26C25 25.45 24.55 25 24 25Z" fill="#60a5fa"/>
         </svg>
       ),
       title: "Clear Compatibility Info",
@@ -26,8 +26,8 @@ const FeatureIcons = () => {
       icon: (
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-          <path d="M24 16C20.69 16 18 18.69 18 22V26C18 29.31 20.69 32 24 32C27.31 32 30 29.31 30 26V22C30 18.69 27.31 16 24 16ZM28 26C28 27.1 27.1 28 26 28H22C20.9 28 20 27.1 20 26V22C20 20.9 20.9 20 22 20H26C27.1 20 28 20.9 28 22V26Z" fill="#0f3d91"/>
-          <path d="M24 18C24.55 18 25 18.45 25 19V21C25 21.55 24.55 22 24 22C23.45 22 23 21.55 23 21V19C23 18.45 23.45 18 24 18Z" fill="#0f3d91"/>
+          <path d="M24 16C20.69 16 18 18.69 18 22V26C18 29.31 20.69 32 24 32C27.31 32 30 29.31 30 26V22C30 18.69 27.31 16 24 16ZM28 26C28 27.1 27.1 28 26 28H22C20.9 28 20 27.1 20 26V22C20 20.9 20.9 20 22 20H26C27.1 20 28 20.9 28 22V26Z" fill="#60a5fa"/>
+          <path d="M24 18C24.55 18 25 18.45 25 19V21C25 21.55 24.55 22 24 22C23.45 22 23 21.55 23 21V19C23 18.45 23.45 18 24 18Z" fill="#60a5fa"/>
         </svg>
       ),
       title: "Secure Checkout",
@@ -37,11 +37,11 @@ const FeatureIcons = () => {
       icon: (
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-          <path d="M16 20H32V22H16V20Z" fill="#0f3d91"/>
-          <path d="M16 24H28V26H16V24Z" fill="#0f3d91"/>
-          <path d="M20 28H32V30H20V28Z" fill="#0f3d91"/>
-          <path d="M14 16H34C35.1 16 36 16.9 36 18V32C36 33.1 35.1 34 34 34H14C12.9 34 12 33.1 12 32V18C12 16.9 12.9 16 14 16Z" stroke="#0f3d91" strokeWidth="2" fill="none"/>
-          <circle cx="20" cy="30" r="2" fill="#0f3d91"/>
+          <path d="M16 20H32V22H16V20Z" fill="#60a5fa"/>
+          <path d="M16 24H28V26H16V24Z" fill="#60a5fa"/>
+          <path d="M20 28H32V30H20V28Z" fill="#60a5fa"/>
+          <path d="M14 16H34C35.1 16 36 16.9 36 18V32C36 33.1 35.1 34 34 34H14C12.9 34 12 33.1 12 32V18C12 16.9 12.9 16 14 16Z" stroke="#60a5fa" strokeWidth="2" fill="none"/>
+          <circle cx="20" cy="30" r="2" fill="#60a5fa"/>
         </svg>
       ),
       title: "Fast Shipping US & Canada",

@@ -23,7 +23,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="footer-section">
             <Link to="/" className="inline-block mb-4">
-               <img src={logo} alt="PrintsCarts" className="h-12 md:h-24 w-auto object-contain brightness-0 invert opacity-90" />
+               <img src={logo} alt="SmartInk Guide" className="h-12 md:h-24 w-auto object-contain brightness-0 invert opacity-90" />
             </Link>
             <p className="footer-description">
               Your trusted source for printers, ink, toner, and printing supplies.
@@ -41,14 +41,14 @@ const Footer = () => {
                   value={trackId}
                   onChange={(e) => setTrackId(e.target.value)}
                 />
-                <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors">
+                <button type="submit" className="bg-[#60a5fa] hover:bg-[#3b82f6] text-white px-3 py-2 rounded-lg transition-colors">
                   <FiSearch />
                 </button>
               </form>
             </div>
 
             <p className="footer-copyright">
-              &copy; {new Date().getFullYear()} Prints Carts. All rights reserved.
+              &copy; {new Date().getFullYear()} SmartInk Guide. All rights reserved.
             </p>
           </div>
 

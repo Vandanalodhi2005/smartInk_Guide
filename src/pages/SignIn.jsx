@@ -66,7 +66,7 @@ const SignIn = () => {
         <div className="auth-container">
           <div className="auth-card">
             <div className="flex justify-center mb-6">
-                <img src={logo} alt="PrintsCarts" className="h-12 md:h-24 w-auto object-contain" />
+                <img src={logo} alt="SmartInk Guide" className="h-12 md:h-24 w-auto object-contain" />
             </div>
             <h1>{isAdminLogin ? 'Admin Sign In' : 'Sign In'}</h1>
             <p className="auth-subtitle">Welcome back! Please sign in to your account.</p>

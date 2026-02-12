@@ -58,7 +58,7 @@ const ShopByCategory = () => {
         .category-container h2 {
           font-size: 36px;
           font-weight: 700;
-          color: #0f3d91;
+          color: #60a5fa;
           text-align: center;
           margin: 0 0 60px 0;
         }
@@ -113,7 +113,7 @@ const ShopByCategory = () => {
 
         .category-btn {
           display: inline-block;
-          background: #0f3d91;
+          background: #60a5fa;
           color: #fff;
           padding: 12px 32px;
           border-radius: 8px;
@@ -123,7 +123,7 @@ const ShopByCategory = () => {
         }
 
         .category-btn:hover {
-          background: #0b2c66;
+          background: #2563eb;
           transform: translateY(-2px);
         }
 

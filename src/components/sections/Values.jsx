@@ -14,10 +14,10 @@ const Values = () => {
       icon: (
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-          <rect x="12" y="14" width="24" height="20" rx="2" stroke="#0f3d91" strokeWidth="2" fill="none"/>
-          <path d="M16 18H32" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M16 22H28" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M16 26H32" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round"/>
+          <rect x="12" y="14" width="24" height="20" rx="2" stroke="#60a5fa" strokeWidth="2" fill="none"/>
+          <path d="M16 18H32" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M16 22H28" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M16 26H32" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/>
         </svg>
       ),
       title: "Transparency",
@@ -38,11 +38,11 @@ const Values = () => {
       icon: (
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="48" height="48" rx="8" fill="#e0f2fe"/>
-          <rect x="12" y="14" width="24" height="20" rx="2" stroke="#0f3d91" strokeWidth="2" fill="none"/>
-          <path d="M16 18H20" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M16 22H24" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M16 26H28" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M16 30H22" stroke="#0f3d91" strokeWidth="2" strokeLinecap="round"/>
+          <rect x="12" y="14" width="24" height="20" rx="2" stroke="#60a5fa" strokeWidth="2" fill="none"/>
+          <path d="M16 18H20" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M16 22H24" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M16 26H28" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M16 30H22" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round"/>
         </svg>
       ),
       title: "Independence",
@@ -81,7 +81,7 @@ const Values = () => {
         .values-container h2 {
           font-size: 36px;
           font-weight: 700;
-          color: #0f3d91;
+          color: #60a5fa;
           text-align: center;
           margin: 0 0 60px 0;
         }

@@ -133,7 +133,7 @@ const ProductCard = ({ product }) => {
           text-decoration: none;
         }
         .product-title:hover {
-          color: #0f3d91;
+          color: #60a5fa;
         }
         .product-price {
           font-size: 1.1rem;
@@ -174,7 +174,7 @@ const ProductCard = ({ product }) => {
             color: #0f172a;
         }
         .buy-btn {
-            background: #0f3d91;
+            background: #60a5fa;
             color: white;
             box-shadow: 0 2px 4px -1px rgba(15, 61, 145, 0.1);
         }

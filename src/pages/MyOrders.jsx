@@ -40,7 +40,7 @@ const MyOrders = () => {
 
           {loading ? (
              <div className="flex flex-col items-center justify-center py-20">
-                 <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                 <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-400 rounded-full animate-spin mb-4"></div>
                  <p className="text-slate-500 font-medium">Loading your orders...</p>
              </div>
           ) : error ? (
@@ -64,7 +64,7 @@ const MyOrders = () => {
                  <p className="text-slate-500 mb-6 sm:mb-8 max-w-md mx-auto text-sm sm:text-base">Looks like you haven't bought anything from us yet. Browse our products and find something you love!</p>
                  <Link 
                     to="/printers" 
-                    className="inline-flex items-center gap-2 px-6 py-2.5 sm:px-8 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-200 text-sm sm:text-base"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 sm:px-8 sm:py-3 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100 text-sm sm:text-base"
                  >
                     Start Shopping
                  </Link>
@@ -131,13 +131,13 @@ const MyOrders = () => {
                          <div className="hidden sm:flex items-center gap-2">
                             <Link 
                                 to={`/order/${order._id}`}
-                                className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
+                                className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-400 hover:text-blue-400 transition-colors"
                             >
                                 View Details
                             </Link>
                             <Link 
                                 to={`/track-order?id=${order._id}`}
-                                className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                                className="px-4 py-2 bg-blue-400 text-white text-sm font-bold rounded-lg hover:bg-blue-500 transition-colors shadow-sm"
                             >
                                 Track
                             </Link>

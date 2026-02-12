@@ -29,7 +29,7 @@ const ContactInfo = () => {
                         </div>
                         <div className="info-content">
                             <h3>Email Support</h3>
-                            <p>support@printscarts.com</p>
+                            <p>support@smartinkguide.com</p>
                         </div>
                     </div>
 
@@ -43,7 +43,7 @@ const ContactInfo = () => {
                         </div>
                         <div className="info-content">
                             <h3>Website</h3>
-                            <p>www.printscarts.com</p>
+                            <p>www.smartinkguide.com</p>
                         </div>
                     </div>
                 </div>

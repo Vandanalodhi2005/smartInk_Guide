@@ -135,7 +135,7 @@ const DoNotSell = () => {
                             <div className="feature-grid">
                                 <div className="feature-item">
                                     <h4>📧 Email Request</h4>
-                                    <p><a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
+                                    <p><a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                                 </div>
                                 <div className="feature-item">
                                     <h4>📬 Mail Request</h4>
@@ -250,9 +250,9 @@ const DoNotSell = () => {
                         {/* Contact Section */}
                         <div className="contact-info-box">
                             <h3>Questions About Your Privacy Rights?</h3>
-                            <p>📧 Email: <a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
+                            <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                             <p>📍 Address: 7181 Beacon Dr 15, Reno, NV 89506</p>
-                            <p>🌐 Website: <a href="https://www.printscarts.com">www.printscarts.com</a></p>
+                            <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
                             <p>We're committed to responding within a reasonable timeframe.</p>
                         </div>
                     </div>

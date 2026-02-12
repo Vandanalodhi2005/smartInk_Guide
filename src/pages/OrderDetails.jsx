@@ -55,14 +55,14 @@ const OrderDetails = () => {
                 <PageContainer>
                     {/* Back Link */}
                     <div className="mb-6">
-                        <Link to="/orders" className="inline-flex items-center text-slate-500 hover:text-blue-600 font-medium transition-colors">
+                        <Link to="/orders" className="inline-flex items-center text-slate-500 hover:text-blue-400 font-medium transition-colors">
                             <FiArrowLeft className="mr-2" /> Back to My Orders
                         </Link>
                     </div>
 
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-20">
-                            <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                            <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-400 rounded-full animate-spin mb-4"></div>
                             <p className="text-slate-500 font-medium">Loading order details...</p>
                         </div>
                     ) : error ? (
@@ -99,7 +99,7 @@ const OrderDetails = () => {
                                         <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-100 -translate-y-1/2 hidden sm:block z-0"></div>
                                         {/* Progress Bar */}
                                         <div 
-                                            className="absolute top-1/2 left-0 h-1 bg-blue-600 -translate-y-1/2 hidden sm:block transition-all duration-1000 z-0"
+                                            className="absolute top-1/2 left-0 h-1 bg-blue-400 -translate-y-1/2 hidden sm:block transition-all duration-1000 z-0"
                                             style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
                                         ></div>
 
@@ -112,14 +112,14 @@ const OrderDetails = () => {
                                                     <div key={index} className="flex sm:flex-col items-center gap-4 sm:gap-2">
                                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center border-4 transition-all ${
                                                             isActive || isCurrent 
-                                                                ? 'bg-blue-600 border-blue-100 text-white shadow-lg shadow-blue-200' 
+                                                                ? 'bg-blue-400 border-blue-50 text-white shadow-lg shadow-blue-200' 
                                                                 : 'bg-white border-slate-100 text-slate-300'
                                                         }`}>
                                                             <step.icon size={18} />
                                                         </div>
                                                         <div className="sm:text-center">
                                                             <p className={`text-sm font-bold ${isActive || isCurrent ? 'text-slate-900' : 'text-slate-400'}`}>{step.label}</p>
-                                                            {isCurrent && <p className="text-xs text-blue-600 font-medium sm:hidden">Current Status</p>}
+                                                            {isCurrent && <p className="text-xs text-blue-400 font-medium sm:hidden">Current Status</p>}
                                                         </div>
                                                     </div>
                                                 )
@@ -160,7 +160,7 @@ const OrderDetails = () => {
                                                      />
                                                  </div>
                                                  <div className="flex-1 w-full text-center sm:text-left">
-                                                     <Link to={`/product/${item.product}`} className="font-bold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2">
+                                                     <Link to={`/product/${item.product}`} className="font-bold text-slate-900 hover:text-blue-400 transition-colors line-clamp-2">
                                                          {item.name}
                                                      </Link>
                                                      <p className="text-slate-500 text-sm mt-1">Quantity: {item.qty}</p>
@@ -220,7 +220,7 @@ const OrderDetails = () => {
                                     
                                     <div className="pt-4 flex justify-between items-center mb-6">
                                         <span className="font-bold text-slate-900">Total</span>
-                                        <span className="font-bold text-xl text-blue-600">${order.totalPrice?.toFixed(2)}</span>
+                                        <span className="font-bold text-xl text-blue-400">${order.totalPrice?.toFixed(2)}</span>
                                     </div>
 
                                     <div className={`p-3 rounded-xl text-center text-sm font-bold ${

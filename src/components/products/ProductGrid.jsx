@@ -20,7 +20,7 @@ const ProductGrid = () => {
          <p>Loading products...</p>
          <style>{`
             .loading-grid { text-align: center; padding: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; }
-            .spinner { width: 30px; height: 30px; border: 3px solid #eee; border-top: 3px solid #0f3d91; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
+            .spinner { width: 30px; height: 30px; border: 3px solid #eee; border-top: 3px solid #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
             @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
          `}</style>
       </div>

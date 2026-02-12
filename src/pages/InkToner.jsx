@@ -296,7 +296,7 @@ const InkToner = () => {
                 <div className="p-4 flex flex-col flex-1 gap-1">
                     {/* Brand */}
                     <div className="flex items-center">
-                        <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider mb-1">
+                        <span className="text-[10px] font-bold text-blue-400 bg-blue-50 px-2 py-0.5 rounded-full uppercase tracking-wider mb-1">
                             {product.brand || 'Product'}
                         </span>
                     </div>
@@ -322,7 +322,7 @@ const InkToner = () => {
                     <div className="grid grid-cols-2 gap-3 mt-auto">
                         <button 
                             onClick={(e) => handleDetails(e, product)}
-                            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 bg-white hover:border-blue-600 hover:text-blue-600 transition-all shadow-sm hover:shadow-md"
+                            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 bg-white hover:border-blue-400 hover:text-blue-400 transition-all shadow-sm hover:shadow-md"
                         >
                             <Eye size={14} />
                             Details

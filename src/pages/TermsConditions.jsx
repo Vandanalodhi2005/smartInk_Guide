@@ -79,11 +79,11 @@ const TermsConditions = () => {
                                 </div>
                                 <div className="feature-item">
                                     <h4>📧 Contact</h4>
-                                    <p><a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
+                                    <p><a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                                 </div>
                                 <div className="feature-item">
                                     <h4>🌐 Website</h4>
-                                    <p><a href="https://www.printscarts.com">www.printscarts.com</a></p>
+                                    <p><a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
                                 </div>
                             </div>
                             <p className="policy-note">
@@ -240,9 +240,9 @@ const TermsConditions = () => {
                         {/* Contact Section */}
                         <div className="contact-info-box">
                             <h3>Questions About These Terms?</h3>
-                            <p>📧 Email: <a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
+                            <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                             <p>📍 Address: 7181 Beacon Dr 15, Reno, NV 89506</p>
-                            <p>🌐 Website: <a href="https://www.printscarts.com">www.printscarts.com</a></p>
+                            <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
                         </div>
                     </div>
                 </div>

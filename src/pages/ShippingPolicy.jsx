@@ -237,8 +237,8 @@ const ShippingPolicy = () => {
             {/* Contact Section */}
             <div className="contact-info-box">
               <h3>Questions About Shipping?</h3>
-              <p>📧 Email: <a href="mailto:support@printscarts.com">support@printscarts.com</a></p>
-              <p>🌐 Website: <a href="https://www.printscarts.com">www.printscarts.com</a></p>
+              <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
+              <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
               <p>We aim to respond promptly during standard business hours.</p>
             </div>
           </div>

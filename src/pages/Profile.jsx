@@ -152,7 +152,7 @@ const Profile = () => {
                                     <button
                                         className="category-btn"
                                         onClick={() => isEditing ? handleSaveProfile() : setIsEditing(true)}
-                                        style={{ background: isEditing ? '#0f3d91' : 'transparent', color: isEditing ? '#fff' : '#0f3d91', border: '1px solid #0f3d91' }}
+                                        style={{ background: isEditing ? '#60a5fa' : 'transparent', color: isEditing ? '#fff' : '#60a5fa', border: '1px solid #60a5fa' }}
                                     >
                                         {isEditing ? 'Save Changes' : 'Edit Profile'}
                                     </button>
@@ -160,7 +160,7 @@ const Profile = () => {
 
                                 <div className="contact-details">
                                     <div className="contact-detail-item">
-                                        <div className="contact-icon" style={{ background: '#f0f4ff', color: '#0f3d91' }}>
+                                        <div className="contact-icon" style={{ background: '#f0f4ff', color: '#60a5fa' }}>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" />
                                             </svg>
@@ -182,7 +182,7 @@ const Profile = () => {
                                         </div>
                                     </div>
                                     <div className="contact-detail-item">
-                                        <div className="contact-icon" style={{ background: '#f0f4ff', color: '#0f3d91' }}>
+                                        <div className="contact-icon" style={{ background: '#f0f4ff', color: '#60a5fa' }}>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" />
                                                 <path d="M22 6L12 13L2 6" />
@@ -205,7 +205,7 @@ const Profile = () => {
                                         </div>
                                     </div>
                                     <div className="contact-detail-item">
-                                        <div className="contact-icon" style={{ background: '#f0f4ff', color: '#0f3d91' }}>
+                                        <div className="contact-icon" style={{ background: '#f0f4ff', color: '#60a5fa' }}>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <path d="M21 15.5a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0z" />
                                                 <path d="M3 20v-8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8" />
@@ -233,7 +233,7 @@ const Profile = () => {
                                 
                                 {loadingOrders ? (
                                     <div className="flex flex-col items-center justify-center py-20">
-                                        <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                                        <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-400 rounded-full animate-spin mb-4"></div>
                                         <p className="text-slate-500 font-medium">Loading your orders...</p>
                                     </div>
                                 ) : errorOrders ? (
@@ -257,7 +257,7 @@ const Profile = () => {
                                         <p className="text-slate-500 mb-8 max-w-md">Looks like you haven't bought anything from us yet.</p>
                                         <Link 
                                             to="/printers" 
-                                            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-200"
+                                            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-100"
                                         >
                                             Start Shopping
                                         </Link>
@@ -311,7 +311,7 @@ const Profile = () => {
                                                 {/* Details Button */}
                                                 <Link 
                                                     to={`/order/${order._id}`}
-                                                    className="hidden sm:inline-block px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-600 hover:text-blue-600 transition-colors"
+                                                    className="hidden sm:inline-block px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-lg hover:border-blue-400 hover:text-blue-400 transition-colors"
                                                 >
                                                     View Details
                                                 </Link>
@@ -333,7 +333,7 @@ const Profile = () => {
                                                             />
                                                         </div>
                                                         <div className='flex-1 min-w-0'>
-                                                            <Link to={`/product/${item.slug || item.product}`} className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-2">
+                                                            <Link to={`/product/${item.slug || item.product}`} className="text-sm font-bold text-slate-800 hover:text-blue-400 transition-colors line-clamp-2">
                                                                 {item.name}
                                                             </Link>
                                                             <p className="text-xs text-slate-500 mt-1">Qty: {item.qty} × ${item.price}</p>

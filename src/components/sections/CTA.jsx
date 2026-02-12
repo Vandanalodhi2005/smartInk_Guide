@@ -22,7 +22,7 @@ const CTA = () => {
       <style>{`
         .cta-section {
           padding: 80px 20px;
-          background: linear-gradient(135deg, #0f3d91, #0b2c66);
+          background: linear-gradient(135deg, #60a5fa, #3b82f6);
           color: #fff;
         }
 
@@ -68,7 +68,7 @@ const CTA = () => {
 
         .btn-primary {
           background: #fff;
-          color: #0f3d91;
+          color: #60a5fa;
           padding: 16px 40px;
           border-radius: 8px;
           text-decoration: none;

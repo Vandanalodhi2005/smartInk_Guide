@@ -159,7 +159,7 @@ const handleReviewClick = () => {
         <Footer />
         <style>{`
           .loading-container { padding-top: 120px; padding-bottom: 100px; text-align: center; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-          .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #0f3d91; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+          .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
           @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         `}</style>
       </>
@@ -607,7 +607,7 @@ const handleReviewClick = () => {
             border: 2px solid #f1f5f9; border-radius: 12px; transition: all 0.2s;
             background: white; padding: 5px;
           }
-          .pd-thumbs img:hover, .pd-thumbs img.active { border-color: #0f3d91; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+          .pd-thumbs img:hover, .pd-thumbs img.active { border-color: #60a5fa; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
           /* MAIN IMAGE CONTAINER */
           .pd-image-container { position: relative; z-index: 10; height: 600px; }
@@ -632,7 +632,7 @@ const handleReviewClick = () => {
 
           /* PRODUCT INFO */
           .pd-info { padding: 10px; }
-          .brand { font-size: 13px; font-weight: 700; color: #0f3d91; text-transform: uppercase; letter-spacing: 1px; }
+          .brand { font-size: 13px; font-weight: 700; color: #60a5fa; text-transform: uppercase; letter-spacing: 1px; }
           .pd-info h1 { margin: 8px 0 16px; font-size: 32px; line-height: 1.2; color: #1e293b; font-weight: 800; }
           
           /* Key Specs section */
@@ -692,8 +692,8 @@ const handleReviewClick = () => {
           
           /* Brand Button (Buy Now) */
           .btn-buy { 
-             background: #0f3d91; 
-             border: 2px solid #0f3d91; 
+             background: #60a5fa; 
+             border: 2px solid #60a5fa; 
              color: white; 
              box-shadow: 0 4px 6px -1px rgba(15, 61, 145, 0.2); 
           }
@@ -718,7 +718,7 @@ const handleReviewClick = () => {
           .tab-header { display: flex; gap: 40px; border-bottom: 1px solid #e2e8f0; margin-bottom: 40px; overflow-x: auto; padding-bottom: 1px; }
           .tab-header button { padding: 0 0 16px 0; background: none; border: none; font-weight: 700; color: #94a3b8; border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
           .tab-header button:hover { color: #475569; }
-          .tab-header button.active { color: #0f3d91; border-bottom-color: #0f3d91; }
+          .tab-header button.active { color: #60a5fa; border-bottom-color: #60a5fa; }
           
           .tab-content { min-height: 200px; color: #334155; line-height: 1.8; font-size: 16px; }
           
@@ -729,7 +729,7 @@ const handleReviewClick = () => {
           .html-content li { margin-bottom: 0.5em; }
           .html-content h2 { font-size: 24px; font-weight: 700; color: #1e293b; margin: 2em 0 1em; }
           .html-content h3 { font-size: 20px; font-weight: 600; color: #334155; margin: 1.5em 0 0.8em; }
-          .html-content blockquote { border-left: 4px solid #0f3d91; padding-left: 20px; color: #475569; font-style: italic; margin: 20px 0; background: #f8fafc; padding: 16px 20px; border-radius: 0 8px 8px 0; }
+          .html-content blockquote { border-left: 4px solid #60a5fa; padding-left: 20px; color: #475569; font-style: italic; margin: 20px 0; background: #f8fafc; padding: 16px 20px; border-radius: 0 8px 8px 0; }
           
           .specs-table { width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
           .specs-table tr:nth-child(even) { background: #f8fafc; }
@@ -748,7 +748,7 @@ const handleReviewClick = () => {
           .no-reviews { text-align: center; padding: 60px 20px; background: #f8fafc; border-radius: 16px; border: 1px dashed #cbd5e1; }
           .no-reviews-icon { display: block; font-size: 40px; margin-bottom: 16px; opacity: 0.5; }
           .no-reviews p { color: #64748b; font-size: 16px; margin-bottom: 24px; font-weight: 500; }
-          .btn-write-review { background: #fff; border: 2px solid #0f3d91; color: #0f3d91; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+          .btn-write-review { background: #fff; border: 2px solid #60a5fa; color: #60a5fa; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; }
           .btn-write-review:hover { background: #f0f7ff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(15, 61, 145, 0.1); }
 
 
@@ -762,7 +762,7 @@ const handleReviewClick = () => {
           .related-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
           .related-info { padding: 20px; }
           .related-info h4 { font-size: 15px; font-weight: 700; color: #334155; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-          .related-price { font-size: 16px; font-weight: 800; color: #0f3d91; }
+          .related-price { font-size: 16px; font-weight: 800; color: #60a5fa; }
 
           /* RESPONSIVE */
           @media (max-width: 1024px) {

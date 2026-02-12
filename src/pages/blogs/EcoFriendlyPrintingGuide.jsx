@@ -30,7 +30,7 @@ const EcoFriendlyPrintingGuide = () => {
               Eco-Friendly Printing — How to Reduce Waste & Extend Printer Life (2026 Sustainability Guide)
             </h1>
             <div className="flex items-center text-gray-500 text-sm">
-              <span className="font-semibold text-gray-900 mr-2">By PrintsCarts Team</span>
+              <span className="font-semibold text-gray-900 mr-2">By SmartInk Guide Team</span>
               <span className="mx-2">•</span>
               <span>February 11, 2026</span>
               <span className="mx-2">•</span>

@@ -88,7 +88,7 @@ const TrackOrder = () => {
                                 <button 
                                     type="submit"
                                     disabled={loading}
-                                    className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:scale-100"
+                                    className="px-8 py-3 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:scale-100"
                                 >
                                     {loading ? 'Tracking...' : 'Track'}
                                 </button>
@@ -128,7 +128,7 @@ const TrackOrder = () => {
                                         {/* Connector Line */}
                                         <div className="absolute left-[19px] top-4 bottom-10 w-0.5 bg-slate-100 md:left-4 md:right-4 md:top-[19px] md:bottom-auto md:w-auto md:h-0.5 -z-0"></div>
                                         <div 
-                                            className="absolute left-[19px] top-4 w-0.5 bg-blue-600 transition-all duration-1000 md:left-4 md:top-[19px] md:h-0.5 md:w-0 -z-0" 
+                                            className="absolute left-[19px] top-4 w-0.5 bg-blue-400 transition-all duration-1000 md:left-4 md:top-[19px] md:h-0.5 md:w-0 -z-0" 
                                             style={{ 
                                                 width: window.innerWidth > 768 ? `calc(${(currentStep - 1) / (steps.length - 1)} * 100%)` : '2px',
                                                 height: window.innerWidth > 768 ? '2px' : `calc(${(currentStep - 1) / (steps.length - 1)} * 100%)`
@@ -144,7 +144,7 @@ const TrackOrder = () => {
                                                     <div key={index} className="flex md:flex-col items-center gap-4 md:gap-3">
                                                         <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${
                                                             isCompleted 
-                                                            ? 'bg-blue-600 text-white border-4 border-blue-50 scale-110' 
+                                                            ? 'bg-blue-400 text-white border-4 border-blue-100 scale-110' 
                                                             : 'bg-white border-2 border-slate-100 text-slate-300'
                                                         }`}>
                                                             <step.icon size={18} />
@@ -183,7 +183,7 @@ const TrackOrder = () => {
                                     <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-slate-100 pt-8">
                                         {/* Customer Info */}
                                         <div className="space-y-4">
-                                            <h4 className="font-bold text-slate-900 border-l-4 border-blue-600 pl-3">Customer Details</h4>
+                                            <h4 className="font-bold text-slate-900 border-l-4 border-blue-400 pl-3">Customer Details</h4>
                                             
                                             <div className="space-y-3 text-sm">
                                                 <div className="flex items-start gap-3">
@@ -214,7 +214,7 @@ const TrackOrder = () => {
 
                                         {/* Order Summary */}
                                         <div className="space-y-4">
-                                            <h4 className="font-bold text-slate-900 border-l-4 border-blue-600 pl-3">Order Summary</h4>
+                                            <h4 className="font-bold text-slate-900 border-l-4 border-blue-400 pl-3">Order Summary</h4>
                                             
                                             <div className="bg-slate-50 rounded-xl p-4 space-y-2 text-sm">
                                                 <div className="flex justify-between">
@@ -231,7 +231,7 @@ const TrackOrder = () => {
                                                 </div>
                                                 <div className="flex justify-between border-t border-slate-200 pt-2 mt-2">
                                                     <span className="font-bold text-slate-900">Total</span>
-                                                    <span className="font-bold text-blue-600 text-lg">${order.totalPrice?.toFixed(2)}</span>
+                                                    <span className="font-bold text-blue-400 text-lg">${order.totalPrice?.toFixed(2)}</span>
                                                 </div>
                                                 <div className={`mt-2 text-center text-xs font-bold py-1 px-2 rounded ${order.isPaid ? 'bg-green-100 text-green-700' : 'bg-red-50 text-red-600'}`}>
                                                     {order.isPaid ? 'PAID' : 'NOT PAID'}
@@ -242,7 +242,7 @@ const TrackOrder = () => {
 
                                     {/* Items List */}
                                     <div className="mt-8 border-t border-slate-100 pt-8">
-                                        <h4 className="font-bold text-slate-900 border-l-4 border-blue-600 pl-3 mb-4 flex items-center gap-2">
+                                        <h4 className="font-bold text-slate-900 border-l-4 border-blue-400 pl-3 mb-4 flex items-center gap-2">
                                             <FiShoppingCart /> Items ({order.orderItems?.length})
                                         </h4>
                                         
@@ -257,7 +257,7 @@ const TrackOrder = () => {
                                                         />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <Link to={`/product/${item.product}`} className="text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors line-clamp-2">
+                                                        <Link to={`/product/${item.product}`} className="text-sm font-bold text-slate-900 hover:text-blue-400 transition-colors line-clamp-2">
                                                             {item.name}
                                                         </Link>
                                                         <p className="text-xs text-slate-500 mt-1">Qty: {item.qty} × ${item.price.toFixed(2)}</p>
@@ -272,7 +272,7 @@ const TrackOrder = () => {
                                 </div>
 
                                 <div className="p-4 bg-slate-50 border-t border-slate-100 text-center">
-                                    <Link to={`/order/${order._id}`} className="text-blue-600 font-bold hover:underline text-sm">
+                                    <Link to={`/order/${order._id}`} className="text-blue-400 font-bold hover:underline text-sm">
                                         View Full Order Details
                                     </Link>
                                 </div>

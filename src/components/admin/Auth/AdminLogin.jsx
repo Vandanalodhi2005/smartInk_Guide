@@ -35,7 +35,7 @@ const AdminLogin = () => {
                 {/* Header */}
                 <div className="bg-blue-600 p-8 text-center">
                     <div className="w-32 h-20 md:w-64 md:h-40 flex items-center justify-center mx-auto mb-4">
-                        <img src={logo} alt="PrintsCarts Logo" className="w-full h-full object-contain brightness-0 invert" />
+                        <img src={logo} alt="SmartInk Guide Logo" className="w-full h-full object-contain brightness-0 invert" />
                     </div>
                     <h2 className="text-2xl font-bold text-white">Admin Portal</h2>
                     <p className="text-blue-100 mt-2 text-sm">Sign in to manage your store</p>

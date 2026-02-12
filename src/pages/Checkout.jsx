@@ -34,7 +34,7 @@ const Checkout = () => {
     const [clover, setClover] = useState(null);
 
     // Style configuration
-    const inputStyle = "w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400";
+    const inputStyle = "w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400";
     const labelStyle = "block text-sm font-medium text-slate-700 mb-2";
 
     useEffect(() => {
@@ -208,9 +208,9 @@ const Checkout = () => {
                     <div className="mb-8 lg:mb-10">
                         <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Checkout</h1>
                         <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
-                            <span className={step >= 1 ? "text-blue-600 font-medium" : ""}>Shipping</span>
+                            <span className={step >= 1 ? "text-blue-400 font-medium" : ""}>Shipping</span>
                             <ChevronRight size={16} />
-                            <span className={step >= 2 ? "text-blue-600 font-medium" : ""}>Payment</span>
+                            <span className={step >= 2 ? "text-blue-400 font-medium" : ""}>Payment</span>
                         </div>
                     </div>
 
@@ -269,7 +269,7 @@ const Checkout = () => {
                             {step === 1 ? (
                                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
                                     <div className="flex items-center gap-3 mb-6">
-                                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                                        <div className="p-2 bg-blue-50 text-blue-400 rounded-lg">
                                             <Truck size={24} />
                                         </div>
                                         <h2 className="text-xl font-semibold text-gray-900">Shipping Address</h2>
@@ -349,7 +349,7 @@ const Checkout = () => {
                                             <button
                                                 type="submit"
                                                 disabled={loadingShipping}
-                                                className="w-full mt-6 bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                                                className="w-full mt-6 bg-blue-400 text-white py-4 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
                                             >
                                                 {loadingShipping ? <Loader2 className="animate-spin" /> : 'Calculate Shipping'}
                                             </button>
@@ -365,7 +365,7 @@ const Checkout = () => {
                                                         >
                                                             <div className="flex items-center gap-3">
                                                                 <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedRate?.id === rate.id ? 'border-blue-600' : 'border-gray-300'}`}>
-                                                                    {selectedRate?.id === rate.id && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
+                                                                    {selectedRate?.id === rate.id && <div className="w-2.5 h-2.5 rounded-full bg-blue-400" />}
                                                                 </div>
                                                                 <div>
                                                                     <p className="font-medium text-gray-900">{rate.service}</p>
@@ -406,12 +406,12 @@ const Checkout = () => {
                                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
                                     <div className="flex items-center justify-between mb-8">
                                         <div className="flex items-center gap-3">
-                                            <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                                            <div className="p-2 bg-blue-50 text-blue-400 rounded-lg">
                                                 <CreditCard size={24} />
                                             </div>
                                             <h2 className="text-xl font-semibold text-gray-900">Payment Details</h2>
                                         </div>
-                                        <button onClick={() => setStep(1)} className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                        <button onClick={() => setStep(1)} className="text-sm text-blue-400 hover:text-blue-800 font-medium">
                                             Edit Shipping
                                         </button>
                                     </div>

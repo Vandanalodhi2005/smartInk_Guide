@@ -21,7 +21,7 @@ const AdminSettings = () => {
                         </div>
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-2">Support Email</label>
-                            <input type="email" defaultValue="support@printscarts.com" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <input type="email" defaultValue="support@smartinkguide.com" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                         </div>
                     </div>
                     <div>

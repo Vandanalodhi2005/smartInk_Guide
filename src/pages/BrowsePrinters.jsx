@@ -177,7 +177,7 @@ const BrowsePrinters = () => {
                 }
                 .browse-header h1 {
                     font-size: 36px;
-                    color: #0f3d91;
+                    color: #60a5fa;
                     margin-bottom: 12px;
                 }
                 .browse-layout {
@@ -267,7 +267,7 @@ const BrowsePrinters = () => {
                 .card-brand {
                     font-size: 12px;
                     font-weight: 700;
-                    color: #0f3d91;
+                    color: #60a5fa;
                     text-transform: uppercase;
                 }
                 .card-info h3 {
@@ -286,7 +286,7 @@ const BrowsePrinters = () => {
                 .card-price {
                     font-size: 20px;
                     font-weight: 700;
-                    color: #0f3d91;
+                    color: #60a5fa;
                 }
                 .card-rating {
                     font-size: 14px;
@@ -297,7 +297,7 @@ const BrowsePrinters = () => {
                     display: block;
                     width: 100%;
                     padding: 12px;
-                    background: #0f3d91;
+                    background: #60a5fa;
                     color: #fff;
                     text-align: center;
                     text-decoration: none;
@@ -306,7 +306,7 @@ const BrowsePrinters = () => {
                     transition: background 0.2s;
                 }
                 .view-btn:hover {
-                    background: #0b2c66;
+                    background: #2563eb;
                 }
                 .no-results-state {
                     text-align: center;

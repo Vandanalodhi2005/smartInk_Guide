@@ -9,7 +9,7 @@
 .contact-section h2 {
     font-size: 32px;
     font-weight: 700;
-    color: #0f3d91;
+    color: #60a5fa;
     margin: 0 0 40px 0;
     text-align: center;
 }
@@ -38,7 +38,7 @@
 
 .contact-item svg {
     flex-shrink: 0;
-    color: #0f3d91;
+    color: #60a5fa;
 }
 
 .contact-item span {

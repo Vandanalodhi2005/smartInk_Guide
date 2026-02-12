@@ -28,7 +28,7 @@ const Commitment = () => {
         .commitment-container h2 {
           font-size: 36px;
           font-weight: 700;
-          color: #0f3d91;
+          color: #60a5fa;
           margin: 0 0 32px 0;
         }
 

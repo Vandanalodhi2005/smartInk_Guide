@@ -41,7 +41,7 @@ const AboutSection = () => {
         .about-content h2 {
           font-size: 36px;
           font-weight: 700;
-          color: #0f3d91;
+          color: #60a5fa;
           margin: 0 0 12px 0;
         }
 
@@ -62,7 +62,7 @@ const AboutSection = () => {
         .principles span {
           font-size: 16px;
           font-weight: 600;
-          color: #0f3d91;
+          color: #60a5fa;
           padding: 8px 16px;
           background: #e0f2fe;
           border-radius: 6px;
@@ -76,7 +76,7 @@ const AboutSection = () => {
         }
 
         .btn-primary {
-          background: #0f3d91;
+          background: #60a5fa;
           color: #fff;
           border: none;
           padding: 14px 32px;
@@ -88,7 +88,7 @@ const AboutSection = () => {
         }
 
         .btn-primary:hover {
-          background: #0b2c66;
+          background: #2563eb;
           transform: translateY(-2px);
         }
 
