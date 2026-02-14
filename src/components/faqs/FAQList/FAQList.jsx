@@ -1,5 +1,6 @@
 import React from 'react';
 import './FAQList.css';
+import { motion, AnimatePresence } from "framer-motion";
 
 const FAQList = ({ faqs, openItems, toggleItem }) => {
     if (faqs.length === 0) {
@@ -12,15 +13,19 @@ const FAQList = ({ faqs, openItems, toggleItem }) => {
 
     return (
         <div className="faqs-list">
-            {faqs.map((faq) => (
-                <div
+            {faqs.map((faq, index) => (
+                <motion.div
                     key={faq.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
                     className={`faq-item ${openItems[faq.id] ? 'open' : ''}`}
                     onClick={() => toggleItem(faq.id)}
                 >
                     <div className="faq-question">
                         <span>{faq.question}</span>
-                        <svg
+                        <motion.svg
+                            animate={{ rotate: openItems[faq.id] ? 180 : 0 }}
                             className="faq-arrow"
                             width="20"
                             height="20"
@@ -34,12 +39,22 @@ const FAQList = ({ faqs, openItems, toggleItem }) => {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />
-                        </svg>
+                        </motion.svg>
                     </div>
-                    <div className="faq-answer">
-                        <p>{faq.answer}</p>
-                    </div>
-                </div>
+                    <AnimatePresence>
+                        {openItems[faq.id] && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className="faq-answer overflow-hidden text-slate-600 leading-relaxed"
+                            >
+                                <p className="py-2">{faq.answer}</p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.div>
             ))}
         </div>
     );

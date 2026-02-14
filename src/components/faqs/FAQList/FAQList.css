@@ -7,73 +7,99 @@
 
 .faq-item {
     background: #fff;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
+    border: 2px solid #f1f5f9;
+    border-radius: 16px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: fadeInUp 0.5s ease-out both;
     cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .faq-item:hover {
     border-color: #60a5fa;
-    box-shadow: 0 4px 12px rgba(15, 61, 145, 0.1);
+    box-shadow: 0 10px 20px rgba(96, 165, 250, 0.1);
     transform: translateY(-2px);
 }
 
 .faq-item.open {
     border-color: #60a5fa;
-    box-shadow: 0 4px 12px rgba(15, 61, 145, 0.15);
+    box-shadow: 0 12px 25px rgba(96, 165, 250, 0.15);
 }
 
 .faq-question {
-    padding: 20px 24px;
+    padding: 24px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
+    font-size: 19px;
+    font-weight: 700;
+    color: #1e293b;
+    transition: color 0.3s ease;
+}
+
+.faq-item.open .faq-question {
+    color: #2563eb;
 }
 
 .faq-arrow {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
     margin-left: 16px;
-}
-
-.faq-item.open .faq-arrow {
-    transform: rotate(180deg);
+    color: #60a5fa;
 }
 
 .faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.4s ease;
-    padding: 0 24px;
-}
-
-.faq-item.open .faq-answer {
-    max-height: 500px;
-    padding: 0 24px 20px;
+    padding: 0 28px;
+    color: #475569;
 }
 
 .faq-answer p {
-    color: #666;
     line-height: 1.8;
     margin: 0;
-    animation: fadeIn 0.4s ease-out 0.2s both;
+    font-size: 16px;
 }
 
 .no-results {
     text-align: center;
-    padding: 60px 20px;
-    color: #666;
+    padding: 80px 20px;
+    color: #64748b;
 }
 
 .no-results p {
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 600;
     margin: 0;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 768px) {
+    .faq-question {
+        padding: 20px 24px;
+        font-size: 17px;
+    }
+
+    .faq-answer p {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .faq-question {
+        padding: 18px 20px;
+        font-size: 16px;
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+    }
+
+    .faqs-list {
+        gap: 12px;
+    }
 }
 
 @keyframes fadeInUp {
@@ -85,15 +111,5 @@
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
     }
 }

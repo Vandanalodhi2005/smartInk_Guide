@@ -22,7 +22,7 @@ import RefundReturnPolicy from "./pages/RefundReturnPolicy";
 import PolicyHub from "./pages/PolicyHub";
 import Blogs from "./pages/Blogs";
 import TopHomePrinters2026 from "./pages/blogs/TopHomePrinters2026";
-import InkjetVsLaserGuide from "./pages/blogs/InkjetVsLaserGuide";import PrinterOfflineFixGuide from './pages/blogs/PrinterOfflineFixGuide';import SaveMoneyInkGuide from "./pages/blogs/SaveMoneyInkGuide";
+import InkjetVsLaserGuide from "./pages/blogs/InkjetVsLaserGuide"; import PrinterOfflineFixGuide from './pages/blogs/PrinterOfflineFixGuide'; import SaveMoneyInkGuide from "./pages/blogs/SaveMoneyInkGuide";
 import PrinterSetupGuide from "./pages/blogs/PrinterSetupGuide";
 import EcoFriendlyPrintingGuide from "./pages/blogs/EcoFriendlyPrintingGuide";
 
@@ -58,21 +58,22 @@ import TrackOrder from "./pages/TrackOrder";
 
 import AdminRoute from "./components/admin/AdminRoute";
 import ScrollToTop from "./components/common/ScrollToTop";
-import Navbar from './components/navbar/Navbar';
+import PublicLayout from './components/layout/PublicLayout';
 
 function App() {
   return (
-      <CartProvider>
-        <FavoritesProvider>
-          <Router>
-            <ScrollToTop />
-            
-            <Routes>
+    <CartProvider>
+      <FavoritesProvider>
+        <Router>
+          <ScrollToTop />
+
+          <Routes>
+            {/* Public & Auth Routes with Global Layout */}
+            <Route element={<PublicLayout />}>
               {/* Public */}
               <Route path="/" element={<Home />} />
               <Route path="/printers" element={<Printers />} />
               <Route path="/product/:slug" element={<ProductDetails />} />
-              <Route path="/printers" element={<Printers />} />
               <Route path="/ink-toner" element={<InkToner />} />
               <Route path="/ink-toner/:id" element={<ProductDetails />} />
               <Route path="/about" element={<AboutUs />} />
@@ -112,30 +113,28 @@ function App() {
               <Route path="/orders" element={<MyOrders />} />
               <Route path="/order/:id" element={<OrderDetails />} />
               <Route path="/track-order" element={<TrackOrder />} />
-
-              {/* Admin */}
-            <Route path="/admin" element={
-              <AdminRoute>
-                 <AdminLayout />
-              </AdminRoute>
-            }>
-               <Route path="dashboard" element={<AdminDashboard />} />
-               <Route path="products" element={<AdminProducts />} />
-               <Route path="orders" element={<AdminOrders />} />
-               <Route path="customers" element={<AdminCustomers />} />
-               <Route path="categories" element={<AdminCategories />} />
-               <Route path="chat" element={<AdminChat />} />
-               <Route path="analytics" element={<AdminAnalytics />} />
-               <Route path="settings" element={<AdminSettings />} />
-               <Route index element={<Navigate to="dashboard" replace />} />
             </Route>
 
-            {/* Old Dashboard Routes (Commented out/Removed) */}
-            {/* <Route path="/dashboard" element={...} /> */}
-            </Routes>
-          </Router>
-        </FavoritesProvider>
-      </CartProvider>
+            {/* Admin Routes with Separate Layout */}
+            <Route path="/admin" element={
+              <AdminRoute>
+                <AdminLayout />
+              </AdminRoute>
+            }>
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="customers" element={<AdminCustomers />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="chat" element={<AdminChat />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="settings" element={<AdminSettings />} />
+              <Route index element={<Navigate to="dashboard" replace />} />
+            </Route>
+          </Routes>
+        </Router>
+      </FavoritesProvider>
+    </CartProvider>
   );
 }
 

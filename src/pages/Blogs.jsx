@@ -1,6 +1,3 @@
-import React from 'react';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
 import { Link } from 'react-router-dom';
 import ecofriendly from '../assets/ecofriendly.png';
 import inkjetvstoner from '../assets/inkjetvstoner.jpg';
@@ -22,7 +19,7 @@ const Blogs = () => {
       imageColor: "bg-blue-100",
       image: top10
     },
-     {
+    {
       id: 2,
       title: "Inkjet vs Laser Printers (2026 Buying Guide) — Which One Is Right for You?",
       excerpt: "Should you buy an inkjet printer or a laser printer? We break down the technical and financial differences to help you decide.",
@@ -32,7 +29,7 @@ const Blogs = () => {
       imageColor: "bg-indigo-100",
       image: inkjetvstoner
     },
-     {
+    {
       id: 3,
       title: "How to Save Money on Ink & Toner — Smart Printing Tips Every User Should Know (2026 Guide)",
       excerpt: "Ink costs can be frustrating. Learn instant ways to reduce printing costs, optimize settings, and save 30-60% per year.",
@@ -62,7 +59,7 @@ const Blogs = () => {
       imageColor: "bg-red-100",
       image: printerisoffline
     },
-   
+
     {
       id: 6,
       title: "Eco-Friendly Printing — How to Reduce Waste & Extend Printer Life (2026 Sustainability Guide)",
@@ -73,16 +70,14 @@ const Blogs = () => {
       imageColor: "bg-teal-100",
       image: ecofriendly
     },
-    
-    
-   
-    
+
+
+
+
   ];
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Navbar />
-      
       <div className="flex-grow">
         {/* Header Section */}
         <div className="bg-primary text-white py-16">
@@ -102,11 +97,11 @@ const Blogs = () => {
               <div key={blog.id} className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <Link to={`/blogs/${blog.slug}`} className="block group">
                   <div className={`h-64 ${blog.imageColor} flex items-center justify-center opacity-90 group-hover:opacity-100 transition-opacity overflow-hidden`}>
-                      <img 
-                        src={blog.image} 
-                        alt={blog.title} 
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" 
-                      />
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
                 </Link>
                 <div className="p-6">
@@ -122,7 +117,7 @@ const Blogs = () => {
                   <p className="text-gray-600 mb-4 line-clamp-3">
                     {blog.excerpt}
                   </p>
-                  <Link 
+                  <Link
                     to={`/blogs/${blog.slug}`}
                     className="inline-block text-blue-600 font-bold hover:underline"
                   >
@@ -135,7 +130,6 @@ const Blogs = () => {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 };

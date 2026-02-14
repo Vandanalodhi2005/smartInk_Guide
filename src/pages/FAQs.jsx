@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
 import FAQHero from '../components/faqs/FAQHero/FAQHero';
 import FAQSearch from '../components/faqs/FAQSearch/FAQSearch';
 import FAQTabs from '../components/faqs/FAQTabs/FAQTabs';
@@ -78,25 +76,21 @@ const FAQs = () => {
 
   const filteredFaqs = searchQuery.trim() !== ''
     ? allFaqs.filter(item =>
-        item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.answer.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : (faqData[activeTab] || []);
 
   return (
-    <>
-      <Navbar />
-      <div className="faqs-page">
-        <div className="faqs-container">
-          <FAQHero />
-          <FAQSearch searchQuery={searchQuery} setSearchQuery={handleSearchChange} />
-          <FAQTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-          <FAQList faqs={filteredFaqs} openItems={openItems} toggleItem={toggleItem} />
-          <FAQContact />
-        </div>
+    <div className="faqs-page">
+      <div className="faqs-container">
+        <FAQHero />
+        <FAQSearch searchQuery={searchQuery} setSearchQuery={handleSearchChange} />
+        <FAQTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <FAQList faqs={filteredFaqs} openItems={openItems} toggleItem={toggleItem} />
+        <FAQContact />
       </div>
-      <Footer />
-    </>
+    </div>
   );
 };
 
