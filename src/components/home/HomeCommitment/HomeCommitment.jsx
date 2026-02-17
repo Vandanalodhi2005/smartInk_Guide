@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
 
 const stats = [
   { value: 100, suffix: "%", label: "Transparency" },
@@ -80,9 +81,11 @@ const HomeCommitment = () => {
           viewport={{ once: true }}
           className="mt-10 flex justify-center"
         >
+          <Link to="/about">
           <button className="px-7 py-3 text-sm sm:text-base font-semibold rounded-lg text-white bg-[#20a1dd] hover:bg-[#20a1dd] transition duration-300 shadow-md hover:shadow-lg">
             Learn More
           </button>
+          </Link>
         </motion.div>
 
       </div>

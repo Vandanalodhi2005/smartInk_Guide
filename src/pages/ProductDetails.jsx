@@ -268,6 +268,30 @@ const ProductDetails = () => {
               <span className="pd-brand-badge">{product.brand || 'Premium Edition'}</span>
               <h1>{product.title || product.name}</h1>
 
+              {/* Structured Attributes */}
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                {Array.isArray(product.technology) && product.technology.length > 0 && (
+                  <span className="inline-block bg-slate-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-blue-100">{product.technology.join(', ')}</span>
+                )}
+                {Array.isArray(product.usageCategory) && product.usageCategory.length > 0 && (
+                  <span className="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-blue-100">{product.usageCategory.join(', ')}</span>
+                )}
+                {Array.isArray(product.allInOneType) && product.allInOneType.length > 0 && (
+                  <span className="inline-block bg-purple-50 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-purple-100">{product.allInOneType.join(', ')}</span>
+                )}
+                {product.wireless && (
+                  <span className="inline-block bg-green-50 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-green-100">Wireless: {product.wireless}</span>
+                )}
+                {Array.isArray(product.mainFunction) && product.mainFunction.length > 0 && (
+                  <span className="inline-block bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-emerald-100">{product.mainFunction.join(', ')}</span>
+                )}
+                {product.countInStock > 0 ? (
+                  <span className="inline-block bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">In Stock</span>
+                ) : (
+                  <span className="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">Out of Stock</span>
+                )}
+              </div>
+
               <div className="pd-rating-row">
                 <div className="pd-stars">
                   {"★".repeat(Math.round(product.rating || 0))}
@@ -277,35 +301,17 @@ const ProductDetails = () => {
               </div>
 
               <div className="pd-price-card">
+                                {/* Bonus offer above price */}
+                                {product.bonusOffer && (
+                                  <div className="bg-yellow-100 text-yellow-800 font-extrabold text-xs uppercase tracking-widest rounded-xl px-4 py-2 mb-4 text-center border border-yellow-300 shadow-sm">
+                                    {product.bonusOffer}
+                                  </div>
+                                )}
                 <div className="pd-price-row">
                   <span className="pd-main-price">${product.price?.toFixed(2)}</span>
                   {product.oldPrice && <span className="pd-old-price">${product.oldPrice.toFixed(2)}</span>}
                 </div>
-                <div className={`pd-stock-pill ${product.countInStock > 0 ? 'stock-in' : 'stock-out'}`}>
-                  {product.countInStock > 0 ? 'Verified In Stock' : 'Currently Unavailable'}
-                </div>
-              </div>
-
-              {product.shortDetails && (
-                <div className="pd-highlights-box">
-                  <h4>Product Highlights</h4>
-                  <div dangerouslySetInnerHTML={{ __html: product.shortDetails }} />
-                </div>
-              )}
-
-              <div className="pd-interaction-row">
-                {product.countInStock > 0 && (
-                  <div className="pd-qty-group">
-                    <span>Selection:</span>
-                    <div className="pd-qty-selector">
-                      <button onClick={() => setQty(Math.max(1, qty - 1))} disabled={qty <= 1}>−</button>
-                      <input type="text" readOnly value={qty} />
-                      <button onClick={() => setQty(Math.min(product.countInStock, qty + 1))} disabled={qty >= product.countInStock}>+</button>
-                    </div>
-                  </div>
-                )}
-
-                <div className="pd-action-btns">
+                <div className="flex gap-3 mt-3">
                   <button
                     className="pd-btn-premium pd-btn-cart"
                     onClick={handleAddToCart}
@@ -324,6 +330,21 @@ const ProductDetails = () => {
                   </button>
                 </div>
               </div>
+
+              {product.shortDetails && (
+                <div className="pd-highlights-box">
+                  <h4>Product Highlights</h4>
+                  <ul>
+                    {/* Example highlights, replace with dynamic or static as needed */}
+                    <li>Functions - Print, Scan, Copy, Photo</li>
+                    <li>Print, scan, copy; wireless; 35-sheet ADF</li>
+                    <li>Perfectly formatted prints with HP AI</li>
+                    <li>Customize the backs of photos for personalized cards with HP's exclusive automatic 2-sided photo printing</li>
+                  </ul>
+                </div>
+              )}
+
+              {/* Removed quantity selector and action buttons from here, now shown under price only */}
             </motion.div>
           </div>
         </div>

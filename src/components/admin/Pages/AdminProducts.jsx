@@ -1,3 +1,9 @@
+// Structured attribute options
+const TECHNOLOGY_OPTIONS = ["Inkjet", "Laser", "Laser (B/W)"];
+const USAGE_CATEGORY_OPTIONS = ["Home", "Office", "Mobile", "Photo"];
+const ALL_IN_ONE_OPTIONS = ["Multifunction", "Single Function"];
+const WIRELESS_OPTIONS = ["Yes", "No"];
+const MAIN_FUNCTION_OPTIONS = ["Print", "Scan", "Copy", "Fax", "Print Only"];
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactQuill from 'react-quill-new';
@@ -72,6 +78,11 @@ const AdminProducts = () => {
     const [itemToDelete, setItemToDelete] = useState(null);
 
     const initialFormState = {
+            technology: [],
+            usageCategory: [],
+            allInOneType: [],
+            wireless: '',
+            mainFunction: [],
         brand: '',
         title: '',
         category: '',
@@ -189,8 +200,12 @@ const AdminProducts = () => {
     const handleEdit = (product) => {
         setEditingId(product._id);
         const techSpec = product.technicalSpecification || '';
-
         setFormData({
+            technology: Array.isArray(product.technology) ? product.technology : [],
+            usageCategory: Array.isArray(product.usageCategory) ? product.usageCategory : [],
+            allInOneType: Array.isArray(product.allInOneType) ? product.allInOneType : [],
+            wireless: typeof product.wireless === 'string' ? product.wireless : '',
+            mainFunction: Array.isArray(product.mainFunction) ? product.mainFunction : [],
             brand: product.brand || '',
             title: product.title || '',
             category: product.category?._id || product.category || '',
@@ -275,6 +290,20 @@ const AdminProducts = () => {
     };
 
     const handleSubmit = (e) => {
+                // Add form fields for structured attributes
+                Object.keys(formData).forEach(key => {
+                    if (["technology", "usageCategory", "allInOneType", "mainFunction"].includes(key)) {
+                        data.append(key, JSON.stringify(formData[key]));
+                    } else if (key === 'images') {
+                        data.append('existingImages', JSON.stringify(formData.images));
+                    } else if (key === 'reviews') {
+                        data.append('reviews', JSON.stringify(formData.reviews));
+                    } else if (key === 'technicalSpecification') {
+                        data.append('technicalSpecification', finalTechSpecs);
+                    } else {
+                        data.append(key, formData[key]);
+                    }
+                });
         e.preventDefault();
 
         const data = new FormData();
@@ -434,6 +463,86 @@ const AdminProducts = () => {
                                 <h4 className="font-black text-slate-800 uppercase tracking-tighter text-lg">Basic Information</h4>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                {/* Structured Attributes Section */}
+                                                <div className="col-span-2 space-y-4">
+                                                    {/* Technology */}
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Technology</label>
+                                                    <div className="flex flex-wrap gap-3 mt-1">
+                                                        {TECHNOLOGY_OPTIONS.map(opt => (
+                                                            <label key={opt} className="flex items-center gap-2">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="technology"
+                                                                    value={opt}
+                                                                    checked={Array.isArray(formData.technology) && formData.technology.includes(opt)}
+                                                                    onChange={handleInputChange}
+                                                                />
+                                                                <span className="text-xs font-bold text-blue-700">{opt}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                    {/* Usage Category */}
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Usage Category</label>
+                                                    <div className="flex flex-wrap gap-3 mt-1">
+                                                        {USAGE_CATEGORY_OPTIONS.map(opt => (
+                                                            <label key={opt} className="flex items-center gap-2">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="usageCategory"
+                                                                    value={opt}
+                                                                    checked={Array.isArray(formData.usageCategory) && formData.usageCategory.includes(opt)}
+                                                                    onChange={handleInputChange}
+                                                                />
+                                                                <span className="text-xs font-bold text-green-700">{opt}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                    {/* All-in-One Type */}
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">All-in-One Type</label>
+                                                    <div className="flex flex-wrap gap-3 mt-1">
+                                                        {ALL_IN_ONE_OPTIONS.map(opt => (
+                                                            <label key={opt} className="flex items-center gap-2">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="allInOneType"
+                                                                    value={opt}
+                                                                    checked={Array.isArray(formData.allInOneType) && formData.allInOneType.includes(opt)}
+                                                                    onChange={handleInputChange}
+                                                                />
+                                                                <span className="text-xs font-bold text-purple-700">{opt}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                    {/* Wireless */}
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Wireless</label>
+                                                    <select
+                                                        name="wireless"
+                                                        value={formData.wireless}
+                                                        onChange={handleInputChange}
+                                                        className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+                                                    >
+                                                        <option value="">Select</option>
+                                                        {WIRELESS_OPTIONS.map(opt => (
+                                                            <option key={opt} value={opt}>{opt}</option>
+                                                        ))}
+                                                    </select>
+                                                    {/* Main Function */}
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Main Function</label>
+                                                    <div className="flex flex-wrap gap-3 mt-1">
+                                                        {MAIN_FUNCTION_OPTIONS.map(opt => (
+                                                            <label key={opt} className="flex items-center gap-2">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    name="mainFunction"
+                                                                    value={opt}
+                                                                    checked={Array.isArray(formData.mainFunction) && formData.mainFunction.includes(opt)}
+                                                                    onChange={handleInputChange}
+                                                                />
+                                                                <span className="text-xs font-bold text-orange-700">{opt}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Product Title</label>
                                     <input

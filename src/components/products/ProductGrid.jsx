@@ -1,58 +1,95 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../../redux/actions/productActions';
+
+import React, { useState } from 'react';
+import ProductFilter from './ProductFilter';
 import ProductCard from './ProductCard';
 
-const ProductGrid = () => {
-  const dispatch = useDispatch();
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+const ProductGrid = ({ heading = "Products", products = [], onFilterChange }) => {
+  const [filters, setFilters] = useState({
+    sort: "",
+    brand: "",
+    technology: [],
+    usageCategory: [],
+    allInOneType: [],
+    wireless: "",
+    mainFunction: []
+  });
 
-  useEffect(() => {
-    // Fetch products on mount
-    dispatch(listProducts('', '', 1)); // keyword, category, pageNumber
-  }, [dispatch]);
-
-  if (loading) {
-    return (
-      <div className="loading-grid">
-         <div className="spinner"></div>
-         <p>Loading products...</p>
-         <style>{`
-            .loading-grid { text-align: center; padding: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; }
-            .spinner { width: 30px; height: 30px; border: 3px solid #eee; border-top: 3px solid #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
-            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-         `}</style>
-      </div>
+  // Local filtering and sorting
+  let filteredProducts = products;
+  if (filters.brand) {
+    filteredProducts = filteredProducts.filter(
+      (product) =>
+        (product.brand && product.brand.toLowerCase() === filters.brand.toLowerCase())
     );
   }
-
-  if (error) {
-     return <div className="error-grid">Error: {error}</div>;
+  if (filters.technology.length > 0) {
+    filteredProducts = filteredProducts.filter((product) =>
+      filters.technology.some((tech) =>
+        Array.isArray(product.technology)
+          ? product.technology.includes(tech)
+          : (product.technology || "").toLowerCase().includes(tech.toLowerCase())
+      )
+    );
+  }
+  if (filters.usageCategory.length > 0) {
+    filteredProducts = filteredProducts.filter((product) =>
+      filters.usageCategory.some((cat) =>
+        Array.isArray(product.usageCategory)
+          ? product.usageCategory.includes(cat)
+          : (product.usageCategory || "").toLowerCase().includes(cat.toLowerCase())
+      )
+    );
+  }
+  if (filters.allInOneType.length > 0) {
+    filteredProducts = filteredProducts.filter((product) =>
+      filters.allInOneType.some((type) =>
+        Array.isArray(product.allInOneType)
+          ? product.allInOneType.includes(type)
+          : (product.allInOneType || "").toLowerCase().includes(type.toLowerCase())
+      )
+    );
+  }
+  if (filters.wireless) {
+    filteredProducts = filteredProducts.filter((product) =>
+      (product.wireless || "").toLowerCase() === filters.wireless.toLowerCase()
+    );
+  }
+  if (filters.mainFunction.length > 0) {
+    filteredProducts = filteredProducts.filter((product) =>
+      filters.mainFunction.some((func) =>
+        Array.isArray(product.mainFunction)
+          ? product.mainFunction.includes(func)
+          : (product.mainFunction || "").toLowerCase().includes(func.toLowerCase())
+      )
+    );
+  }
+  if (filters.sort === "lowToHigh") {
+    filteredProducts = filteredProducts.slice().sort((a, b) => Number(a.price) - Number(b.price));
+  } else if (filters.sort === "highToLow") {
+    filteredProducts = filteredProducts.slice().sort((a, b) => Number(b.price) - Number(a.price));
   }
 
-  // Ensure products is an array
-  const safeProducts = Array.isArray(products) ? products : [];
+  const handleFilterChange = (updatedFilters) => {
+    setFilters(updatedFilters);
+    if (onFilterChange) onFilterChange(updatedFilters);
+  };
 
   return (
-    <div className="grid">
-      {safeProducts.map(p => (
-        <ProductCard key={p._id || p.id} product={p} />
-      ))}
-      <style>{`
-        .grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-          gap: 24px;
-          padding: 24px 0;
-        }
-        .error-grid {
-           padding: 40px;
-           text-align: center;
-           color: #ef4444;
-        }
-      `}</style>
-    </div>
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="flex flex-col gap-8 mb-8">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-blue-800 drop-shadow-lg">
+            {heading}
+          </h2>
+          <ProductFilter filters={filters} onChange={handleFilterChange} />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-10">
+          {filteredProducts.map((product, index) => (
+            <ProductCard key={product._id || product.id || index} product={product} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

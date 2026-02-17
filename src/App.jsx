@@ -15,6 +15,8 @@ import DoNotSell from "./pages/DoNotSell";
 import Accessibility from "./pages/Accessibility";
 import Disclaimer from "./pages/Disclaimer";
 import Printers from "./pages/Printers";
+import HomePrinter from "./components/products/HomePrinter";
+import OfficePrinter from "./components/products/OfficePrinter";
 import InkToner from "./pages/InkToner";
 import AboutUs from "./pages/AboutUs";
 import ProductDetails from "./pages/ProductDetails";
@@ -76,8 +78,8 @@ function App() {
               {/* Public */}
               <Route path="/" element={<Home />} />
               <Route path="/printers" element={<Printers />} />
-              <Route path="/home-printers" element={<Printers forcedCategory="Home Printer" />} />
-              <Route path="/office-printers" element={<Printers forcedCategory="Office Printer" />} />
+              <Route path="/home-printers" element={<HomePrinter />} />
+              <Route path="/office-printers" element={<OfficePrinter />} />
               <Route path="/laser-printers" element={<Printers forcedCategory="Laser Printer" />} />
               <Route path="/inkjet-printers" element={<Printers forcedCategory="Inkjet Printer" />} />
 

@@ -311,10 +311,11 @@
 }
 
 .pd-btn-premium {
-    height: 64px;
+    height: auto;
+    padding: 20px 36px;
     border-radius: 20px;
     font-weight: 900;
-    font-size: 0.875rem;
+    font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     display: flex;
