@@ -126,7 +126,7 @@ const HomeWhyChoose = () => {
               <div className="flex flex-col md:flex-col lg:flex-row items-center lg:items-start gap-5 text-center lg:text-left">
 
                 {/* Icon */}
-                <div className="w-14 h-14 flex items-center justify-center rounded-lg bg-blue-100 text-blue-500">
+                <div className="w-14 h-14 flex items-center justify-center rounded-lg bg-blue-100 text-[#20a1dd]">
                   {reason.icon}
                 </div>
 

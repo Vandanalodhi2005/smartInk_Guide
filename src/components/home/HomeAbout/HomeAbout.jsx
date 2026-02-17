@@ -23,7 +23,7 @@ const HomeAbout = () => {
           {/* CONTENT SIDE */}
           <div className="w-full lg:w-1/2 space-y-6 text-left">
 
-            <h2 className="text-blue-400 font-semibold uppercase tracking-wider text-sm">
+            <h2 className="text-blue-600 font-semibold uppercase tracking-wider text-sm">
               About SmartInk Guide
             </h2>
 
@@ -47,14 +47,14 @@ const HomeAbout = () => {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 to="/about"
-                className="px-6 py-3 border border-blue-400 text-blue-400 font-semibold rounded-md hover:bg-blue-50 transition duration-300"
+                className="px-6 py-3 border border-[#20a1dd] text-[#20a1dd] font-semibold rounded-md hover:bg-[#20a1dd] transition duration-300"
               >
                 Learn More
               </Link>
 
               <Link
                 to="/printers"
-                className="px-6 py-3 bg-blue-400 text-white font-semibold rounded-md hover:bg-blue-500 transition duration-300"
+                className="px-6 py-3 bg-[#20a1dd] text-white font-semibold rounded-md hover:bg-[#20a1dd] transition duration-300"
               >
                 Explore Products
               </Link>

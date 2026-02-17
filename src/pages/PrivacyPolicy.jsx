@@ -1,12 +1,8 @@
-import React from 'react';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
 import '../styles/PolicyPages.css';
 
 const PrivacyPolicy = () => {
     return (
         <div className="policy-page-wrapper">
-            <Navbar />
             <main className="policy-main-content">
                 {/* Hero Section */}
                 <div className="policy-hero">
@@ -289,7 +285,6 @@ const PrivacyPolicy = () => {
                     </div>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 };

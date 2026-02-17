@@ -21,10 +21,13 @@ import ProductDetails from "./pages/ProductDetails";
 import RefundReturnPolicy from "./pages/RefundReturnPolicy";
 import PolicyHub from "./pages/PolicyHub";
 import Blogs from "./pages/Blogs";
-import TopHomePrinters2026 from "./pages/blogs/TopHomePrinters2026";
-import InkjetVsLaserGuide from "./pages/blogs/InkjetVsLaserGuide"; import PrinterOfflineFixGuide from './pages/blogs/PrinterOfflineFixGuide'; import SaveMoneyInkGuide from "./pages/blogs/SaveMoneyInkGuide";
-import PrinterSetupGuide from "./pages/blogs/PrinterSetupGuide";
-import EcoFriendlyPrintingGuide from "./pages/blogs/EcoFriendlyPrintingGuide";
+import BlogDetails from "./pages/BlogDetails";
+// import TopHomePrinters2026 from "./pages/blogs/TopHomePrinters2026";
+// import InkjetVsLaserGuide from "./pages/blogs/InkjetVsLaserGuide"; 
+// import PrinterOfflineFixGuide from './pages/blogs/PrinterOfflineFixGuide'; 
+// import SaveMoneyInkGuide from "./pages/blogs/SaveMoneyInkGuide";
+// import PrinterSetupGuide from "./pages/blogs/PrinterSetupGuide";
+// import EcoFriendlyPrintingGuide from "./pages/blogs/EcoFriendlyPrintingGuide";
 
 // Auth pages
 import SignIn from "./pages/SignIn";
@@ -73,17 +76,46 @@ function App() {
               {/* Public */}
               <Route path="/" element={<Home />} />
               <Route path="/printers" element={<Printers />} />
+              <Route path="/home-printers" element={<Printers forcedCategory="Home Printer" />} />
+              <Route path="/office-printers" element={<Printers forcedCategory="Office Printer" />} />
+              <Route path="/laser-printers" element={<Printers forcedCategory="Laser Printer" />} />
+              <Route path="/inkjet-printers" element={<Printers forcedCategory="Inkjet Printer" />} />
+
               <Route path="/product/:slug" element={<ProductDetails />} />
+
               <Route path="/ink-toner" element={<InkToner />} />
+              <Route path="/ink-toner/home-printer-ink" element={
+                <InkToner
+                  forcedCategory="Ink"
+                  forcedTitle="Home Printer Ink"
+                  forcedDescription="Explore affordable and reliable ink cartridges perfect for everyday home documents and school projects."
+                />
+              } />
+              <Route path="/ink-toner/office-printer-ink" element={
+                <InkToner
+                  forcedCategory="Ink"
+                  forcedTitle="Office Printer Ink"
+                  forcedDescription="Professional-grade ink for high-volume office printing. Sharp black text and vibrant professional colors."
+                />
+              } />
+              <Route path="/ink-toner/laser-printer-toner" element={
+                <InkToner
+                  forcedCategory="Toner"
+                  forcedTitle="Laser Printer Toner"
+                  forcedDescription="High-yield laser toner cartridges for crisp, professional documents and unbeatable reliability."
+                />
+              } />
+              <Route path="/ink-toner/inkjet-printer-ink" element={
+                <InkToner
+                  forcedCategory="Ink"
+                  forcedTitle="Inkjet Printer Ink"
+                  forcedDescription="Premium photo-quality ink for stunning results on every page. Perfect for high-resolution graphics and images."
+                />
+              } />
               <Route path="/ink-toner/:id" element={<ProductDetails />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/blogs" element={<Blogs />} />
-              <Route path="/blogs/top-10-home-printers-2026" element={<TopHomePrinters2026 />} />
-              <Route path="/blogs/inkjet-vs-laser-printers-2026" element={<InkjetVsLaserGuide />} />
-              <Route path="/blogs/printer-offline-fix-guide-2026" element={<PrinterOfflineFixGuide />} />
-              <Route path="/blogs/save-money-on-ink-toner-2026" element={<SaveMoneyInkGuide />} />
-              <Route path="/blogs/printer-setup-guide-2026" element={<PrinterSetupGuide />} />
-              <Route path="/blogs/eco-friendly-printing-guide-2026" element={<EcoFriendlyPrintingGuide />} />
+              <Route path="/blogs/:slug" element={<BlogDetails />} />
               <Route path="/faqs" element={<FAQs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/policies" element={<PolicyHub />} />

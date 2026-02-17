@@ -2,7 +2,7 @@
     position: relative;
     padding: 120px 20px;
     overflow: hidden;
-    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    background: linear-gradient(135deg, #1e3a8a, #20a1dd);
     color: #fff;
 }
 
@@ -103,7 +103,7 @@
 .blob1 {
     width: 400px;
     height: 400px;
-    background: #60a5fa;
+    background: #20a1dd;
     top: -100px;
     left: -100px;
 }

@@ -1,7 +1,5 @@
 import React from "react";
 import "../styles/settings.css"
-import Footer from "../components/footer/Footer";
-import Navbar from "../components/navbar/Navbar";
 
 const Input = ({ label, type = "text", placeholder }) => (
   <div className="form-group">
@@ -12,8 +10,6 @@ const Input = ({ label, type = "text", placeholder }) => (
 
 export default function Settings() {
   return (
-    <>
-         <Navbar />
     <div className="page">
       <div className="card">
 
@@ -73,7 +69,5 @@ export default function Settings() {
         </main>
       </div>
     </div>
-    <Footer />
-    </>
   );
 }

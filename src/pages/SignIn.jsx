@@ -2,16 +2,15 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/actions/userActions';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
-const logo = "/PrintsCartslogo.png";
-import '../styles/pages.css';
+import { motion } from 'framer-motion';
+import { Mail, Lock, CheckCircle, AlertCircle, ArrowRight, UserCheck } from 'lucide-react';
+import './Auth.css';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdminLogin, setIsAdminLogin] = useState(false);
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,130 +26,159 @@ const SignIn = () => {
   const messageParam = queryParams.get('message');
 
   useEffect(() => {
-      if (messageParam) {
-          setSuccessMessage(messageParam);
-      }
+    if (messageParam) {
+      setSuccessMessage(messageParam);
+    }
   }, [messageParam]);
 
   useEffect(() => {
     if (userInfo) {
-        setSuccessMessage('Logged In Successfully');
-        
-        const timer = setTimeout(() => {
-            if (redirect) {
-                navigate(`/${redirect}`);
-            } else if (userInfo.isAdmin) {
-              navigate('/admin/dashboard');
-            } else {
-              navigate('/');
-            }
-        }, 1500);
-        
-        return () => clearTimeout(timer);
+      setSuccessMessage('Logged In Successfully');
+      const timer = setTimeout(() => {
+        if (redirect) {
+          navigate(`/${redirect}`);
+        } else if (userInfo.isAdmin) {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/');
+        }
+      }, 1500);
+      return () => clearTimeout(timer);
     }
   }, [userInfo, navigate, redirect]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-       return; 
-    }
-
+    if (!email || !password) return;
     dispatch(login(email, password, isAdminLogin));
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="auth-page">
-        <div className="auth-container">
-          <div className="auth-card">
-            <div className="flex justify-center mb-6">
-                <img src={logo} alt="SmartInk Guide" className="h-12 md:h-24 w-auto object-contain" />
+    <div className="auth-page-wrapper">
+      <div className="auth-split-container">
+        {/* Left Side: Visual */}
+        <div className="auth-visual-side">
+          <div className="auth-brand-logo">
+            <UserCheck size={28} />
+            SmartInk Guide
+          </div>
+
+          <div className="auth-visual-content">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Welcome Back.
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              Access your order history, track shipments, and manage your account details securely.
+            </motion.p>
+          </div>
+
+          <div className="auth-visual-footer">
+            © 2026 SmartInk Guide. All rights reserved.
+          </div>
+        </div>
+
+        {/* Right Side: Form */}
+        <div className="auth-form-side">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="auth-header">
+              <h1>{isAdminLogin ? 'Admin Portal' : 'Sign In'}</h1>
+              <p>Please enter your credentials to continue.</p>
             </div>
-            <h1>{isAdminLogin ? 'Admin Sign In' : 'Sign In'}</h1>
-            <p className="auth-subtitle">Welcome back! Please sign in to your account.</p>
 
             {successMessage && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
+              <div className="message-box message-success">
+                <CheckCircle size={20} />
                 <span>{successMessage}</span>
               </div>
             )}
 
             {error && (
-              <div className="error-message">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <circle cx="10" cy="10" r="9" fill="#ef4444"/>
-                  <path d="M10 6V10M10 14H10.01" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
+              <div className="message-box message-error">
+                <AlertCircle size={20} />
                 <span>{error}</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="auth-form">
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-
-              <div className="form-options">
-                <label className="checkbox-label">
-                  <input 
-                      type="checkbox" 
-                      onChange={(e) => setIsAdminLogin(e.target.checked)}
-                      checked={isAdminLogin}
+            <form onSubmit={handleSubmit}>
+              <div className="auth-form-group">
+                <label className="auth-label">Email Address</label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    className="auth-input pl-10"
+                    placeholder="name@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
-                  <span>Login as Admin</span>
+                  <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                </div>
+              </div>
+
+              <div className="auth-form-group">
+                <label className="auth-label">Password</label>
+                <div className="relative">
+                  <input
+                    type="password"
+                    className="auth-input pl-10"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                </div>
+              </div>
+
+              <div className="auth-options">
+                <label className="remember-me">
+                  <input
+                    type="checkbox"
+                    checked={isAdminLogin}
+                    onChange={(e) => setIsAdminLogin(e.target.checked)}
+                    className="accent-blue-600 w-4 h-4"
+                  />
+                  Login as Admin
                 </label>
-                <Link to="/forgot-password" className="forgot-link">Forgot Password?</Link>
+                <Link to="/forgot-password" class="forgot-password">
+                  Forgot Password?
+                </Link>
               </div>
 
               <button type="submit" className="auth-submit-btn" disabled={loading}>
                 {loading ? 'Signing In...' : 'Sign In'}
+                {!loading && <ArrowRight size={18} />}
               </button>
             </form>
 
             <div className="auth-divider">
               <span>OR</span>
             </div>
-            
-             <center>
-             {!isAdminLogin ? (
-                <p>New customer? <Link to="/signup" className="text-indigo-600 font-semibold">Create an account</Link></p>
-             ) : (
-                <p>Not an admin? <span className="text-indigo-600 font-semibold cursor-pointer" onClick={() => setIsAdminLogin(false)}>User Login</span></p>
-             )}
-             </center>
 
-          </div>
+            <div className="auth-footer">
+              {!isAdminLogin ? (
+                <p>New customer? <Link to="/signup">Create an account</Link></p>
+              ) : (
+                <p>Not an admin? <span className="text-blue-600 font-bold cursor-pointer" onClick={() => setIsAdminLogin(false)}>User Login</span></p>
+              )}
+            </div>
+          </motion.div>
         </div>
       </div>
-      <Footer />
-    </>
+    </div>
   );
 };
 
 export default SignIn;
-

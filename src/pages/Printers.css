@@ -1,0 +1,547 @@
+/* Premium Printers Page UI Redesign */
+
+.printers-redesign {
+    background: radial-gradient(circle at top left, #f8fafc, #f1f5f9);
+    padding-top: 60px;
+    padding-bottom: 100px;
+    min-height: 100vh;
+    color: #094c70;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Decorations */
+.printers-redesign::before {
+    content: '';
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    width: 30%;
+    height: 30%;
+    background: radial-gradient(circle, rgba(11, 127, 229, 0.05) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.printers-main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header Section */
+.printers-hero-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.printers-hero-header h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #1064a5 0%, #3bb2f6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.printers-hero-header p {
+    font-size: 1.25rem;
+    color: #64748b;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Glassmorphic Control Panel */
+.printers-controls-wrapper {
+    position: sticky;
+    top: 90px;
+    z-index: 50;
+    margin-bottom: 48px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 28px;
+    box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.printers-controls-top {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.printer-search-container {
+    flex: 1;
+    min-width: 320px;
+    position: relative;
+}
+
+.printer-search-container input {
+    width: 100%;
+    padding: 18px 24px 18px 60px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #072d6a;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.printer-search-container input:focus {
+    outline: none;
+    border-color: #3398e5;
+    box-shadow: 0 0 0 5px rgba(28, 81, 167, 0.08);
+    background: #fff;
+}
+
+.printer-search-icon {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    transition: color 0.3s;
+}
+
+.printer-search-container input:focus+.printer-search-icon {
+    color: #39a9dd;
+}
+
+/* Control Bottom Row */
+.printers-controls-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.results-badge {
+    padding: 8px 16px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+.results-badge span {
+    color: #3ba5f6;
+}
+
+.printers-dropdown-group {
+    display: flex;
+    gap: 12px;
+}
+
+.printer-select-box {
+    position: relative;
+    min-width: 180px;
+}
+
+.professional-select {
+    width: 100%;
+    padding: 12px 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #084192;
+    cursor: pointer;
+    appearance: none;
+    transition: all 0.2s ease;
+}
+
+.professional-select:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+
+.professional-select:focus {
+    outline: none;
+    border-color: #3ba2f6;
+    box-shadow: 0 0 0 4px rgba(18, 62, 133, 0.05);
+}
+
+.price-slider-panel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+.price-slider-panel label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.custom-range {
+    width: 120px;
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    appearance: none;
+}
+
+.custom-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #3b82f6;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.price-value {
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: #0c338e;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* Printers Grid */
+.printers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+/* Professional Printer Card */
+.printer-card-premium {
+    background: #ffffff;
+    border-radius: 36px;
+    overflow: hidden;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.printer-card-premium:hover {
+    transform: translateY(-16px);
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.12);
+    border-color: #e2e8f0;
+}
+
+.printer-img-preview {
+    height: 320px;
+    background: #f8fafc;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.printer-img-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.printer-card-premium:hover .printer-img-preview img {
+    transform: scale(1.15) rotate(1deg);
+}
+
+.stock-status-pill {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+}
+
+.status-in {
+    background: rgba(16, 145, 185, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-out {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.printer-details-box {
+    padding: 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.printer-tag-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.brand-chip {
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: #3babf6;
+    background: rgba(34, 110, 171, 0.08);
+    padding: 6px 14px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rating-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+.rating-indicator span {
+    color: #fbbf24;
+}
+
+.printer-card-premium h3 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1.35;
+    margin-bottom: 20px;
+    height: 2.7em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.price-cta-row {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.price-display {
+    display: flex;
+    flex-direction: column;
+}
+
+.original-price-striked {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    text-decoration: line-through;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.current-price-bold {
+    font-size: 1.875rem;
+    font-weight: 950;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+
+.cart-btn-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+}
+
+.cart-btn-circle:hover {
+    background: #3bb2f6;
+    transform: scale(1.05) rotate(5deg);
+    box-shadow: 0 15px 30px rgba(53, 119, 226, 0.3);
+}
+
+.printer-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.explore-details-btn {
+    padding: 14px;
+    border-radius: 16px;
+    background: #fff;
+    border: 2px solid #f1f5f9;
+    color: #475569;
+    font-size: 0.8rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.explore-details-btn:hover {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #25689f;
+}
+
+.buy-now-btn-premium {
+    padding: 14px;
+    border-radius: 16px;
+    background: #1976a1;
+    color: #fff;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 20px rgba(13, 109, 165, 0.15);
+}
+
+.buy-now-btn-premium:hover {
+    background: #3ba5f6;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(18, 132, 204, 0.25);
+}
+
+.buy-now-btn-premium:active {
+    transform: scale(0.95);
+}
+
+.price-cta-row {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Loading & Empty States */
+.load-more-professional {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.btn-load-more {
+    padding: 20px 60px;
+    background: #195885;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    font-size: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.3);
+}
+
+.btn-load-more:hover:not(:disabled) {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px -10px rgba(15, 23, 42, 0.4);
+    background: #0b5d94;
+}
+
+.btn-load-more:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.no-results-premium {
+    text-align: center;
+    padding: 120px 20px;
+}
+
+.no-results-premium h3 {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #334155;
+    margin-bottom: 12px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .printers-hero-header h1 {
+        font-size: 3rem;
+    }
+
+    .printer-search-container {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .printers-hero-header h1 {
+        font-size: 2.25rem;
+    }
+
+    .printers-controls-wrapper {
+        top: 80px;
+        border-radius: 24px;
+    }
+
+    .printers-controls-bottom {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .printers-dropdown-group {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .printer-select-box {
+        width: 100%;
+    }
+
+    .price-slider-panel {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .printers-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPassword } from '../redux/actions/userActions';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
 import PageContainer from '../components/common/PageContainer';
 import '../styles/pages.css';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,7 +29,6 @@ const ForgotPassword = () => {
 
   return (
     <>
-      <Navbar />
       <PageContainer>
         <div className="auth-wrapper">
           <div className="auth-card">
@@ -72,7 +69,6 @@ const ForgotPassword = () => {
           </div>
         </div>
       </PageContainer>
-      <Footer />
 
       <style>
         {`/* Center wrapper */
@@ -209,7 +205,6 @@ const ForgotPassword = () => {
 `}
       </style>
     </>
-    
   );
 };
 

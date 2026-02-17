@@ -5,11 +5,11 @@ import { listProducts } from '../redux/actions/productActions';
 import { listCategories } from '../redux/actions/categoryActions';
 import { addToCart } from '../redux/actions/cartActions';
 import { useCart } from '../context/CartContext';
-import { Eye, ShoppingBag } from 'lucide-react';
-import '../styles/pages.css';
-import { motion } from "framer-motion";
+import { Eye, ShoppingBag, Search, ChevronDown, Filter } from 'lucide-react';
+import './InkToner.css';
+import { motion, AnimatePresence } from "framer-motion";
 
-const InkToner = () => {
+const InkToner = ({ forcedCategory, forcedTitle, forcedDescription }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,25 +17,14 @@ const InkToner = () => {
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, page: reduxPage, pages: totalPages } = productList;
 
-  // Clear products on mount to prevent old state
-  useEffect(() => {
-    return () => {
-      setAllProducts([]);
-    }
-  }, []);
-
-  // Use 'Ink & Toner' as default category if not specified
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'Ink & Toner');
+  // Local state
+  const [selectedCategory, setSelectedCategory] = useState(forcedCategory || searchParams.get('category') || 'Ink & Toner');
   const [selectedBrand, setSelectedBrand] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  // Increased max price range to ensure all products are visible by default
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
-
-  // Local state
   const [allProducts, setAllProducts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
-  const { addToCart: contextAddToCart } = useCart();
 
   const categoryListState = useSelector((state) => state.categoryList);
   const { categories: allCategories } = categoryListState || {};
@@ -45,27 +34,31 @@ const InkToner = () => {
     if (!allCategories) return [];
     return allCategories.filter(c =>
       /Ink|Toner/i.test(c.name) && !/Printer/i.test(c.name)
-    ).map(c => ({ id: c.name, label: c.name })); // Use name as ID since backend lookup expects name
+    ).map(c => ({ id: c.name, label: c.name }));
   }, [allCategories]);
 
   useEffect(() => {
     dispatch(listCategories());
+    return () => setAllProducts([]);
   }, [dispatch]);
 
   // Sync state with URL params changes
   useEffect(() => {
-    const catParam = searchParams.get('category');
-    if (catParam) {
-      setSelectedCategory(catParam);
-    } else if (relevantCategories.length > 0) {
-      // If current selection is not found in loaded categories, default to 'Ink & Toner' or first available
-      const exists = relevantCategories.find(c => c.id === selectedCategory);
-      if (!exists) {
-        const defaultCat = relevantCategories.find(c => c.id === 'Ink & Toner');
-        setSelectedCategory(defaultCat ? defaultCat.id : relevantCategories[0].id);
+    if (forcedCategory) {
+      setSelectedCategory(forcedCategory);
+    } else {
+      const catParam = searchParams.get('category');
+      if (catParam) {
+        setSelectedCategory(catParam);
+      } else if (relevantCategories.length > 0) {
+        const exists = relevantCategories.find(c => c.id === selectedCategory);
+        if (!exists) {
+          const defaultCat = relevantCategories.find(c => c.id === 'Ink & Toner');
+          setSelectedCategory(defaultCat ? defaultCat.id : relevantCategories[0].id);
+        }
       }
     }
-  }, [searchParams, relevantCategories, selectedCategory]);
+  }, [searchParams, relevantCategories, selectedCategory, forcedCategory]);
 
   useEffect(() => {
     const searchParam = searchParams.get('search');
@@ -74,12 +67,8 @@ const InkToner = () => {
 
   // Initial Fetch & Reset on Filter Change
   useEffect(() => {
-    // Reset local state
     setAllProducts([]);
     setCurrPage(1);
-
-    // Fetch products based on category and brand
-    // If we have categories, ensure selectedCategory is valid or at least passed
     if (selectedCategory) {
       dispatch(listProducts(searchQuery, selectedCategory, 1, selectedBrand));
     }
@@ -87,13 +76,11 @@ const InkToner = () => {
 
   // Handle Accumulation
   useEffect(() => {
-    // Only update if we have new products and not in loading state (unless it's a fresh load)
     if (products && Array.isArray(products) && !loading) {
       if (reduxPage === 1) {
         setAllProducts(products);
       } else if (reduxPage > 1) {
         setAllProducts(prev => {
-          // Prevent duplicates
           const existingIds = new Set(prev.map(p => p._id));
           const uniqueNew = products.filter(p => !existingIds.has(p._id));
           return [...prev, ...uniqueNew];
@@ -103,7 +90,6 @@ const InkToner = () => {
   }, [products, reduxPage, loading]);
 
   const handleLoadMore = () => {
-    // Ensure we don't fetch if already loading or at end
     const maxPages = totalPages || 1;
     if (currPage < maxPages && !loading) {
       const nextPage = currPage + 1;
@@ -114,16 +100,10 @@ const InkToner = () => {
 
   const handleCategoryClick = (catId) => {
     setSelectedCategory(catId);
-    // Update URL without reloading
     setSearchParams({ category: catId });
   };
 
-  const uniqueBrands = useMemo(() => {
-    // User requested explicit list: HP, Canon, Brother, Epson. Removed Samsung.
-    const hardcodedBrands = ['HP', 'Canon', 'Brother', 'Epson'];
-
-    return hardcodedBrands;
-  }, []);
+  const uniqueBrands = ['HP', 'Canon', 'Brother', 'Epson'];
 
   const handleBuyNow = (e, product) => {
     e.preventDefault();
@@ -141,241 +121,184 @@ const InkToner = () => {
   // Filter and sort logic
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = allProducts || [];
-
-    // Client-side Brand filter removed as we now filter on backend
-    // But keeping safeguard just in case of mixed results if needed, 
-    // though backend filtering is cleaner.
-    // If backend works, this is redundant but harmless unless backend fails.
-    // Let's rely on backend result.
-
-    // Price range filter
-    filtered = filtered.filter(p =>
-      p.price >= priceRange.min && p.price <= priceRange.max
-    );
-
-    // Sort
+    filtered = filtered.filter(p => p.price >= priceRange.min && p.price <= priceRange.max);
     const sorted = [...filtered];
     switch (sortBy) {
-      case 'price-low':
-        sorted.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high':
-        sorted.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      case 'name':
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      default:
-        break;
+      case 'price-low': sorted.sort((a, b) => a.price - b.price); break;
+      case 'price-high': sorted.sort((a, b) => b.price - a.price); break;
+      case 'rating': sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0)); break;
+      case 'name': sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
+      default: break;
     }
-
     return sorted;
   }, [allProducts, priceRange, sortBy]);
 
   return (
-    <div className="ink-toner-page bg-slate-50 min-h-screen">
-      <div className="printers-container mx-auto max-w-7xl px-4 py-8">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Ink & Toner</h1>
-          <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
-            Premium quality ink and toner for all your printing needs.
-          </p>
-        </div>
+    <div className="ink-toner-redesign main-content">
+      <div className="ink-container">
+        <header className="ink-hero-header">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {forcedTitle || 'Ink & Toner'}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {forcedDescription || 'Quality cartridges for every printer. Find your perfect match with our intelligent verified selection.'}
+          </motion.p>
+        </header>
 
-        {/* Filters Top Bar */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 mb-8 flex flex-col md:flex-row items-center gap-4 shadow-sm transition-shadow duration-300">
-
-          {/* Category Filter Buttons */}
-          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto no-scrollbar">
-            {relevantCategories && relevantCategories.length > 0 ? (
-              relevantCategories.map(cat => (
+        <div className="ink-controls-wrapper">
+          <div className="ink-controls-top">
+            <div className="ink-search-box">
+              <input
+                type="text"
+                placeholder="Search by model or cartridge number..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="ink-search-icon" size={20} />
+            </div>
+            <div className="ink-filter-chips no-scrollbar">
+              {relevantCategories.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${selectedCategory === cat.id
-                    ? 'bg-blue-900 text-white shadow-md transform scale-105'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                    }`}
+                  className={`ink-chip ${selectedCategory === cat.id ? 'active' : ''}`}
                 >
                   {cat.label}
                 </button>
-              ))
-            ) : (
-              <span className="text-sm text-slate-400 italic px-2">
-                {categoryListState?.loading ? "Loading categories..." : "No ink/toner categories found."}
-              </span>
-            )}
-          </div>
-
-          {/* Search */}
-          <div className="flex-1 w-full relative">
-            <input
-              type="text"
-              placeholder="Search ink or toner..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all font-medium"
-            />
-            <svg className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          {/* Sort & Price Filter */}
-          <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
-            {/* Brand Filter */}
-            <select
-              value={selectedBrand}
-              onChange={(e) => setSelectedBrand(e.target.value)}
-              className="py-3 px-4 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 focus:outline-none cursor-pointer hover:bg-slate-100 transition-colors capitalize"
-            >
-              <option value="all">All Brands</option>
-              {uniqueBrands.map(brand => (
-                <option key={brand} value={brand}>{brand}</option>
               ))}
-            </select>
-
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="py-3 px-4 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 focus:outline-none cursor-pointer hover:bg-slate-100 transition-colors"
-            >
-              <option value="featured">Recommended</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Top Rated</option>
-            </select>
+            </div>
           </div>
-        </div>
 
-        {/* Results Count */}
-        <div className="results-count mb-4 flex justify-between items-center">
-          <p className="text-slate-500 font-medium text-sm">
-            Showing <strong>{filteredAndSortedProducts.length}</strong> items
-          </p>
-        </div>
-
-        {/* Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-8"
-        >
-          {filteredAndSortedProducts.map((product, index) => (
-            <motion.div
-              key={product._id || index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ y: -5 }}
-              className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group relative h-full"
-            >
-              {/* Image */}
-              <Link to={`/product/${product.slug || product._id}`} className="relative w-full aspect-square bg-white p-4 flex items-center justify-center overflow-hidden border-b border-slate-50 block">
-                <motion.img
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.4 }}
-                  src={
-                    product.image ||
-                    (product.images && product.images.length > 0
-                      ? (product.images[0].startsWith('http')
-                        ? product.images[0]
-                        : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${product.images[0]}`)
-                      : 'https://via.placeholder.com/300?text=No+Image')
-                  }
-                  alt={product.title || product.name}
-                  className="w-full h-full object-contain mix-blend-multiply"
-                  onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image'; }}
-                  loading="lazy"
-                />
-                {product.countInStock === 0 && (
-                  <div className="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wide shadow-sm">
-                    Out of Stock
-                  </div>
-                )}
-              </Link>
-
-              {/* Info */}
-              <div className="p-5 flex flex-col flex-1 gap-2">
-                {/* Brand */}
-                <div className="flex items-center">
-                  <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2.5 py-1 rounded-lg uppercase tracking-wider">
-                    {product.brand || 'Product'}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <Link to={`/product/${product.slug || product._id}`} className="text-sm font-bold text-slate-800 leading-snug group-hover:text-blue-600 transition-colors line-clamp-2 h-10" title={product.title || product.name}>
-                  {product.title || product.name}
-                </Link>
-
-                {/* Price */}
-                <div className="mt-auto flex items-end gap-2 pt-3 border-t border-slate-100">
-                  <span className="text-xl font-black text-slate-900">
-                    ${product.price?.toFixed(2)}
-                  </span>
-                  {(product.oldPrice > 0 || product.originalPrice > 0) && (
-                    <span className="text-sm text-slate-400 line-through mb-0.5">
-                      ${product.oldPrice?.toFixed(2) || product.originalPrice?.toFixed(2)}
-                    </span>
-                  )}
-                </div>
-
-                {/* Buttons */}
-                <div className="grid grid-cols-2 gap-2 mt-3">
-                  <Link
-                    to={`/product/${product.slug || product._id}`}
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 transition-all shadow-sm"
-                  >
-                    <Eye size={14} />
-                    Details
-                  </Link>
-                  <button
-                    onClick={(e) => handleBuyNow(e, product)}
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold bg-blue-500 text-white hover:bg-blue-600 transition-all shadow-md active:scale-95"
-                  >
-                    <ShoppingBag size={14} />
-                    Buy Now
-                  </button>
-                </div>
+          <div className="ink-controls-bottom">
+            <div className="ink-stats">
+              <span className="text-sm font-bold text-slate-500">
+                Found {filteredAndSortedProducts.length} Results
+              </span>
+            </div>
+            <div className="ink-dropdowns">
+              <div className="ink-select-wrapper">
+                <select
+                  value={selectedBrand}
+                  onChange={(e) => setSelectedBrand(e.target.value)}
+                  className="ink-select"
+                >
+                  <option value="all">Every Brand</option>
+                  {uniqueBrands.map(brand => (
+                    <option key={brand} value={brand}>{brand}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" size={16} />
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Loading State or No Products */}
-        {loading && currPage === 1 && (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-900"></div>
+              <div className="ink-select-wrapper">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="ink-select"
+                >
+                  <option value="featured">Recommended</option>
+                  <option value="price-low">Lowest Price</option>
+                  <option value="price-high">Highest Price</option>
+                  <option value="rating">Top Rated</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" size={16} />
+              </div>
+            </div>
           </div>
-        )}
+        </div>
 
-        {!loading && filteredAndSortedProducts.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="mb-4">
-              <circle cx="32" cy="32" r="30" stroke="#e0e0e0" strokeWidth="2" />
-              <path d="M32 20V32M32 36H32.01" stroke="#e0e0e0" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <h3 className="text-lg font-bold text-slate-700">No products found</h3>
-            <p className="text-slate-500">Try adjusting your filters, category or search query</p>
-          </div>
-        )}
-
-        {/* Load More Trigger */}
-        {products && products.length > 0 && currPage < totalPages && !loading && (
-          <div className="flex justify-center pt-8">
-            <button
-              onClick={handleLoadMore}
-              className="px-8 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-full shadow-sm hover:shadow-md hover:border-slate-300 transition-all"
+        <AnimatePresence mode="wait">
+          {filteredAndSortedProducts.length > 0 ? (
+            <motion.div
+              key="grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="ink-grid"
             >
-              Load More Products
+              {filteredAndSortedProducts.map((product, index) => (
+                <motion.div
+                  key={product._id || index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  className="ink-card"
+                >
+                  <div className="ink-image-holder">
+                    <img
+                      src={product.image || (product.images?.[0]?.startsWith('http') ? product.images[0] : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${product.images?.[0]}`) || 'https://via.placeholder.com/300'}
+                      alt={product.name}
+                      onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image'; }}
+                    />
+                    <div className={`ink-stock-badge ${product.countInStock > 0 ? 'in-stock' : 'out-of-stock'}`}>
+                      {product.countInStock > 0 ? 'Verified In Stock' : 'Out of Stock'}
+                    </div>
+                  </div>
+
+                  <div className="ink-card-info">
+                    <div className="ink-brand-tag">{product.brand || 'Premium'}</div>
+                    <h3>{product.title || product.name}</h3>
+
+                    <div className="ink-price-row">
+                      <span className="ink-current-price">${product.price?.toFixed(2)}</span>
+                      {(product.oldPrice > 0 || product.originalPrice > 0) && (
+                        <span className="ink-old-price">${(product.oldPrice || product.originalPrice)?.toFixed(2)}</span>
+                      )}
+                    </div>
+
+                    <div className="ink-card-actions">
+                      <button onClick={(e) => handleDetails(e, product)} className="ink-btn ink-btn-secondary">
+                        <Eye size={18} /> Details
+                      </button>
+                      <button onClick={(e) => handleBuyNow(e, product)} className="ink-btn ink-btn-primary" disabled={product.countInStock === 0}>
+                        <ShoppingBag size={18} /> Buy Now
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            !loading && (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="ink-empty"
+              >
+                <div className="text-6xl mb-4">🔍</div>
+                <h2>No Matches Found</h2>
+                <p>Try adjusting your search or switching categories.</p>
+              </motion.div>
+            )
+          )}
+        </AnimatePresence>
+
+        {loading && (
+          <div className="flex justify-center py-20">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
+            />
+          </div>
+        )}
+
+        {!loading && currPage < totalPages && (
+          <div className="ink-load-more">
+            <button onClick={handleLoadMore} className="load-more-btn">
+              Load More Essentials
             </button>
           </div>
         )}
-
       </div>
     </div>
   );

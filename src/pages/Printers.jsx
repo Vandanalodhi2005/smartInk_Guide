@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
 import { addToCart } from '../redux/actions/cartActions';
 import { useCart } from '../context/CartContext';
-import { Eye, ShoppingBag } from 'lucide-react';
-import '../styles/pages.css';
-import { motion } from "framer-motion";
+import { Eye, ShoppingBag, ChevronDown, Search, Filter } from 'lucide-react';
+import './Printers.css';
+import { motion, AnimatePresence } from "framer-motion";
 
-const Printers = () => {
+const Printers = ({ forcedCategory }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,10 +16,10 @@ const Printers = () => {
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, page: reduxPage, pages: totalPages } = productList;
 
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
+  const [selectedCategory, setSelectedCategory] = useState(forcedCategory || searchParams.get('category') || 'all');
   const [sortBy, setSortBy] = useState('featured');
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 5000 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
 
   // Local state for accumulated products
   const [allProducts, setAllProducts] = useState([]);
@@ -28,9 +28,13 @@ const Printers = () => {
 
   // Sync state with URL params changes
   useEffect(() => {
-    const catParam = searchParams.get('category');
-    setSelectedCategory(catParam || 'all');
-  }, [searchParams]);
+    if (forcedCategory) {
+      setSelectedCategory(forcedCategory);
+    } else {
+      const catParam = searchParams.get('category');
+      setSelectedCategory(catParam || 'all');
+    }
+  }, [searchParams, forcedCategory]);
 
   useEffect(() => {
     const searchParam = searchParams.get('search');
@@ -49,13 +53,11 @@ const Printers = () => {
 
   // Handle Accumulation
   useEffect(() => {
-    // Only update if we have new products and not in loading state (unless it's a fresh load)
     if (products && Array.isArray(products) && !loading) {
       if (reduxPage === 1) {
         setAllProducts(products);
       } else if (reduxPage > 1) {
         setAllProducts(prev => {
-          // Prevent duplicates
           const existingIds = new Set(prev.map(p => p._id));
           const uniqueNew = products.filter(p => !existingIds.has(p._id));
           return [...prev, ...uniqueNew];
@@ -65,7 +67,6 @@ const Printers = () => {
   }, [products, reduxPage, loading]);
 
   const handleLoadMore = () => {
-    // Ensure we don't fetch if already loading or at end
     const maxPages = totalPages || 1;
     if (currPage < maxPages && !loading) {
       const nextPage = currPage + 1;
@@ -82,241 +83,227 @@ const Printers = () => {
     navigate('/cart?redirect=shipping');
   };
 
-  const handleDetails = (e, product) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`/product/${product.slug || product._id}`);
-  };
-
   // Filter and sort logic
   const filteredAndSortedPrinters = useMemo(() => {
     let filtered = allProducts || [];
+    filtered = filtered.filter(p => p.price >= priceRange.min && p.price <= priceRange.max);
 
-    // Price range filter
-    filtered = filtered.filter(p =>
-      p.price >= priceRange.min && p.price <= priceRange.max
-    );
-
-    // Sort
     const sorted = [...filtered];
     switch (sortBy) {
-      case 'price-low':
-        sorted.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high':
-        sorted.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      case 'name':
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      default:
-        break;
+      case 'price-low': sorted.sort((a, b) => a.price - b.price); break;
+      case 'price-high': sorted.sort((a, b) => b.price - a.price); break;
+      case 'rating': sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0)); break;
+      case 'name': sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
+      default: break;
     }
-
     return sorted;
   }, [allProducts, priceRange, sortBy]);
 
-  return (
-    <div className="printers-page bg-slate-50 min-h-screen">
-      <div className="printers-container mx-auto max-w-7xl px-4 py-8">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Printers</h1>
-          <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
-            Find the perfect printer for your home or office.
-          </p>
-        </div>
+  const categoryData = {
+    'Home Printer': {
+      title: 'Home Printers',
+      description: 'Discover versatile and compact printers perfect for home offices, student projects, and family photos.'
+    },
+    'Office Printer': {
+      title: 'Office Printers',
+      description: 'High-speed, high-duty cycle printers designed to handle the heavy demands of professional work environments.'
+    },
+    'Laser Printer': {
+      title: 'Laser Printers',
+      description: 'Efficient and fast laser printing solutions for crisp text and high-volume document printing.'
+    },
+    'Inkjet Printer': {
+      title: 'Inkjet Printers',
+      description: 'Professional-grade inkjet printers for vibrant colors, high-resolution photos, and creative projects.'
+    },
+    'all': {
+      title: 'Premium Printers',
+      description: 'Browse our complete collection of top-rated printers from industry-leading brands.'
+    }
+  };
 
-        {/* Filters Top Bar */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 mb-10 flex flex-col lg:flex-row items-center gap-6 shadow-sm hover:shadow-md transition-all duration-300">
-          {/* Search */}
-          <div className="flex-1 w-full relative">
-            <input
-              type="text"
-              placeholder="Search by brand, model or features..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-md focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium placeholder:text-slate-400"
-            />
-            <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+  const currentCategoryInfo = categoryData[forcedCategory || selectedCategory] || categoryData['all'];
+
+  return (
+    <div className="printers-redesign main-content">
+      <div className="printers-main-container">
+
+        <header className="printers-hero-header">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            {currentCategoryInfo.title}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            {currentCategoryInfo.description}
+          </motion.p>
+        </header>
+
+        {/* Professional Control Panel */}
+        <div className="printers-controls-wrapper">
+          <div className="printers-controls-top">
+            <div className="printer-search-container">
+              <div className="printer-search-icon">
+                <Search size={22} />
+              </div>
+              <input
+                type="text"
+                placeholder="Search by model, brand, or features..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
 
-          {/* Sort & Price Filter */}
-          <div className="flex flex-col sm:flex-row items-center gap-6 w-full lg:w-auto">
-            <div className="relative w-full sm:w-48">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full py-3.5 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-700 focus:outline-none cursor-pointer hover:bg-slate-100 transition-colors appearance-none"
-              >
-                <option value="featured">Recommended</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Top Rated</option>
-              </select>
-              <FaChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-[10px]" />
+          <div className="printers-controls-bottom">
+            <div className="results-badge">
+              Found <span>{filteredAndSortedPrinters.length}</span> Printers
             </div>
 
-            <div className="flex items-center gap-4 px-6 py-3 bg-slate-50 border border-slate-200 rounded-xl w-full sm:w-auto">
-              <span className="text-xs font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">Max Price:</span>
-              <div className="flex items-center gap-3 flex-1 sm:flex-none">
+            <div className="printers-dropdown-group">
+              <div className="price-slider-panel">
+                <label>Limit Price</label>
                 <input
                   type="range"
                   min="0"
-                  max="5000"
+                  max="10000"
                   step="100"
                   value={priceRange.max}
                   onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
-                  className="w-full sm:w-28 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  className="custom-range"
                 />
-                <span className="text-sm font-black text-slate-900 min-w-[50px] text-right">${priceRange.max}</span>
+                <span className="price-value">${priceRange.max}</span>
+              </div>
+
+              <div className="printer-select-box">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="professional-select"
+                >
+                  <option value="featured">Best Match</option>
+                  <option value="price-low">Lowest Price</option>
+                  <option value="price-high">Highest Price</option>
+                  <option value="rating">Top Rated</option>
+                  <option value="name">A-Z Name</option>
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none size-4" />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Results Count */}
-        <div className="mb-6 flex justify-between items-center px-2">
-          <p className="text-slate-500 font-bold text-sm">
-            Showing <span className="text-blue-500">{filteredAndSortedPrinters.length}</span> Results
-          </p>
-        </div>
-
-        {/* Printers Grid - Responsive: 1(mobile), 2(sm), 3(md), 4(lg+) */}
         <motion.div
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 pb-12"
+          className="printers-grid"
         >
-          {filteredAndSortedPrinters.map((printer, index) => (
-            <motion.div
-              key={printer._id || index}
-              layout
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 flex flex-col group relative h-full"
-            >
-              {/* Image Holder */}
-              <Link to={`/product/${printer.slug || printer._id}`} className="relative w-full h-64 bg-slate-50 p-8 flex items-center justify-center overflow-hidden border-b border-slate-100 group">
-                <motion.img
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  src={
-                    printer.image ||
-                    (printer.images && printer.images.length > 0
-                      ? (printer.images[0].startsWith('http')
-                        ? printer.images[0]
-                        : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${printer.images[0]}`)
-                      : 'https://via.placeholder.com/300?text=No+Image')
-                  }
-                  alt={printer.title || printer.name}
-                  className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500"
-                  onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image'; }}
-                  loading="lazy"
-                />
+          <AnimatePresence mode='popLayout'>
+            {filteredAndSortedPrinters.map((printer, index) => (
+              <motion.div
+                key={printer._id || index}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className="printer-card-premium"
+              >
+                <Link to={`/product/${printer.slug || printer._id}`} className="printer-img-preview">
+                  <motion.img
+                    src={
+                      printer.image ||
+                      (printer.images && printer.images.length > 0
+                        ? (printer.images[0].startsWith('http')
+                          ? printer.images[0]
+                          : `${import.meta.env.VITE_API_URL?.replace('/api', '') || ''}${printer.images[0]}`)
+                        : 'https://via.placeholder.com/400?text=No+Image')
+                    }
+                    alt={printer.title || printer.name}
+                    onError={(e) => { e.target.src = 'https://via.placeholder.com/400?text=No+Image'; }}
+                    loading="lazy"
+                  />
 
-                {/* Badge Overlay */}
-                <div className="absolute top-4 left-4 flex flex-col gap-2">
-                  {printer.countInStock === 0 ? (
-                    <div className="bg-red-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-                      Out of Stock
-                    </div>
-                  ) : (
-                    <div className="bg-emerald-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-                      In Stock
-                    </div>
-                  )}
-                </div>
-              </Link>
-
-              {/* Info Section */}
-              <div className="p-6 flex flex-col flex-1">
-                {/* Brand & Stats */}
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] font-black text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-widest">
-                    {printer.brand || 'Premium'}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <span className="text-yellow-400 text-xs">★</span>
-                    <span className="text-slate-400 text-[11px] font-bold">{printer.rating || '4.8'}</span>
+                  <div className={`stock-status-pill ${printer.countInStock > 0 ? 'status-in' : 'status-out'}`}>
+                    {printer.countInStock > 0 ? 'Verified Stock' : 'Out of Stock'}
                   </div>
-                </div>
-
-                {/* Title */}
-                <Link to={`/product/${printer.slug || printer._id}`} className="text-lg font-extrabold text-slate-800 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2 h-14" title={printer.title || printer.name}>
-                  {printer.title || printer.name}
                 </Link>
 
-                {/* Price & Cart Actions */}
-                <div className="mt-auto pt-6 flex flex-col gap-5">
-                  <div className="flex items-end justify-between">
-                    <div className="flex flex-col">
+                <div className="printer-details-box">
+                  <div className="printer-tag-line">
+                    <span className="brand-chip">{printer.brand || 'Premium'}</span>
+                    <div className="rating-indicator">
+                      <span>★</span> {printer.rating || '4.8'}
+                    </div>
+                  </div>
+
+                  <Link to={`/product/${printer.slug || printer._id}`}>
+                    <h3 title={printer.title || printer.name}>{printer.title || printer.name}</h3>
+                  </Link>
+
+                  <div className="price-cta-row">
+                    <div className="price-display">
                       {(printer.oldPrice > 0 || printer.originalPrice > 0) && (
-                        <span className="text-xs text-slate-400 line-through font-bold mb-1">
-                          ${(printer.oldPrice || printer.originalPrice)?.toFixed(2)}
+                        <span className="original-price-striked">
+                          ${(printer.oldPrice || printer.originalPrice).toFixed(2)}
                         </span>
                       )}
-                      <span className="text-2xl font-black text-slate-900 tracking-tight">
+                      <span className="current-price-bold">
                         ${printer.price?.toFixed(2)}
                       </span>
                     </div>
-
-                    <button
-                      onClick={(e) => handleBuyNow(e, printer)}
-                      className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center hover:bg-blue-600 transition-all duration-300 shadow-xl active:scale-90"
-                    >
-                      <ShoppingBag size={20} />
-                    </button>
                   </div>
 
-                  <Link
-                    to={`/product/${printer.slug || printer._id}`}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-black border-2 border-slate-100 text-slate-600 hover:bg-slate-50 hover:border-slate-200 transition-all"
-                  >
-                    <Eye size={18} />
-                    Explore Details
-                  </Link>
+                  <div className="printer-actions-grid">
+                    <Link
+                      to={`/product/${printer.slug || printer._id}`}
+                      className="explore-details-btn"
+                    >
+                      <Eye size={18} />
+                      Details
+                    </Link>
+                    <button
+                      onClick={(e) => handleBuyNow(e, printer)}
+                      className="buy-now-btn-premium"
+                    >
+                      <ShoppingBag size={18} />
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </motion.div>
 
-        {/* Loading State or No Products */}
-        {loading && currPage === 1 && (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-slate-900"></div>
+        {loading && (
+          <div className="flex justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
           </div>
         )}
 
         {!loading && filteredAndSortedPrinters.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="mb-4">
-              <circle cx="32" cy="32" r="30" stroke="#e0e0e0" strokeWidth="2" />
-              <path d="M32 20V32M32 36H32.01" stroke="#e0e0e0" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <h3 className="text-lg font-bold text-slate-700">No printers found</h3>
-            <p className="text-slate-500">Try adjusting your filters or search query</p>
+          <div className="no-results-premium">
+            <h3>No results for these filters.</h3>
+            <p>Try broadening your search or resetting the price range.</p>
           </div>
         )}
 
-        {/* Load More Trigger */}
         {products && products.length > 0 && currPage < totalPages && !loading && (
-          <div className="flex justify-center pt-8">
+          <div className="load-more-professional">
             <button
               onClick={handleLoadMore}
-              className="px-8 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-full shadow-sm hover:shadow-md hover:border-slate-300 transition-all"
+              className="btn-load-more"
             >
-              Load More Products
+              Discover More
             </button>
           </div>
         )}
-
       </div>
     </div>
   );

@@ -71,9 +71,9 @@ body::after {
 }
 
 .main-content {
-  padding-top: 80px;
-  /* Space for the fixed Navbar (adjust if needed) */
-  min-height: calc(100vh - 80px);
+  flex-grow: 1;
+  min-height: calc(100vh - 400px);
+  /* Rough estimation to keep footer at bottom, but flex-grow usually handles this */
 }
 
 a {

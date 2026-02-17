@@ -1,15 +1,11 @@
-import React from 'react';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
 import '../styles/PolicyPages.css';
 
 const ShippingPolicy = () => {
   return (
     <div className="policy-page-wrapper">
-      <Navbar />
       <main className="policy-main-content">
         {/* Hero Section */}
-        <div className="policy-hero">
+        <div className="policy-hero redesigned-hero">
           <div className="policy-hero-content">
             <h1>Shipping Policy</h1>
             <p className="last-updated">Last Updated: January 26, 2026</p>
@@ -20,60 +16,44 @@ const ShippingPolicy = () => {
           </div>
         </div>
 
-        <div className="policy-content-container">
+        <div className="policy-content-container redesigned-content">
           {/* Quick Info Cards */}
-          <div className="policy-info-cards">
-            <div className="policy-info-card" style={{ animationDelay: '0.1s' }}>
-              <div className="icon-wrapper">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                </svg>
-              </div>
+          <div className="policy-info-cards redesigned-cards">
+            <div className="policy-info-card redesigned-card" style={{ animationDelay: '0.1s' }}>
+              <div className="icon-wrapper">🚀</div>
               <h3>1-2 Day Processing</h3>
-              <p>Orders are processed and shipped within 1-2 business days</p>
+              <p>Orders are processed and shipped within 1–2 business days</p>
             </div>
 
-            <div className="policy-info-card" style={{ animationDelay: '0.2s' }}>
-              <div className="icon-wrapper">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
-                </svg>
-              </div>
+            <div className="policy-info-card redesigned-card" style={{ animationDelay: '0.2s' }}>
+              <div className="icon-wrapper">📦</div>
               <h3>Secure Packaging</h3>
               <p>All items are carefully packaged to ensure safe delivery</p>
             </div>
 
-            <div className="policy-info-card" style={{ animationDelay: '0.3s' }}>
-              <div className="icon-wrapper">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                </svg>
-              </div>
+            <div className="policy-info-card redesigned-card" style={{ animationDelay: '0.3s' }}>
+              <div className="icon-wrapper">📍</div>
               <h3>Track Your Order</h3>
               <p>Receive tracking information via email once shipped</p>
             </div>
 
-            <div className="policy-info-card" style={{ animationDelay: '0.4s' }}>
-              <div className="icon-wrapper">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
-                </svg>
-              </div>
+            <div className="policy-info-card redesigned-card" style={{ animationDelay: '0.4s' }}>
+              <div className="icon-wrapper">🚚</div>
               <h3>Trusted Carriers</h3>
               <p>USPS, UPS, FedEx, and Canada Post</p>
             </div>
           </div>
 
-          {/* Main Content */}
+          {/* Main Content Sections */}
           <div className="policy-content-card">
             <section className="policy-section">
               <h2>Shipping Locations</h2>
-              <div className="feature-grid">
-                <div className="feature-item">
+              <div className="feature-grid redesigned-grid">
+                <div className="feature-item redesigned-feature">
                   <h4>🇺🇸 United States</h4>
                   <p>All 50 states including Alaska and Hawaii</p>
                 </div>
-                <div className="feature-item">
+                <div className="feature-item redesigned-feature">
                   <h4>🇨🇦 Canada</h4>
                   <p>All provinces (excluding remote regions)</p>
                 </div>
@@ -86,8 +66,7 @@ const ShippingPolicy = () => {
             <section className="policy-section">
               <h2>Processing Time</h2>
               <p>Orders are typically processed within <strong>1–2 business days</strong>.</p>
-              <p>Processing includes:</p>
-              <ul>
+              <ul className="redesigned-list">
                 <li>Order verification and payment confirmation</li>
                 <li>Secure packaging of your items</li>
                 <li>Quality checks to ensure accuracy</li>
@@ -102,76 +81,51 @@ const ShippingPolicy = () => {
             <section className="policy-section">
               <h2>Delivery Timeframes</h2>
               <p>Delivery times depend on your location, product availability, and carrier operations.</p>
-
-              <div className="delivery-tables">
-                <div className="delivery-table">
-                  <h3>🇺🇸 United States</h3>
-                  <ul>
-                    <li><strong>Standard Shipping:</strong> 3–7 business days</li>
-                    <li><strong>Expedited Shipping:</strong> 2–4 business days (when available)</li>
-                  </ul>
+              <div className="feature-grid redesigned-grid">
+                <div className="feature-item redesigned-feature">
+                  <h4>🇺🇸 United States</h4>
+                  <p>Standard Shipping: 3–7 business days</p>
+                  <p>Expedited Shipping: 2–4 business days (when available)</p>
                 </div>
-
-                <div className="delivery-table">
-                  <h3>🇨🇦 Canada</h3>
-                  <ul>
-                    <li><strong>Standard Shipping:</strong> 5–10 business days</li>
-                    <li><strong>Expedited Shipping:</strong> 3–7 business days (when available)</li>
-                  </ul>
+                <div className="feature-item redesigned-feature">
+                  <h4>🇨🇦 Canada</h4>
+                  <p>Standard Shipping: 5–10 business days</p>
+                  <p>Expedited Shipping: 3–7 business days (when available)</p>
                 </div>
               </div>
-
               <p className="policy-note">
-                Delivery estimates are not guaranteed and may vary due to weather, carrier delays,
-                or other unforeseen circumstances.
+                Delivery estimates may vary due to weather, carrier delays, or other unforeseen circumstances.
               </p>
             </section>
 
             <section className="policy-section">
               <h2>Shipping Costs</h2>
-              <p>Shipping fees are calculated at checkout based on:</p>
-              <ul>
+              <ul className="redesigned-list">
                 <li>Total weight of your items</li>
                 <li>Shipping destination</li>
                 <li>Current carrier rates</li>
                 <li>Selected shipping method</li>
               </ul>
               <p className="policy-note">
-                Free shipping may be available during special promotions. Eligibility will be
-                clearly displayed at checkout when applicable.
+                Free shipping may be available during special promotions. Eligibility will be clearly displayed at checkout.
               </p>
             </section>
 
             <section className="policy-section">
               <h2>Shipping Carriers</h2>
-              <p>We partner with trusted carriers to ensure reliable delivery:</p>
-              <div className="feature-grid">
-                <div className="feature-item">
-                  <h4>📮 USPS</h4>
-                  <p>United States Postal Service</p>
-                </div>
-                <div className="feature-item">
-                  <h4>📦 UPS</h4>
-                  <p>United Parcel Service</p>
-                </div>
-                <div className="feature-item">
-                  <h4>🚚 FedEx</h4>
-                  <p>Federal Express</p>
-                </div>
-                <div className="feature-item">
-                  <h4>🇨🇦 Canada Post</h4>
-                  <p>For Canadian orders</p>
-                </div>
+              <div className="feature-grid redesigned-grid">
+                <div className="feature-item redesigned-feature">📮 USPS – United States Postal Service</div>
+                <div className="feature-item redesigned-feature">📦 UPS – United Parcel Service</div>
+                <div className="feature-item redesigned-feature">🚚 FedEx – Federal Express</div>
+                <div className="feature-item redesigned-feature">🇨🇦 Canada Post – For Canadian orders</div>
               </div>
-              <p>Carrier availability may vary by region.</p>
             </section>
 
             <section className="policy-section">
               <h2>Order Tracking</h2>
-              <p>Once your order ships, you'll receive an email containing:</p>
-              <ul>
+              <ul className="redesigned-list">
                 <li>Your unique tracking number</li>
-                <li>Carrier name and contact information</li>
+                <li>Carrier name and contact info</li>
                 <li>Direct link to track your package</li>
                 <li>Estimated delivery date</li>
               </ul>
@@ -182,9 +136,7 @@ const ShippingPolicy = () => {
 
             <section className="policy-section">
               <h2>Address Accuracy</h2>
-              <p>Please ensure your shipping address is complete and accurate before checkout.</p>
-              <p>Prints Carts is not responsible for:</p>
-              <ul>
+              <ul className="redesigned-list">
                 <li>Delays caused by incorrect addresses</li>
                 <li>Packages delivered to wrong locations</li>
                 <li>Returned shipments due to incomplete information</li>
@@ -196,46 +148,41 @@ const ShippingPolicy = () => {
 
             <section className="policy-section">
               <h2>Lost or Stolen Packages</h2>
-              <p>If your tracking shows "delivered" but you didn't receive the package:</p>
-              <ul>
+              <ul className="redesigned-list">
                 <li>Check with neighbors or building management</li>
-                <li>Wait 24–48 hours (packages are sometimes scanned early)</li>
+                <li>Wait 24–48 hours (packages sometimes scanned early)</li>
                 <li>Contact the carrier directly using your tracking number</li>
                 <li>Reach out to our support team for assistance</li>
               </ul>
               <p className="policy-note">
-                While we cannot guarantee replacement for lost or stolen packages, we'll work
-                with you to investigate and resolve the issue.
+                While we cannot guarantee replacement, we'll help investigate and resolve the issue.
               </p>
             </section>
 
             <section className="policy-section">
               <h2>Damaged Shipments</h2>
-              <p>If your order arrives damaged:</p>
-              <ul>
+              <ul className="redesigned-list">
                 <li>Contact us within 48 hours of delivery</li>
                 <li>Include photos of the product and packaging</li>
                 <li>Provide your order number</li>
               </ul>
-              <p>We'll review your case and provide appropriate next steps for resolution.</p>
+              <p>We'll review your case and provide next steps for resolution.</p>
             </section>
 
             <section className="policy-section">
               <h2>Customs & Duties (Canada)</h2>
-              <p>Canadian orders may be subject to:</p>
-              <ul>
+              <ul className="redesigned-list">
                 <li>Import fees and customs duties</li>
                 <li>Provincial and federal taxes</li>
                 <li>Brokerage fees (depending on carrier)</li>
               </ul>
               <p className="policy-note">
-                These charges are the customer's responsibility and are not included in product
-                or shipping costs.
+                These charges are the customer's responsibility and are not included in product or shipping costs.
               </p>
             </section>
 
             {/* Contact Section */}
-            <div className="contact-info-box">
+            <div className="contact-info-box contact-section">
               <h3>Questions About Shipping?</h3>
               <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
               <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
@@ -244,7 +191,6 @@ const ShippingPolicy = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

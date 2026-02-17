@@ -1,7 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
 import '../styles/PolicyHub.css';
 
 const PolicyHub = () => {
@@ -116,7 +114,6 @@ const PolicyHub = () => {
 
     return (
         <div className="policy-hub-wrapper">
-            <Navbar />
             <main className="policy-hub-main">
                 {/* Hero Section */}
                 <div className="policy-hub-hero">
@@ -183,7 +180,6 @@ const PolicyHub = () => {
                     </div>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 };

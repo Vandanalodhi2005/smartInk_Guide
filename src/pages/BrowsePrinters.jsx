@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import Navbar from '../components/navbar/Navbar';
-import Footer from '../components/footer/Footer';
 import { Link } from 'react-router-dom';
 import '../styles/pages.css';
 
@@ -57,7 +55,6 @@ const BrowsePrinters = () => {
 
     return (
         <>
-            <Navbar />
             <div className="browse-printers-page">
                 <div className="browse-container">
                     <div className="browse-header">
@@ -158,7 +155,7 @@ const BrowsePrinters = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
+
             <style>{`
                 .browse-printers-page {
                     padding-top: 120px;

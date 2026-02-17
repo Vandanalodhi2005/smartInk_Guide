@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useSearchParams } from 'react-router-dom';
-import Navbar from "../components/navbar/Navbar";
-import Footer from "../components/footer/Footer";
 import PageContainer from "../components/common/PageContainer";
 import { FiSearch, FiPackage, FiTruck, FiMapPin, FiCheckCircle, FiAlertCircle, FiUser, FiMail, FiShoppingCart } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,13 +61,12 @@ const TrackOrder = () => {
 
     return (
         <>
-            <Navbar />
             <div className="bg-slate-50 min-h-screen pt-24 pb-12">
                 <PageContainer>
                     <div className="max-w-2xl mx-auto">
                         <div className="text-center mb-10">
                             <h1 className="text-4xl font-extrabold text-slate-900 mb-4">Track Your Order</h1>
-                            <p className="text-slate-500 text-lg">Enter your order ID below to check the current status of your shipment.</p>
+                            <p className="text-[#20a1dd] text-lg">Enter your order ID below to check the current status of your shipment.</p>
                         </div>
 
                         {/* Search Box */}
@@ -93,7 +90,7 @@ const TrackOrder = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:scale-100"
+                                    className="px-8 py-3 bg-[#20a1dd] hover:bg-[#20a1dd] text-white font-bold rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:scale-100"
                                 >
                                     {loading ? 'Tracking...' : 'Track'}
                                 </button>
@@ -304,7 +301,6 @@ const TrackOrder = () => {
                     </div>
                 </PageContainer>
             </div>
-            <Footer />
         </>
     );
 };

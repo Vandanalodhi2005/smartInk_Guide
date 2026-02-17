@@ -3,7 +3,7 @@
 /* ============================= */
 
 .contact-section {
-  background: linear-gradient(135deg, #92bbed, #8baac0, #5280e3);
+  background: linear-gradient(135deg, #69bbd4, #8baac0, #42b0df);
   padding: 90px 20px;
   position: relative;
   overflow: hidden;
@@ -69,7 +69,7 @@
 /* Icon */
 .icon-wrap {
   font-size: 30px;
-  color: #2595eb;
+  color: #20a1dd;
   margin-bottom: 15px;
 }
 

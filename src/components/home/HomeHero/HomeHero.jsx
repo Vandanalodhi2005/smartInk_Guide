@@ -23,7 +23,7 @@ const HomeHero = () => {
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
               Print smarter with the world’s
-              <span className="block text-blue-500 mt-2">
+              <span className="block text-[#20a1dd] mt-2">
                 trusted printing platform
               </span>
             </h1>
@@ -36,7 +36,7 @@ const HomeHero = () => {
             <div className="mt-10">
               <Link
                 to="/printers"
-                className="inline-block px-9 py-3.5 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
+                className="inline-block px-9 py-3.5 bg-[#20a1dd] text-white font-semibold rounded-full hover:bg-[#20a1dd] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
               >
                 Shop Now
               </Link>

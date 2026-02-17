@@ -2,80 +2,90 @@ import React from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-import "./HomeCommitment.css";
 
 const stats = [
   { value: 100, suffix: "%", label: "Transparency" },
-  { value: 24, suffix: "/7", label: "Secure Shopping" },
-  { value: 5000, suffix: "+", label: "Happy Customers" },
+  { value: 24, suffix: "/7", label: "Secure" },
+  { value: 5000, suffix: "+", label: "Customers" },
 ];
 
 const HomeCommitment = () => {
   const { ref, inView } = useInView({ triggerOnce: true });
 
   return (
-    <section className="commitment-section">
-      {/* Animated Background Blobs */}
-      <div className="blob blob1"></div>
-      <div className="blob blob2"></div>
+    <section className="relative bg-white py-14 sm:py-20 lg:py-24">
 
-      <div className="commitment-container">
-        {/* LEFT CONTENT */}
+      <div className="max-w-6xl mx-auto px-5 sm:px-6">
+
+        {/* HEADER */}
         <motion.div
-          className="commitment-content"
-          initial={{ opacity: 0, x: -60 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
+          className="text-center max-w-2xl mx-auto"
         >
-          <h2 className="section-title">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#20a1dd] leading-tight">
             Our Commitment to Excellence
           </h2>
 
-          <p>
-            At <strong>Prints Carts</strong>, we believe in transparent communication,
-            verified product listings, and customer-first service. Our platform
-            is built on trust, performance, and long-term reliability.
+          <p className="mt-4 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
+            At <span className="font-semibold text-gray-900">Smart Ink Guide</span>, 
+            we deliver transparency, secure shopping, and long-term reliability 
+            for every customer.
           </p>
+        </motion.div>
 
-          <p>
-            We continuously enhance our technology and service to make
-            browsing, comparing, and purchasing printing essentials seamless.
-          </p>
+        {/* STATS STRIP (Better Mobile Design) */}
+        <div
+          ref={ref}
+          className="mt-10 sm:mt-14"
+        >
+          <div className="grid grid-cols-3 gap-3 sm:gap-6">
 
-          <button className="premium-btn">
+            {stats.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.15 }}
+                viewport={{ once: true }}
+                className="bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-6 text-center hover:shadow-md transition-all duration-300"
+              >
+                <div className="text-xl sm:text-3xl lg:text-4xl font-bold text-[#20a1dd]">
+                  {inView && (
+                    <CountUp
+                      end={item.value}
+                      duration={2}
+                      separator=","
+                    />
+                  )}
+                  {item.suffix}
+                </div>
+
+                <div className="text-[10px] sm:text-xs lg:text-sm text-gray-600 font-medium uppercase tracking-wide mt-1">
+                  {item.label}
+                </div>
+              </motion.div>
+            ))}
+
+          </div>
+        </div>
+
+        {/* BUTTON */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mt-10 flex justify-center"
+        >
+          <button className="px-7 py-3 text-sm sm:text-base font-semibold rounded-lg text-white bg-[#20a1dd] hover:bg-[#20a1dd] transition duration-300 shadow-md hover:shadow-lg">
             Learn More
           </button>
         </motion.div>
 
-        {/* RIGHT STATS */}
-        <div ref={ref} className="commitment-stats">
-          {stats.map((item, i) => (
-            <motion.div
-              key={i}
-              className="stat-card"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.2 }}
-              viewport={{ once: true }}
-            >
-              <span className="stat-value">
-                {inView && (
-                  <CountUp
-                    end={item.value}
-                    duration={2}
-                  />
-                )}
-                {item.suffix}
-              </span>
-              <span className="stat-label">{item.label}</span>
-            </motion.div>
-          ))}
-        </div>
       </div>
-
-      {/* Noise Overlay */}
-      <div className="noise-overlay"></div>
     </section>
   );
 };
