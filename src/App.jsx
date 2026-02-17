@@ -80,8 +80,8 @@ function App() {
               <Route path="/printers" element={<Printers />} />
               <Route path="/home-printers" element={<HomePrinter />} />
               <Route path="/office-printers" element={<OfficePrinter />} />
-              <Route path="/laser-printers" element={<Printers forcedCategory="Laser Printer" />} />
-              <Route path="/inkjet-printers" element={<Printers forcedCategory="Inkjet Printer" />} />
+              <Route path="/laser-printers" element={<Printers forcedCategory="Laser" />} />
+              <Route path="/inkjet-printers" element={<Printers forcedCategory="Inkjet" />} />
 
               <Route path="/product/:slug" element={<ProductDetails />} />
 

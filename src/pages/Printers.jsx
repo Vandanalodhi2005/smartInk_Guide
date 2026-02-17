@@ -108,11 +108,11 @@ const Printers = ({ forcedCategory }) => {
       title: 'Office Printers',
       description: 'High-speed, high-duty cycle printers designed to handle the heavy demands of professional work environments.'
     },
-    'Laser Printer': {
+    'Laser': {
       title: 'Laser Printers',
       description: 'Efficient and fast laser printing solutions for crisp text and high-volume document printing.'
     },
-    'Inkjet Printer': {
+    'Inkjet': {
       title: 'Inkjet Printers',
       description: 'Professional-grade inkjet printers for vibrant colors, high-resolution photos, and creative projects.'
     },

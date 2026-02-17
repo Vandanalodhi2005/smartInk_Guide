@@ -206,8 +206,8 @@ const Navbar = () => {
                   >
                     <Link to="/home-printers" className="block py-2 hover:text-blue-600">Home Printer</Link>
                     <Link to="/office-printers" className="block py-2 hover:text-blue-600">Office Printer</Link>
-                    <Link to="/laser-printers" className="block py-2 hover:text-blue-600">Laser Printer</Link>
-                    <Link to="/inkjet-printers" className="block py-2 hover:text-blue-600">Inkjet Printer</Link>
+                    <Link to="/laser-printers" className="block py-2 hover:text-blue-600">Laser Printers</Link>
+                    <Link to="/inkjet-printers" className="block py-2 hover:text-blue-600">Inkjet Printers</Link>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -273,9 +273,9 @@ const Navbar = () => {
                       className="overflow-hidden flex flex-col pl-4"
                     >
                       <Link to="/home-printers" className="py-2">Home Printer</Link>
-                      <Link to="/printers?category=Office Printer" className="py-2">Office Printer</Link>
-                      <Link to="/printers?category=Laser Printer" className="py-2">Laser Printer</Link>
-                      <Link to="/printers?category=Inkjet Printer" className="py-2">Inkjet Printer</Link>
+                      <Link to="/office-printers" className="py-2">Office Printer</Link>
+                      <Link to="/laser-printers" className="py-2">Laser Printers</Link>
+                      <Link to="/inkjet-printers" className="py-2">Inkjet Printers</Link>
                     </motion.div>
                   )}
                 </AnimatePresence>
