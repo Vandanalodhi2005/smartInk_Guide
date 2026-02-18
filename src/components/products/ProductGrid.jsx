@@ -77,8 +77,8 @@ const ProductGrid = ({ heading = "Products", products = [], onFilterChange }) =>
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8">
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col gap-8 mb-8">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-blue-800 drop-shadow-lg">
+        <div className="flex flex-col gap-8 mb-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#2b94b4ff] drop-shadow-lg">
             {heading}
           </h2>
           <ProductFilter filters={filters} onChange={handleFilterChange} />

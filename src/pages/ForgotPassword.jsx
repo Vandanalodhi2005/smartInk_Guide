@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { forgotPassword } from '../redux/actions/userActions';
-import PageContainer from '../components/common/PageContainer';
-import '../styles/pages.css';
+import { motion } from 'framer-motion';
+import { Mail, ArrowRight, Activity, CheckCircle, AlertCircle, LockKeyhole } from 'lucide-react';
+import './Auth.css';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,183 +28,90 @@ const ForgotPassword = () => {
   };
 
   return (
-    <>
-      <PageContainer>
-        <div className="auth-wrapper">
-          <div className="auth-card">
-            <h1>Forgot password</h1>
-            <p className="auth-subtitle">
-              Enter your email address and we’ll send you an OTP to reset your password.
-            </p>
+    <div className="auth-page-wrapper">
+      <div className="auth-split-container">
+        {/* Left Side: Visual */}
+        <div className="auth-visual-side bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900">
+          <div className="auth-brand-logo">
+            <LockKeyhole size={28} />
+            SmartInk Guide
+          </div>
 
-            {error && (
-              <div className="error-message">{error}</div>
-            )}
+          <div className="auth-visual-content">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Account Recovery.
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              Don't worry, it happens to the best of us. We'll get you back into your account in no time.
+            </motion.p>
+          </div>
 
-            <form onSubmit={handleSubmit} className="auth-form">
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="auth-submit-btn"
-                disabled={loading}
-              >
-                {loading ? 'Sending OTP...' : 'Send OTP'}
-              </button>
-
-              <div className="auth-switch">
-                Remembered your password? <Link to="/signin">Sign in</Link>
-              </div>
-            </form>
+          <div className="auth-visual-footer">
+            © 2026 SmartInk Guide. All rights reserved.
           </div>
         </div>
-      </PageContainer>
 
-      <style>
-        {`/* Center wrapper */
-.auth-wrapper {
-  min-height: calc(100vh - 160px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 16px;
-}
+        {/* Right Side: Form */}
+        <div className="auth-form-side">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full max-w-md"
+          >
+            <div className="auth-header">
+              <h1>Forgot Password?</h1>
+              <p>Enter your email address and we'll send you a code to reset your password.</p>
+            </div>
 
-/* Card */
-.auth-card {
-  width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 36px 32px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-}
+            {error && (
+              <div className="message-box message-error mb-6">
+                <AlertCircle size={20} />
+                <span>{error}</span>
+              </div>
+            )}
 
-/* Headings */
-.auth-card h1 {
-  margin-bottom: 8px;
-  font-size: 26px;
-  font-weight: 700;
-}
+            <form onSubmit={handleSubmit}>
+              <div className="auth-form-group">
+                <label className="auth-label">Email Address</label>
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                    <Mail size={20} />
+                  </div>
+                  <input
+                    type="email"
+                    className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-slate-700 font-medium placeholder:text-slate-400"
+                    placeholder="name@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
 
-.auth-subtitle {
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 28px;
-}
+              <button type="submit" className="auth-submit-btn mt-6" disabled={loading}>
+                {loading ? 'Sending OTP...' : 'Send Reset Code'}
+                {!loading && <ArrowRight size={18} />}
+              </button>
+            </form>
 
-/* Form */
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.form-group label {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 6px;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  font-size: 14px;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #60a5fa;
-}
-
-/* Button */
-.auth-submit-btn {
-  margin-top: 10px;
-  padding: 14px;
-  border-radius: 12px;
-  border: none;
-  background: #60a5fa;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.auth-submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.auth-submit-btn:hover:not(:disabled) {
-  background: #60a5fa;
-}
-
-/* Links */
-.auth-switch {
-  text-align: center;
-  font-size: 13px;
-  color: #6b7280;
-}
-
-.auth-switch a {
-  color: #60a5fa;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-/* Error */
-.error-message {
-  background: #fef2f2;
-  color: #b91c1c;
-  padding: 12px 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  margin-bottom: 18px;
-}
-
-/* Success */
-.success-box {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.success-box h4 {
-  margin-bottom: 6px;
-  color: #15803d;
-}
-
-.success-box p {
-  font-size: 13px;
-  color: #166534;
-}
-
-.success-box .hint {
-  margin-top: 8px;
-  color: #4b5563;
-}
-
-.reset-link {
-  display: inline-block;
-  margin-top: 14px;
-  color: #60a5fa;
-  font-weight: 600;
-}
-`}
-      </style>
-    </>
+            <div className="auth-footer mt-8 text-center">
+              <Link to="/signin" className="text-slate-600 hover:text-blue-600 font-medium inline-flex items-center gap-2 transition-colors">
+                <ArrowRight size={16} className="rotate-180" /> Back to Sign In
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
   );
 };
 

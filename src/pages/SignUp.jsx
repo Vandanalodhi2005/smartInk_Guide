@@ -121,61 +121,69 @@ const SignUp = () => {
                 <>
                   <div className="auth-form-group">
                     <label className="auth-label">Full Name</label>
-                    <div className="relative">
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                        <User size={20} />
+                      </div>
                       <input
                         type="text"
-                        className="auth-input pl-10"
+                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-slate-700 font-medium placeholder:text-slate-400"
                         placeholder="John Doe"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
                       />
-                      <User size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     </div>
                   </div>
 
                   <div className="auth-form-group">
                     <label className="auth-label">Email Address</label>
-                    <div className="relative">
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                        <Mail size={20} />
+                      </div>
                       <input
                         type="email"
-                        className="auth-input pl-10"
+                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-slate-700 font-medium placeholder:text-slate-400"
                         placeholder="john@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                       />
-                      <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     </div>
                   </div>
 
                   <div className="auth-form-group">
                     <label className="auth-label">Password</label>
-                    <div className="relative">
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                        <Lock size={20} />
+                      </div>
                       <input
                         type="password"
-                        className="auth-input pl-10"
+                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-slate-700 font-medium placeholder:text-slate-400"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                       />
-                      <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     </div>
                   </div>
 
                   <div className="auth-form-group">
                     <label className="auth-label">Confirm Password</label>
-                    <div className="relative">
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                        <ShieldCheck size={20} />
+                      </div>
                       <input
                         type="password"
-                        className="auth-input pl-10"
+                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-slate-700 font-medium placeholder:text-slate-400"
                         placeholder="••••••••"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
-                      <ShieldCheck size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     </div>
                   </div>
                 </>

@@ -4,32 +4,31 @@ import './HomeValues.css';
 const HomeValues = () => {
     const values = [
         {
-            title: 'Reliability',
-            description: 'We prioritize consistent product quality and dependable order handling.',
+            title: 'Free Shipping',
+            description: 'On Qualifying Orders',
+            icon: '🚚'
+        },
+        {
+            title: '30-Day Returns',
+            description: 'Hassle-free return policy',
+            icon: '↩️'
+        },
+        {
+            title: 'Manufacturer Warranty',
+            description: 'Full coverage on eligible items',
             icon: '🛡️'
         },
         {
-            title: 'Transparency',
-            description: 'All product names, descriptions, images, and specifications are presented clearly and accurately.',
-            icon: '💎'
-        },
-        {
-            title: 'Customer Care',
-            description: 'Our team is here to assist with product questions, order inquiries, and general shopping support.',
-            icon: '🤝'
-        },
-        {
-            title: 'Independence',
-            description: 'Prints Carts is an independent retailer. We are not affiliated with or endorsed by any printer or technology manufacturer.',
-            details: 'All trademarks and brand names belong to their respective owners and are used for identification purposes only.',
-            icon: '🗽'
+            title: 'Secure Payment',
+            description: '100% Secure Processing',
+            icon: '🔒'
         }
     ];
 
     return (
         <section className="home-values">
             <div className="values-container">
-                <h2 className="section-title text-center">Our Values</h2>
+                <h2 className="section-title text-center">Trust & Value</h2>
                 <div className="values-grid">
                     {values.map((value, index) => (
                         <div key={index} className={`value-card ${value.title === 'Independence' ? 'independence' : ''}`}>

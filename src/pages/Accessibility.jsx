@@ -1,187 +1,153 @@
 import '../styles/PolicyPages.css';
-import { motion } from 'framer-motion';
+import { Mail, MapPin, Globe } from 'lucide-react';
 
 const Accessibility = () => {
     return (
         <div className="policy-page-wrapper">
             <main className="policy-main-content">
                 {/* Hero Section */}
-                <section className="policy-hero redesigned-hero">
-                    <motion.div
-                        className="policy-hero-content"
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
+                <div className="policy-hero">
+                    <div className="policy-hero-content">
                         <h1>Accessibility Statement</h1>
-                        <p className="last-updated">Last Updated: January 26, 2026</p>
+                        <p className="last-updated">Effective Date: February 18, 2026</p>
                         <p className="intro-text">
-                            At Prints Carts, inclusivity is a priority. We are committed to making our website fully accessible, 
-                            ensuring an equal, seamless experience for everyone.
+                            Smart Ink Guide is committed to ensuring digital accessibility for all users, including individuals with disabilities.
+                            <br /><br />
+                            We are continually improving the user experience for everyone and applying relevant accessibility standards to enhance usability and inclusivity.
                         </p>
-                    </motion.div>
-                </section>
+                    </div>
+                </div>
 
-                {/* Quick Info Cards */}
-                <section className="policy-info-cards redesigned-cards">
-                    {[
-                        {
-                            title: "WCAG 2.1 AA",
-                            text: "Following recognized accessibility standards",
-                            icon: "✔️",
-                        },
-                        {
-                            title: "Inclusive Experience",
-                            text: "Barrier-free shopping for all users",
-                            icon: "🌐",
-                        },
-                        {
-                            title: "Feedback Driven",
-                            text: "We listen and improve based on your suggestions",
-                            icon: "🗣️",
-                        },
-                        {
-                            title: "Continuous Updates",
-                            text: "Ongoing improvements for accessibility",
-                            icon: "🔄",
-                        },
-                    ].map((card, index) => (
-                        <motion.div
-                            className="policy-info-card redesigned-card"
-                            key={index}
-                            style={{ animationDelay: `${0.1 + index * 0.1}s` }}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                        >
-                            <div className="icon-wrapper">{card.icon}</div>
-                            <h3>{card.title}</h3>
-                            <p>{card.text}</p>
-                        </motion.div>
-                    ))}
-                </section>
-
-                {/* Main Content */}
-                <section className="policy-content-container redesigned-content">
-                    {/* Commitment Section */}
-                    <motion.div
-                        className="policy-section"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h2>Our Commitment</h2>
-                        <p>We follow recognized accessibility guidelines to ensure all users can access our site:</p>
-                        <div className="feature-grid redesigned-grid">
-                            {[
-                                { title: "✅ WCAG 2.1 AA", desc: "Web Content Accessibility Guidelines" },
-                                { title: "✅ ADA Title III", desc: "Americans with Disabilities Act" },
-                                { title: "✅ Section 508", desc: "Federal accessibility standards" },
-                            ].map((item, i) => (
-                                <div className="feature-item redesigned-feature" key={i}>
-                                    <h4>{item.title}</h4>
-                                    <p>{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-
-                    {/* Accessibility Features */}
-                    <motion.div
-                        className="policy-section"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                    >
-                        <h2>Accessibility Features</h2>
-                        <p>Prints Carts implements the following features for an inclusive experience:</p>
-                        <div className="feature-grid redesigned-grid">
-                            {[
-                                { title: "⌨️ Keyboard Navigation", desc: "Full site navigation via keyboard" },
-                                { title: "🔊 Screen Reader Support", desc: "Compatible with assistive tools" },
-                                { title: "🖼️ Text Alternatives", desc: "Alt text for all images" },
-                                { title: "📋 Clear Structure", desc: "Consistent headings and layout" },
-                                { title: "🔍 Adjustable Text", desc: "Zoom and resize without loss" },
-                                { title: "🎨 Color Contrast", desc: "WCAG-compliant contrast ratios" },
-                                { title: "🧭 Predictable Navigation", desc: "Consistent menus and paths" },
-                                { title: "📱 Responsive Design", desc: "Works on all devices and sizes" },
-                            ].map((item, i) => (
-                                <div className="feature-item redesigned-feature" key={i}>
-                                    <h4>{item.title}</h4>
-                                    <p>{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </motion.div>
-
-                    {/* Ongoing Efforts */}
-                    <motion.div
-                        className="policy-section"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <h2>Ongoing Accessibility Efforts</h2>
-                        <ul className="redesigned-list">
-                            <li>Regularly review website content for accessibility compliance</li>
-                            <li>Enhance navigation and overall UX</li>
-                            <li>Test pages with assistive technologies</li>
-                            <li>Update features to support more tools and devices</li>
-                            <li>Integrate user feedback for improvements</li>
-                            <li>Train our team on accessibility best practices</li>
-                        </ul>
-                        <p className="policy-note">
-                            Accessibility is a continuous process, and we strive for reasonable updates as standards evolve.
-                        </p>
-                    </motion.div>
-
-                    {/* Contact Section */}
-                    <motion.div
-                        className="policy-section contact-section"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.3 }}
-                    >
-                        <h2>Need Assistance?</h2>
-                        <p>If you encounter any accessibility issues, we want to help promptly.</p>
-                        <div className="feature-grid redesigned-grid">
-                            <div className="feature-item redesigned-feature">
-                                <h4>📧 Email Support</h4>
-                                <p><a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
+                <div className="policy-content-container">
+                    {/* Quick Info Cards */}
+                    <div className="policy-info-cards">
+                        <div className="policy-info-card" style={{ animationDelay: '0.1s' }}>
+                            <div className="icon-wrapper">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                </svg>
                             </div>
-                            <div className="feature-item redesigned-feature">
-                                <h4>📍 Mailing Address</h4>
-                                <p>7181 Beacon Dr 15<br />Reno, NV 89506</p>
-                            </div>
+                            <h3>Inclusivity</h3>
+                            <p>Accessible for everyone</p>
                         </div>
-                        <h3>When Contacting Us, Please Include:</h3>
-                        <ul className="redesigned-list">
-                            <li>The page or feature you were trying to access</li>
-                            <li>The nature of the accessibility issue</li>
-                            <li>Assistive technologies you were using</li>
-                            <li>Browser and device details</li>
-                        </ul>
-                    </motion.div>
 
-                    {/* Feedback Section */}
-                    <motion.div
-                        className="policy-section"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                    >
-                        <h2>Feedback & Suggestions</h2>
-                        <p>We welcome all accessibility feedback to improve our site experience.</p>
-                        <p className="policy-note">
-                            Your input ensures we maintain an inclusive, comfortable, and usable platform for all visitors.
-                        </p>
-                    </motion.div>
-                </section>
+                        <div className="policy-info-card" style={{ animationDelay: '0.2s' }}>
+                            <div className="icon-wrapper">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                                </svg>
+                            </div>
+                            <h3>Standards</h3>
+                            <p>WCAG 2.1 Level AA</p>
+                        </div>
+
+                        <div className="policy-info-card" style={{ animationDelay: '0.3s' }}>
+                            <div className="icon-wrapper">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" />
+                                </svg>
+                            </div>
+                            <h3>Support</h3>
+                            <p>Here to assist you</p>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="policy-content-card">
+
+                        {/* 1. Our Commitment to Accessibility */}
+                        <section className="policy-section">
+                            <h2>1. Our Commitment to Accessibility</h2>
+                            <p>Smart Ink Guide strives to make our Website accessible and usable for all individuals, regardless of ability or technology. We are committed to:</p>
+                            <ul>
+                                <li>Providing an inclusive digital experience</li>
+                                <li>Removing accessibility barriers where feasible</li>
+                                <li>Improving usability for assistive technologies</li>
+                                <li>Monitoring accessibility performance</li>
+                            </ul>
+                            <p className="policy-note">Accessibility is an ongoing effort, and we continuously review our website to identify improvements.</p>
+                        </section>
+
+                        {/* 2. Accessibility Standards */}
+                        <section className="policy-section">
+                            <h2>2. Accessibility Standards</h2>
+                            <p>We aim to conform, where reasonably practicable, to:</p>
+                            <ul>
+                                <li>Web Content Accessibility Guidelines (WCAG) 2.1 Level AA</li>
+                                <li>Applicable provisions of the Americans with Disabilities Act (ADA)</li>
+                            </ul>
+                            <p>While we strive for compliance, some content may not yet fully meet every standard due to the evolving nature of web technologies.</p>
+                        </section>
+
+                        {/* 3. Measures We Take to Support Accessibility */}
+                        <section className="policy-section">
+                            <h2>3. Measures We Take to Support Accessibility</h2>
+                            <p>We take reasonable steps to improve accessibility, including:</p>
+                            <div className="feature-grid">
+                                <div className="feature-item"><h4>Typography</h4><p>Readable fonts and sufficient contrast</p></div>
+                                <div className="feature-item"><h4>Alt Text</h4><p>Alternative text for images</p></div>
+                                <div className="feature-item"><h4>Structure</h4><p> structured heading hierarchy</p></div>
+                                <div className="feature-item"><h4>Navigation</h4><p>Keyboard navigability</p></div>
+                            </div>
+                            <p className="mt-4">We also test website functionality on multiple devices and work with third-party service providers to encourage accessible integrations.</p>
+                        </section>
+
+                        {/* 4. Ongoing Improvements */}
+                        <section className="policy-section">
+                            <h2>4. Ongoing Improvements</h2>
+                            <p>Accessibility is an ongoing process. We periodically review website content, evaluate new technologies, update components, and address issues brought to our attention.</p>
+                            <p className="policy-note">We welcome feedback from users regarding accessibility improvements.</p>
+                        </section>
+
+                        {/* 5. Third-Party Content */}
+                        <section className="policy-section">
+                            <h2>5. Third-Party Content</h2>
+                            <p>Our Website may include third-party content or integrations (Payment processors, Embedded tools, etc.). We do not control third-party accessibility standards but encourage those providers to maintain accessible practices.</p>
+                        </section>
+
+                        {/* 6. Known Limitations */}
+                        <section className="policy-section">
+                            <h2>6. Known Limitations</h2>
+                            <p>Despite our best efforts, certain limitations may exist due to third-party plugins, legacy content, or rapid technology updates. If you encounter difficulty accessing any part of our Website, please contact us so we can assist you.</p>
+                        </section>
+
+                        {/* 7. Requesting Assistance */}
+                        <section className="policy-section">
+                            <h2>7. Requesting Assistance</h2>
+                            <p>If you experience difficulty accessing content, need assistance placing an order, or encounter accessibility barriers, please contact us.</p>
+                            <p>When contacting us, please include:</p>
+                            <ul>
+                                <li>A description of the issue</li>
+                                <li>The webpage URL (if applicable)</li>
+                                <li>The device or browser used</li>
+                            </ul>
+                            <p className="policy-note">We will make reasonable efforts to provide the information or assistance you need in an alternative format.</p>
+                        </section>
+
+                        {/* 8. Policy Updates */}
+                        <section className="policy-section">
+                            <h2>8. Policy Updates</h2>
+                            <p>We reserve the right to update this Accessibility Statement at any time to reflect improvements or regulatory changes. Updates become effective upon posting.</p>
+                        </section>
+
+                        {/* Independent Retailer Disclosure */}
+                        <section className="policy-section">
+                            <h2>Independent Retailer Disclosure</h2>
+                            <p>Smart Ink Guide operates as an independent online retailer and is not affiliated with printer manufacturers unless explicitly stated.</p>
+                        </section>
+
+                        {/* 9. Contact Information */}
+                        <div className="contact-info-box">
+                            <h3>9. Contact Information</h3>
+                            <p><strong>Smart Ink Guide - Accessibility Support</strong><br />
+                                30 N GOULD STREET SUITE R<br />
+                                SHERIDAN, WY 82801<br />
+                                United States</p>
+                            <p className="mt-2">Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
+                            <p className="mt-2">We aim to respond within 24 business hours.</p>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     );

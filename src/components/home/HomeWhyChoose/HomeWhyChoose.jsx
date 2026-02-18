@@ -3,9 +3,9 @@ import React from "react";
 const HomeWhyChoose = () => {
   const reasons = [
     {
-      title: "Clear, Accurate Product Information",
+      title: "Transparent Information",
       description:
-        "Each product listing includes detailed descriptions, compatibility information, and specifications so you can choose the right item without confusion.",
+        "We provide clear product details, compatibility information, and specifications to help you choose correctly.",
       icon: (
         <svg
           className="w-6 h-6"
@@ -23,69 +23,9 @@ const HomeWhyChoose = () => {
       ),
     },
     {
-      title: "Customer-Centered Experience",
+      title: "Secure Transactions",
       description:
-        "We offer responsive assistance for product inquiries, order updates, and general questions.",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-      ),
-    },
-    {
-      title: "Fast & Dependable Shipping",
-      description:
-        "We work with trusted carriers to ensure safe and timely delivery.",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="1" y="3" width="15" height="13" />
-          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-          <circle cx="5.5" cy="18.5" r="2.5" />
-          <circle cx="18.5" cy="18.5" r="2.5" />
-        </svg>
-      ),
-    },
-    {
-      title: "Wide Selection for Every Need",
-      description:
-        "From compact home printers to office-ready devices and everyday supplies.",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="3" y="3" width="7" height="7" />
-          <rect x="14" y="3" width="7" height="7" />
-          <rect x="14" y="14" width="7" height="7" />
-          <rect x="3" y="14" width="7" height="7" />
-        </svg>
-      ),
-    },
-    {
-      title: "Secure Online Shopping",
-      description:
-        "We use secure checkout processes to help protect your information.",
+        "All payments are processed using encrypted, secure payment systems.",
       icon: (
         <svg
           className="w-6 h-6"
@@ -101,6 +41,46 @@ const HomeWhyChoose = () => {
         </svg>
       ),
     },
+    {
+      title: "30-Day Return Policy",
+      description:
+        "Eligible items can be returned within 30 days of delivery.",
+      icon: (
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 10h10a5 5 0 0 1 5 5v2" />
+          <path d="M7 6l-4 4 4 4" />
+        </svg>
+      ),
+    },
+    {
+      title: "Independent Retailer",
+      description:
+        "We operate independently and are not affiliated with printer manufacturers unless explicitly stated.",
+      icon: (
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 21h18" />
+          <path d="M5 21v-7l8-4 8 4v7" />
+          <path d="M9 10a2 2 0 1 1-4 0v7h4v-7z" />
+          <path d="M19 10a2 2 0 1 1-4 0v7h4v-7z" />
+        </svg>
+      ),
+    },
   ];
 
   return (
@@ -110,7 +90,7 @@ const HomeWhyChoose = () => {
         {/* Title */}
         <div className="mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center md:text-left">
-            Why Shop with Prints Carts?
+            Why Choose Smart Ink Guide?
           </h2>
         </div>
 

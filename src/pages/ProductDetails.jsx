@@ -138,7 +138,7 @@ const ProductDetails = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mb-6"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-secondary mb-6"></div>
         <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Synchronizing Details...</p>
       </div>
     );
@@ -147,9 +147,9 @@ const ProductDetails = () => {
   if (error || !product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] py-20 text-center px-4">
-        <h2 className="text-2xl font-black text-slate-800 mb-4">Product Transmission Interrupted</h2>
+        <h2 className="text-2xl font-black text-primary mb-4">Product Transmission Interrupted</h2>
         <p className="text-slate-500 mb-8">We couldn't locate the product you're looking for.</p>
-        <Link to="/printers" className="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm uppercase tracking-widest hover:bg-blue-600 transition-all">
+        <Link to="/printers" className="px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm uppercase tracking-widest hover:bg-secondary transition-all">
           Return to Catalog
         </Link>
       </div>
@@ -301,12 +301,12 @@ const ProductDetails = () => {
               </div>
 
               <div className="pd-price-card">
-                                {/* Bonus offer above price */}
-                                {product.bonusOffer && (
-                                  <div className="bg-yellow-100 text-yellow-800 font-extrabold text-xs uppercase tracking-widest rounded-xl px-4 py-2 mb-4 text-center border border-yellow-300 shadow-sm">
-                                    {product.bonusOffer}
-                                  </div>
-                                )}
+                {/* Bonus offer above price */}
+                {product.bonusOffer && (
+                  <div className="bg-yellow-100 text-yellow-800 font-extrabold text-xs uppercase tracking-widest rounded-xl px-4 py-2 mb-4 text-center border border-yellow-300 shadow-sm">
+                    {product.bonusOffer}
+                  </div>
+                )}
                 <div className="pd-price-row">
                   <span className="pd-main-price">${product.price?.toFixed(2)}</span>
                   {product.oldPrice && <span className="pd-old-price">${product.oldPrice.toFixed(2)}</span>}
@@ -475,13 +475,13 @@ const ProductDetails = () => {
                           rows="5"
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
-                          className="w-full p-6 rounded-2xl border border-slate-100 bg-slate-50 focus:bg-white focus:border-blue-500 transition-all font-medium text-slate-700 outline-none"
+                          className="w-full p-6 rounded-2xl border border-slate-100 bg-slate-50 focus:bg-white focus:border-secondary transition-all font-medium text-slate-700 outline-none"
                           placeholder="Share your detailed feedback about this product..."
                           required
                         />
                       </div>
 
-                      <button className="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/20">
+                      <button className="px-10 py-4 bg-secondary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-lg hover:shadow-secondary/20">
                         {editingReviewId ? "Update Feedback" : "Broadcast Review"}
                       </button>
                     </motion.form>

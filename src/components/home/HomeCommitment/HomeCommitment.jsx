@@ -27,45 +27,37 @@ const HomeCommitment = () => {
           className="text-center max-w-2xl mx-auto"
         >
           <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#20a1dd] leading-tight">
-            Our Commitment to Excellence
+            Professional-Grade Printing Solutions
           </h2>
 
           <p className="mt-4 text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-            At <span className="font-semibold text-gray-900">Smart Ink Guide</span>, 
-            we deliver transparency, secure shopping, and long-term reliability 
-            for every customer.
+            Designed for teams and businesses that require consistent, high-quality output. Our goal is to help you reduce long-term printing expenses while maintaining productivity.
           </p>
         </motion.div>
 
-        {/* STATS STRIP (Better Mobile Design) */}
+        {/* FEATURES GRID */}
         <div
           ref={ref}
           className="mt-10 sm:mt-14"
         >
-          <div className="grid grid-cols-3 gap-3 sm:gap-6">
-
-            {stats.map((item, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              "High-Speed Laser Printers",
+              "Multifunction All-in-One Devices",
+              "High-Yield Toner Options",
+              "Cost-Per-Page Optimization"
+            ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15 }}
                 viewport={{ once: true }}
-                className="bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-6 text-center hover:shadow-md transition-all duration-300"
+                className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-center hover:shadow-md transition-all duration-300 flex items-center justify-center min-h-[100px]"
               >
-                <div className="text-xl sm:text-3xl lg:text-4xl font-bold text-[#20a1dd]">
-                  {inView && (
-                    <CountUp
-                      end={item.value}
-                      duration={2}
-                      separator=","
-                    />
-                  )}
-                  {item.suffix}
-                </div>
-
-                <div className="text-[10px] sm:text-xs lg:text-sm text-gray-600 font-medium uppercase tracking-wide mt-1">
-                  {item.label}
+                <div className="text-lg font-bold text-gray-800">
+                  <span className="block text-[#20a1dd] text-2xl mb-2">✔</span>
+                  {item}
                 </div>
               </motion.div>
             ))}
@@ -82,9 +74,9 @@ const HomeCommitment = () => {
           className="mt-10 flex justify-center"
         >
           <Link to="/about">
-          <button className="px-7 py-3 text-sm sm:text-base font-semibold rounded-lg text-white bg-[#20a1dd] hover:bg-[#20a1dd] transition duration-300 shadow-md hover:shadow-lg">
-            Learn More
-          </button>
+            <button className="px-7 py-3 text-sm sm:text-base font-semibold rounded-lg text-white bg-[#20a1dd] hover:bg-[#20a1dd] transition duration-300 shadow-md hover:shadow-lg">
+              Explore Professional Solutions
+            </button>
           </Link>
         </motion.div>
 

@@ -2,27 +2,29 @@ import React from 'react';
 import './HomeNotice.css';
 
 const HomeNotice = () => {
-    const notices = [
-        'Product availability, pricing, and specifications may change without prior notice.',
-        'Delivery times vary based on location, courier service, and product availability.',
-        'Manufacturer warranties apply to eligible products as provided by their respective brands.',
-        'Prints Carts provides retail services independently and does not represent or act as an authorized dealer of any manufacturer.'
-    ];
-
     return (
-        <section className="home-notice">
-            <div className="notice-container">
-                <h2 className="section-title">Important Notice</h2>
-                <ul className="notice-list">
-                    {notices.map((notice, index) => (
-                        <li key={index}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
-                            </svg>
-                            <span>{notice}</span>
-                        </li>
-                    ))}
-                </ul>
+        <section className="home-notice py-16 bg-[#f8fbff]">
+            <div className="max-w-4xl mx-auto px-6 text-center">
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Stay In The Loop</h2>
+                <p className="text-gray-600 mb-8">
+                    Subscribe to receive updates on new products, helpful printing tips, and occasional special offers.
+                </p>
+
+                <form className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
+                    <input
+                        type="email"
+                        placeholder="Email Address"
+                        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#20a1dd]"
+                        required
+                    />
+                    <button
+                        type="submit"
+                        className="px-8 py-3 bg-[#20a1dd] text-white font-semibold rounded-lg hover:bg-[#1a8bbd] transition"
+                    >
+                        Subscribe
+                    </button>
+                </form>
+                <p className="text-xs text-gray-400 mt-4">We respect your privacy and will never sell your information.</p>
             </div>
         </section>
     );

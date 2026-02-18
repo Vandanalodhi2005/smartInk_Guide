@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
 import { addToCart } from '../redux/actions/cartActions';
 import { useCart } from '../context/CartContext';
-import { Eye, ShoppingBag, ChevronDown, Search, Filter } from 'lucide-react';
+import { Eye, ShoppingBag, ChevronDown, Search, Filter, Home, Building2, Printer as PrinterIcon, Zap } from 'lucide-react';
 import './Printers.css';
 import { motion, AnimatePresence } from "framer-motion";
 
-const Printers = ({ forcedCategory }) => {
+const Printers = ({ forcedCategory, forcedUsageCategory }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,7 +48,20 @@ const Printers = ({ forcedCategory }) => {
     setCurrPage(1);
 
     let categoryArg = selectedCategory === 'all' ? '' : selectedCategory;
-    dispatch(listProducts(searchQuery, categoryArg, 1));
+    // If forcedUsageCategory is present, pass it. validated by the new action signature: (search, category, page, brand, usageCategory)
+    // Note: The action signature is (search, category, page, brand, usageCategory)
+    // We need to pass empty string for brand if we are not filtering by brand yet (or add brand state)
+    // The current component has brand filtering but it's local or not fully wired in this useEffect?
+    // Looking at line 51: dispatch(listProducts(searchQuery, categoryArg, 1));
+    // The previous signature was (search, category, page, brand).
+    // I need to be careful with arguments position.
+    // New signature: (search, category, pageNumber, brand, usageCategory)
+
+    // We should use the existing 'filters' state if available, but for now let's stick to the basic fetch.
+    // Provide '' for brand if not used in this specific effect (although there is a separate filter component)
+    // Actually, looking at the previous code, top-level usage didn't pass brand.
+
+    dispatch(listProducts(searchQuery, categoryArg, 1, '', forcedUsageCategory || ''));
   }, [dispatch, selectedCategory, searchQuery]);
 
   // Handle Accumulation
@@ -72,7 +85,7 @@ const Printers = ({ forcedCategory }) => {
       const nextPage = currPage + 1;
       setCurrPage(nextPage);
       let categoryArg = selectedCategory === 'all' ? '' : selectedCategory;
-      dispatch(listProducts(searchQuery, categoryArg, nextPage));
+      dispatch(listProducts(searchQuery, categoryArg, nextPage, '', forcedUsageCategory || ''));
     }
   };
 
@@ -99,26 +112,49 @@ const Printers = ({ forcedCategory }) => {
     return sorted;
   }, [allProducts, priceRange, sortBy]);
 
+  // ... inside component ...
+
   const categoryData = {
     'Home Printer': {
       title: 'Home Printers',
-      description: 'Discover versatile and compact printers perfect for home offices, student projects, and family photos.'
+      description: 'Compact, versatile, and user-friendly printers designed for photos, creative projects, and everyday home documents.',
+      icon: <Home size={48} className="text-teal-400" />,
+      theme: 'home'
     },
     'Office Printer': {
       title: 'Office Printers',
-      description: 'High-speed, high-duty cycle printers designed to handle the heavy demands of professional work environments.'
+      description: 'High-performance, durable printers engineered for speed, volume, and professional business productivity.',
+      icon: <Building2 size={48} className="text-blue-500" />,
+      theme: 'office'
     },
     'Laser': {
       title: 'Laser Printers',
-      description: 'Efficient and fast laser printing solutions for crisp text and high-volume document printing.'
+      description: 'Efficient and fast laser printing solutions for crisp text and high-volume document printing.',
+      icon: <Zap size={48} className="text-amber-400" />,
+      theme: 'laser'
     },
     'Inkjet': {
       title: 'Inkjet Printers',
-      description: 'Professional-grade inkjet printers for vibrant colors, high-resolution photos, and creative projects.'
+      description: 'Professional-grade inkjet printers for vibrant colors, high-resolution photos, and creative projects.',
+      icon: <PrinterIcon size={48} className="text-purple-400" />,
+      theme: 'inkjet'
+    },
+    'Home': {
+      title: 'Home Printers',
+      description: 'Compact and versatile printers designed for home offices and personal use.',
+      icon: <Home size={48} className="text-teal-400" />,
+      theme: 'home'
+    },
+    'Office': {
+      title: 'Office Printers',
+      description: 'High-performance printers built for business productivity and heavy workloads.',
+      icon: <Building2 size={48} className="text-blue-500" />,
+      theme: 'office'
     },
     'all': {
       title: 'Premium Printers',
-      description: 'Browse our complete collection of top-rated printers from industry-leading brands.'
+      description: 'Browse our complete collection of top-rated printers from industry-leading brands.',
+      icon: <PrinterIcon size={48} className="text-blue-400" />
     }
   };
 
@@ -129,6 +165,14 @@ const Printers = ({ forcedCategory }) => {
       <div className="printers-main-container">
 
         <header className="printers-hero-header">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mb-4 flex justify-center"
+          >
+            {currentCategoryInfo.icon}
+          </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,6 +184,7 @@ const Printers = ({ forcedCategory }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
+            className="max-w-2xl mx-auto"
           >
             {currentCategoryInfo.description}
           </motion.p>

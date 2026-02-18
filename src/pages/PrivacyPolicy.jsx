@@ -1,4 +1,5 @@
 import '../styles/PolicyPages.css';
+import { Mail, MapPin, Globe } from 'lucide-react';
 
 const PrivacyPolicy = () => {
     return (
@@ -8,16 +9,18 @@ const PrivacyPolicy = () => {
                 <div className="policy-hero">
                     <div className="policy-hero-content">
                         <h1>Privacy Policy</h1>
-                        <p className="last-updated">Last Updated: January 26, 2026</p>
+                        <p className="last-updated">Effective Date: February 18, 2026</p>
                         <p className="intro-text">
-                            Your privacy matters to us. We're committed to protecting your personal information
-                            and being transparent about how we collect, use, and safeguard your data.
+                            This Privacy Policy describes how Smart Ink Guide (“Company,” “we,” “our,” or “us”) collects, uses, discloses, safeguards,
+                            and processes personal information when you access or use: <a href="https://www.smartinkguide.com" className="text-blue-200 hover:text-white underline">www.smartinkguide.com</a> (“Website”).
+                            <br /><br />
+                            By accessing or using our Website, you acknowledge that you have read and understood this Privacy Policy.
                         </p>
                     </div>
                 </div>
 
                 <div className="policy-content-container">
-                    {/* Quick Info Cards */}
+                    {/* Quick Info Cards - Kept for visual appeal as they align with new policy */}
                     <div className="policy-info-cards">
                         <div className="policy-info-card" style={{ animationDelay: '0.1s' }}>
                             <div className="icon-wrapper">
@@ -39,16 +42,6 @@ const PrivacyPolicy = () => {
                             <p>All data is protected with industry-standard security</p>
                         </div>
 
-                        <div className="policy-info-card" style={{ animationDelay: '0.3s' }}>
-                            <div className="icon-wrapper">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                                </svg>
-                            </div>
-                            <h3>Essential Cookies Only</h3>
-                            <p>No advertising or tracking cookies used</p>
-                        </div>
-
                         <div className="policy-info-card" style={{ animationDelay: '0.4s' }}>
                             <div className="icon-wrapper">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -62,226 +55,179 @@ const PrivacyPolicy = () => {
 
                     {/* Main Content */}
                     <div className="policy-content-card">
+
+                        {/* 1. Company Information */}
                         <section className="policy-section">
-                            <h2>Company Information</h2>
+                            <h2>1. Company Information</h2>
                             <div className="feature-grid">
                                 <div className="feature-item">
-                                    <h4>📍 Address</h4>
-                                    <p>7181 Beacon Dr 15<br />Reno, NV 89506<br />United States</p>
+                                    <h4><MapPin size={18} className="inline mr-2" /> Address</h4>
+                                    <p>30 N GOULD STREET SUITE R<br />SHERIDAN, WY 82801<br />United States</p>
                                 </div>
                                 <div className="feature-item">
-                                    <h4>📧 Email</h4>
+                                    <h4><Mail size={18} className="inline mr-2" /> Contact</h4>
                                     <p><a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                                 </div>
                                 <div className="feature-item">
-                                    <h4>🌐 Website</h4>
+                                    <h4><Globe size={18} className="inline mr-2" /> Website</h4>
                                     <p><a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
                                 </div>
                             </div>
-                            <p>We operate as an independent online retailer offering printers, ink, toner, and printing supplies.</p>
+                            <p>Smart Ink Guide operates as an independent online retailer of printers, ink cartridges, toner, and related office technology products.</p>
                         </section>
 
+                        {/* 2. Categories of Information We Collect */}
                         <section className="policy-section">
-                            <h2>Information We Collect</h2>
+                            <h2>2. Categories of Information We Collect</h2>
+                            <p>We collect information necessary to operate our business, fulfill orders, comply with legal obligations, and improve user experience.</p>
 
-                            <h3>Information You Provide</h3>
-                            <p>When you make a purchase or create an account, you voluntarily provide:</p>
+                            <h3>A. Personal Information You Provide</h3>
+                            <p>When you place an order, create an account, or contact us, we may collect:</p>
                             <ul>
-                                <li>Name and contact information</li>
-                                <li>Email address for order updates</li>
-                                <li>Billing and shipping addresses</li>
-                                <li>Phone number (optional)</li>
-                                <li>Payment details (processed securely)</li>
-                                <li>Order history and preferences</li>
+                                <li>Full name</li>
+                                <li>Billing address</li>
+                                <li>Shipping address</li>
+                                <li>Email address</li>
+                                <li>Phone number</li>
+                                <li>Order history</li>
+                                <li>Customer service communications</li>
                             </ul>
+                            <p className="policy-note">Payment details are processed securely by third-party payment processors. We do not store complete credit card numbers.</p>
 
-                            <h3>Automatically Collected Information</h3>
-                            <p>When you browse our website, we collect limited technical data:</p>
+                            <h3>B. Automatically Collected Information</h3>
+                            <p>When you visit our Website, we may automatically collect:</p>
                             <ul>
-                                <li>IP address and browser type</li>
+                                <li>IP address</li>
+                                <li>Browser type and version</li>
                                 <li>Device information</li>
-                                <li>Pages viewed and time spent</li>
-                                <li>Essential session data for cart functionality</li>
+                                <li>Pages viewed</li>
+                                <li>Referring URLs</li>
+                                <li>Time and date of access</li>
+                                <li>Interaction behavior</li>
                             </ul>
-                            <p className="policy-note">
-                                We do not use third-party tracking tools for behavioral advertising.
-                            </p>
+                            <p>This information helps us analyze website performance and maintain security.</p>
 
-                            <h3>Cookies & Essential Technologies</h3>
-                            <p>We use only essential cookies for:</p>
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>🛒 Secure Checkout</h4>
-                                    <p>Processing payments safely</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🛍️ Cart Function</h4>
-                                    <p>Saving your items</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>⚡ Performance</h4>
-                                    <p>Website optimization</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🔐 Security</h4>
-                                    <p>Fraud prevention</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        <section className="policy-section">
-                            <h2>How We Use Your Information</h2>
-                            <p>We process your information only for legitimate business purposes:</p>
-
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>📦 Order Processing</h4>
-                                    <p>Managing orders, payments, shipping, and delivery</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>💬 Customer Support</h4>
-                                    <p>Responding to inquiries and providing assistance</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🔒 Security</h4>
-                                    <p>Protecting against fraud and unauthorized activity</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>⚖️ Legal Compliance</h4>
-                                    <p>Meeting tax and regulatory requirements</p>
-                                </div>
-                            </div>
-
-                            <p className="policy-note">
-                                We do NOT sell or share your personal information for advertising purposes.
-                            </p>
-                        </section>
-
-                        <section className="policy-section">
-                            <h2>Information Sharing</h2>
-                            <p>We only share your information with trusted third parties necessary for operations:</p>
+                            <h3>C. Cookies and Tracking Technologies</h3>
+                            <p>We use cookies and similar technologies to:</p>
                             <ul>
-                                <li>Payment processors (for secure transactions)</li>
-                                <li>Shipping carriers (for delivery)</li>
-                                <li>Customer communication tools</li>
-                                <li>Fraud-prevention services</li>
-                                <li>IT and hosting providers</li>
-                                <li>Legal authorities (when required by law)</li>
+                                <li>Enable essential site functionality</li>
+                                <li>Improve browsing experience</li>
+                                <li>Analyze website traffic</li>
+                                <li>Support marketing efforts</li>
                             </ul>
-
-                            <h3>We DO NOT:</h3>
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>❌ Sell Personal Data</h4>
-                                    <p>Your data is never sold to third parties</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>❌ Share for Advertising</h4>
-                                    <p>No marketing or ad targeting</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>❌ Allow Unauthorized Access</h4>
-                                    <p>Strict access controls in place</p>
-                                </div>
-                            </div>
+                            <p>You may control cookies through browser settings. Disabling cookies may limit certain features.</p>
                         </section>
 
+                        {/* 3. How We Use Your Information */}
                         <section className="policy-section">
-                            <h2>Data Security</h2>
-                            <p>We use industry-standard security measures:</p>
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>🔐 SSL/TLS Encryption</h4>
-                                    <p>All data transmitted securely</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>✅ Secure Checkout</h4>
-                                    <p>PCI-compliant payment processing</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>👥 Access Controls</h4>
-                                    <p>Limited employee access</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🛡️ Monitoring</h4>
-                                    <p>Regular security audits</p>
-                                </div>
-                            </div>
-                            <p className="policy-note">
-                                While no method is 100% secure, we take reasonable steps to safeguard your information.
-                            </p>
-                        </section>
-
-                        <section className="policy-section">
-                            <h2>Your Privacy Rights</h2>
-                            <p>Depending on your location, you have the right to:</p>
-
+                            <h2>3. How We Use Your Information</h2>
+                            <p>We use personal information for legitimate business purposes, including:</p>
                             <ul>
-                                <li><strong>Access Your Data:</strong> Request a copy of information we hold</li>
-                                <li><strong>Request Corrections:</strong> Update inaccurate information</li>
-                                <li><strong>Request Deletion:</strong> Ask to have your data deleted</li>
-                                <li><strong>Opt Out:</strong> Unsubscribe from non-essential emails</li>
-                                <li><strong>Data Portability:</strong> Receive your data in a structured format</li>
+                                <li>Order processing and fulfillment</li>
+                                <li>Shipping and tracking notifications</li>
+                                <li>Customer service responses</li>
+                                <li>Fraud detection and prevention</li>
+                                <li>Website improvement and analytics</li>
+                                <li>Compliance with legal obligations</li>
                             </ul>
+                            <p className="policy-note">We do not sell personal information.</p>
+                        </section>
 
-                            <h3>CCPA/CPRA Rights (California Residents)</h3>
+                        {/* 4. Disclosure of Personal Information */}
+                        <section className="policy-section">
+                            <h2>4. Disclosure of Personal Information</h2>
+                            <p>We may share information with trusted third parties only as necessary, including:</p>
                             <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>📋 Right to Know</h4>
-                                    <p>What data is collected</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🗑️ Right to Delete</h4>
-                                    <p>Request data removal</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🚫 Right to Opt Out</h4>
-                                    <p>Stop data "sale" or sharing</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>⚖️ Non-Discrimination</h4>
-                                    <p>Equal service regardless</p>
-                                </div>
+                                <div className="feature-item"><h4>Payment Processors</h4></div>
+                                <div className="feature-item"><h4>Shipping Carriers</h4></div>
+                                <div className="feature-item"><h4>Hosting Providers</h4></div>
+                                <div className="feature-item"><h4>Analytics Providers</h4></div>
                             </div>
-
-                            <p className="policy-note">
-                                Prints Carts does not sell or share personal information under CCPA/CPRA definitions.
-                            </p>
-
-                            <h3>How to Exercise These Rights</h3>
-                            <p>Email us at <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
-                            <p>We may request identity verification for your safety.</p>
+                            <p className="mt-4">These service providers are contractually obligated to safeguard information. We may disclose information if required by law or to protect our legal rights.</p>
                         </section>
 
+                        {/* 5. Data Security */}
                         <section className="policy-section">
-                            <h2>Data Retention</h2>
-                            <p>We retain your information only as long as necessary to:</p>
+                            <h2>5. Data Security</h2>
+                            <p>We implement reasonable administrative, technical, and physical safeguards, including:</p>
                             <ul>
-                                <li>Fulfill orders and provide services</li>
-                                <li>Meet legal and tax obligations</li>
-                                <li>Maintain business records</li>
-                                <li>Prevent fraud and resolve disputes</li>
+                                <li>SSL encryption</li>
+                                <li>Secure payment gateways</li>
+                                <li>Access restrictions</li>
+                                <li>System monitoring</li>
                             </ul>
-                            <p>When no longer needed, data is securely deleted or anonymized.</p>
+                            <p>However, no internet transmission is completely secure.</p>
                         </section>
 
+                        {/* 6. Data Retention */}
                         <section className="policy-section">
-                            <h2>Children's Privacy</h2>
-                            <p>Our services are not intended for children under 13.</p>
-                            <p>We do not knowingly collect personal information from children.</p>
-                            <p className="policy-note">
-                                If we learn that we have unintentionally collected such data, we will delete it promptly.
-                            </p>
+                            <h2>6. Data Retention</h2>
+                            <p>We retain personal information only as long as necessary to:</p>
+                            <ul>
+                                <li>Fulfill transactions</li>
+                                <li>Maintain accounting records</li>
+                                <li>Comply with legal obligations</li>
+                                <li>Resolve disputes</li>
+                            </ul>
+                            <p>Information is securely deleted or anonymized when no longer needed.</p>
                         </section>
 
-                        {/* Contact Section */}
+                        {/* 7. Your Privacy Rights */}
+                        <section className="policy-section">
+                            <h2>7. Your Privacy Rights</h2>
+                            <p>Depending on your jurisdiction, you may have the right to:</p>
+                            <ul>
+                                <li>Request access to personal information</li>
+                                <li>Request correction</li>
+                                <li>Request deletion</li>
+                                <li>Restrict certain processing</li>
+                            </ul>
+                            <p>Requests may be submitted to: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
+                            <p>Identity verification may be required.</p>
+                        </section>
+
+                        {/* 8. California Privacy Rights */}
+                        <section className="policy-section">
+                            <h2>8. California Privacy Rights (CCPA/CPRA)</h2>
+                            <p>California residents have the right to:</p>
+                            <ul>
+                                <li>Know what personal information we collect</li>
+                                <li>Request deletion</li>
+                                <li>Request correction</li>
+                                <li>Opt out of the sale or sharing of personal information</li>
+                            </ul>
+                            <p className="policy-note">Smart Ink Guide does not sell personal information.</p>
+                            <p>Requests may be submitted via email.</p>
+                        </section>
+
+                        {/* 9. Children’s Privacy */}
+                        <section className="policy-section">
+                            <h2>9. Children’s Privacy</h2>
+                            <p>Our Website is not intended for children under 13 years of age. We do not knowingly collect personal information from minors.</p>
+                        </section>
+
+                        {/* 10. Third-Party Links */}
+                        <section className="policy-section">
+                            <h2>10. Third-Party Links</h2>
+                            <p>We are not responsible for the privacy practices of third-party websites linked from our Website.</p>
+                        </section>
+
+                        {/* 11. Changes to This Policy */}
+                        <section className="policy-section">
+                            <h2>11. Changes to This Policy</h2>
+                            <p>We reserve the right to update this Privacy Policy at any time. Changes become effective upon posting.</p>
+                        </section>
+
+                        {/* 12. Contact Information */}
                         <div className="contact-info-box">
-                            <h3>Questions About Privacy?</h3>
-                            <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
-                            <p>📍 Address: 7181 Beacon Dr 15, Reno, NV 89506</p>
-                            <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
-                            <p>We will respond within a reasonable timeframe.</p>
+                            <h3>12. Contact Information</h3>
+                            <p><strong>Smart Ink Guide</strong><br />
+                                30 N GOULD STREET SUITE R<br />
+                                SHERIDAN, WY 82801<br />
+                                United States</p>
+                            <p className="mt-2">Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                         </div>
+
                     </div>
                 </div>
             </main>

@@ -14,15 +14,16 @@ import CookiePolicy from "./pages/CookiePolicy";
 import DoNotSell from "./pages/DoNotSell";
 import Accessibility from "./pages/Accessibility";
 import Disclaimer from "./pages/Disclaimer";
+import ConsumerRights from "./pages/ConsumerRights";
 import Printers from "./pages/Printers";
-import HomePrinter from "./components/products/HomePrinter";
-import OfficePrinter from "./components/products/OfficePrinter";
 import InkToner from "./pages/InkToner";
 import AboutUs from "./pages/AboutUs";
 import ProductDetails from "./pages/ProductDetails";
 import RefundReturnPolicy from "./pages/RefundReturnPolicy";
 import PolicyHub from "./pages/PolicyHub";
 import Blogs from "./pages/Blogs";
+import BuyingGuide from "./pages/BuyingGuide";
+import GuidesAndResources from "./pages/GuidesAndResources";
 import BlogDetails from "./pages/BlogDetails";
 // import TopHomePrinters2026 from "./pages/blogs/TopHomePrinters2026";
 // import InkjetVsLaserGuide from "./pages/blogs/InkjetVsLaserGuide"; 
@@ -78,8 +79,8 @@ function App() {
               {/* Public */}
               <Route path="/" element={<Home />} />
               <Route path="/printers" element={<Printers />} />
-              <Route path="/home-printers" element={<HomePrinter />} />
-              <Route path="/office-printers" element={<OfficePrinter />} />
+              <Route path="/home-printers" element={<Printers forcedUsageCategory="Home" />} />
+              <Route path="/office-printers" element={<Printers forcedUsageCategory="Office" />} />
               <Route path="/laser-printers" element={<Printers forcedCategory="Laser" />} />
               <Route path="/inkjet-printers" element={<Printers forcedCategory="Inkjet" />} />
 
@@ -118,6 +119,8 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:slug" element={<BlogDetails />} />
+              <Route path="/buying-guide" element={<BuyingGuide />} />
+              <Route path="/guides-and-resources" element={<GuidesAndResources />} />
               <Route path="/faqs" element={<FAQs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/policies" element={<PolicyHub />} />
@@ -129,6 +132,7 @@ function App() {
               <Route path="/do-not-sell" element={<DoNotSell />} />
               <Route path="/accessibility" element={<Accessibility />} />
               <Route path="/disclaimer" element={<Disclaimer />} />
+              <Route path="/consumer-rights" element={<ConsumerRights />} />
 
               {/* Auth */}
               <Route path="/signin" element={<SignIn />} />

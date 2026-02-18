@@ -22,23 +22,43 @@ const HomeHero = () => {
             className="w-full lg:w-1/2 text-center lg:text-left"
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-              Print smarter with the world’s
+              Office Printing Solutions for
               <span className="block text-[#20a1dd] mt-2">
-                trusted printing platform
+                Work & Home
               </span>
             </h1>
 
             <p className="mt-6 text-gray-600 text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Save time, discover reliable printers, and explore genuine ink
-              & toner solutions designed for smooth home and office printing.
+              Find reliable printers, ink cartridges, toner, and printing essentials — carefully selected to meet everyday home, remote work, and business needs.
             </p>
 
-            <div className="mt-10">
+            <div className="mt-8 space-y-2 text-gray-600">
+              <div className="flex items-center gap-2">
+                <span className="text-[#20a1dd]">✔</span> Secure Checkout
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[#20a1dd]">✔</span> Fast Order Processing
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[#20a1dd]">✔</span> U.S. Shipping
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[#20a1dd]">✔</span> Email Support Assistance
+              </div>
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/printers"
-                className="inline-block px-9 py-3.5 bg-[#20a1dd] text-white font-semibold rounded-full hover:bg-[#20a1dd] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
+                className="inline-block px-9 py-3.5 bg-[#20a1dd] text-white font-semibold rounded-full hover:bg-[#1a8bbd] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
               >
-                Shop Now
+                Browse Products
+              </Link>
+              <Link
+                to="/ink-toner"
+                className="inline-block px-9 py-3.5 bg-white text-[#20a1dd] border border-[#20a1dd] font-semibold rounded-full hover:bg-blue-50 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1"
+              >
+                Shop Ink & Toner
               </Link>
             </div>
           </motion.div>

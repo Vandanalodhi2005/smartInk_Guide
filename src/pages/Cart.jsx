@@ -31,9 +31,9 @@ const Cart = () => {
                 {/* Header */}
                 <section className="w-full bg-white rounded-3xl border border-slate-100 p-6 md:p-12 mb-6 md:mb-8 shadow-sm">
                     <div className="text-center">
-                        <h1 className="text-3xl md:text-4xl font-[#20a1dd] text-[#20a1dd]-600 uppercase tracking-tighter">Shopping Hub</h1>
+                        <h1 className="text-3xl md:text-4xl font-black text-secondary uppercase tracking-tighter">Shopping Hub</h1>
                         <p className="mt-4 text-[10px] md:text-xs font-[#20a1dd] text-[#20a1dd] uppercase tracking-[0.3em]">
-                            You have <span className="text-[#20a1dd]">{cartItems.reduce((acc, item) => acc + Number(item.qty), 0)}</span> items in your inventory
+                            You have <span className="text-secondary">{cartItems.reduce((acc, item) => acc + Number(item.qty), 0)}</span> items in your inventory
                         </p>
                     </div>
                 </section>
@@ -41,15 +41,15 @@ const Cart = () => {
                 {cartItems.length === 0 ? (
                     <div className="bg-white border border-dashed border-slate-200 rounded-[2rem] md:rounded-[3rem] p-10 md:p-20 text-center flex flex-col items-center justify-center space-y-6">
                         <div className="w-20 h-20 md:w-24 md:h-24 bg-slate-50 rounded-full flex items-center justify-center">
-                            <svg className="w-8 h-8 md:w-10 md:h-10 text-[#20a1dd]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-8 h-8 md:w-10 md:h-10 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
                         </div>
                         <div className="space-y-2">
-                            <h2 className="text-xl md:text-2xl font-[#20a1dd] text-[#20a1dd]-600 uppercase tracking-tight"> Your Cart is Empty</h2>
-                            <p className="text-sm md:text-base text-[#20a1dd] font-medium">Ready to start printing? Explore our premium hardware collection.</p>
+                            <h2 className="text-xl md:text-2xl font-black text-secondary uppercase tracking-tight"> Your Cart is Empty</h2>
+                            <p className="text-sm md:text-base text-secondary font-medium">Ready to start printing? Explore our premium hardware collection.</p>
                         </div>
-                        <Link to="/printers" className="px-6 py-4 md:px-8 bg-[#20a1dd] text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-black transition-all">
+                        <Link to="/printers" className="px-6 py-4 md:px-8 bg-secondary text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-black transition-all">
                             Browse Inventory
                         </Link>
                     </div>
@@ -57,9 +57,9 @@ const Cart = () => {
                     <div className="flex flex-col lg:grid lg:grid-cols-3 gap-8">
                         {/* LEFT : Cart Items */}
                         <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white border border-[#20a1dd] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-sm">
+                            <div className="bg-white border border-secondary rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-sm">
                                 {/* Desktop Header */}
-                                <div className="hidden md:grid grid-cols-5 gap-4 p-6 bg-[#20a1dd] text-[10px] font-black text-[#20a1dd]-600 uppercase tracking-widest border-b border-slate-100">
+                                <div className="hidden md:grid grid-cols-5 gap-4 p-6 bg-secondary text-[10px] font-black text-white uppercase tracking-widest border-b border-slate-100">
                                     <span className="col-span-2">Product Details</span>
                                     <span className="text-center">Price</span>
                                     <span className="text-center">Quantity</span>
@@ -80,18 +80,18 @@ const Cart = () => {
                                                     />
                                                 </div>
                                                 <div className="space-y-1 flex-1">
-                                                    <Link to={`/product/${item.slug}`} className="text-sm font-[#20a1dd] text-[#20a1dd]-600 uppercase tracking-tight hover:text-indigo-600 transition-colors line-clamp-2 md:line-clamp-1">
+                                                    <Link to={`/product/${item.slug}`} className="text-sm font-bold text-primary uppercase tracking-tight hover:text-secondary transition-colors line-clamp-2 md:line-clamp-1">
                                                         {item.title}
                                                     </Link>
-                                                    <p className="text-[10px] font-[#20a1dd] text-emerald-500 uppercase tracking-widest">In Stock</p>
+                                                    <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">In Stock</p>
                                                     {/* Mobile Price Display */}
-                                                    <p className="md:hidden text-sm font-bold text-[#20a1dd]-600 mt-1">${item.price.toFixed(2)}</p>
+                                                    <p className="md:hidden text-sm font-bold text-secondary mt-1">${item.price.toFixed(2)}</p>
                                                 </div>
                                             </div>
 
                                             {/* Price (Desktop Only) */}
                                             <div className="hidden md:block text-center">
-                                                <p className="text-[#20a1dd] font-[#20a1dd] tracking-tight">${item.price.toFixed(2)}</p>
+                                                <p className="text-secondary font-bold tracking-tight">${item.price.toFixed(2)}</p>
                                             </div>
 
                                             {/* Mobile Controls Row */}
@@ -103,7 +103,7 @@ const Cart = () => {
                                                             onClick={() => dispatch(addToCart(item.product, Math.max(1, Number(item.qty) - 1)))}
                                                             className="px-3 hover:bg-slate-50 text-slate-400 active:bg-slate-100"
                                                         >-</button>
-                                                        <span className="px-2 text-[10px] font-[#20a1dd] text-[#20a1dd]-600 min-w-[20px] text-center">{item.qty}</span>
+                                                        <span className="px-2 text-[10px] font-bold text-secondary min-w-[20px] text-center">{item.qty}</span>
                                                         <button
                                                             onClick={() => dispatch(addToCart(item.product, Math.min(item.countInStock, Number(item.qty) + 1)))}
                                                             className="px-3 hover:bg-slate-50 text-slate-400 active:bg-slate-100"
@@ -155,22 +155,22 @@ const Cart = () => {
 
                                 <div className="pt-4">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-sm font-black text-[#20a1dd] uppercase tracking-tight">Invoice Total</span>
-                                        <span className="text-2xl md:text-3xl font-black text-[#20a1dd] tracking-tighter">${totalWithGift.toFixed(2)}</span>
+                                        <span className="text-sm font-black text-secondary uppercase tracking-tight">Invoice Total</span>
+                                        <span className="text-2xl md:text-3xl font-black text-secondary tracking-tighter">${totalWithGift.toFixed(2)}</span>
                                     </div>
-                                    <p className="text-[9px] font-bold text-[#20a1dd] uppercase tracking-[0.3em] text-center">Taxes and Logistics calculated at next stage</p>
+                                    <p className="text-[9px] font-bold text-secondary uppercase tracking-[0.3em] text-center">Taxes and Logistics calculated at next stage</p>
                                 </div>
 
                                 <div className="space-y-4 pt-4">
                                     <button
                                         onClick={checkoutHandler}
-                                        className="w-full bg-[#20a1dd] text-white py-4 md:py-5 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-black transition-all shadow-xl shadow-slate-200 active:scale-95"
+                                        className="w-full bg-secondary text-white py-4 md:py-5 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-black transition-all shadow-xl shadow-slate-200 active:scale-95"
                                     >
                                         Proceed to Secure Checkout
                                     </button>
                                     <div className="flex items-center justify-center gap-6 py-4 px-4 bg-slate-50 rounded-2xl border border-slate-100">
                                         <img src="https://razorpay.com/assets/razorpay-glyph.svg" alt="Razorpay" className="h-4 opacity-50" />
-                                        <span className="text-[9px] font-black text-[#20a1dd] uppercase tracking-[0.2em]">Verified Secure Terminal</span>
+                                        <span className="text-[9px] font-black text-secondary uppercase tracking-[0.2em]">Verified Secure Terminal</span>
                                     </div>
                                 </div>
                             </div>

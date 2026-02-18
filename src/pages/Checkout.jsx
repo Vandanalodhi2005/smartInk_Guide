@@ -32,7 +32,7 @@ const Checkout = () => {
     const [clover, setClover] = useState(null);
 
     // Style configuration
-    const inputStyle = "w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400";
+    const inputStyle = "w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all text-slate-700 placeholder:text-slate-400";
     const labelStyle = "block text-sm font-medium text-slate-700 mb-2";
 
     useEffect(() => {
@@ -202,11 +202,11 @@ const Checkout = () => {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 <div className="mb-8 lg:mb-10">
-                    <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Checkout</h1>
+                    <h1 className="text-2xl lg:text-3xl font-bold text-primary">Checkout</h1>
                     <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
-                        <span className={step >= 1 ? "text-blue-400 font-medium" : ""}>Shipping</span>
+                        <span className={step >= 1 ? "text-secondary font-medium" : ""}>Shipping</span>
                         <ChevronRight size={16} />
-                        <span className={step >= 2 ? "text-blue-400 font-medium" : ""}>Payment</span>
+                        <span className={step >= 2 ? "text-secondary font-medium" : ""}>Payment</span>
                     </div>
                 </div>
 
@@ -254,8 +254,8 @@ const Checkout = () => {
                             </div>
 
                             <div className="flex justify-between items-center mt-6 pt-6 border-t border-gray-100">
-                                <span className="text-base font-bold text-gray-900">Total</span>
-                                <span className="text-2xl font-bold text-blue-900">${totalPrice.toFixed(2)}</span>
+                                <span className="text-base font-bold text-primary">Total</span>
+                                <span className="text-2xl font-bold text-primary">${totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
@@ -265,7 +265,7 @@ const Checkout = () => {
                         {step === 1 ? (
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
                                 <div className="flex items-center gap-3 mb-6">
-                                    <div className="p-2 bg-blue-50 text-blue-400 rounded-lg">
+                                    <div className="p-2 bg-secondary/10 text-secondary rounded-lg">
                                         <Truck size={24} />
                                     </div>
                                     <h2 className="text-xl font-semibold text-gray-900">Shipping Address</h2>
@@ -345,7 +345,7 @@ const Checkout = () => {
                                         <button
                                             type="submit"
                                             disabled={loadingShipping}
-                                            className="w-full mt-6 bg-blue-400 text-white py-4 rounded-lg font-semibold hover:bg-blue-500 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                                            className="w-full mt-6 bg-secondary text-white py-4 rounded-lg font-semibold hover:bg-primary transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
                                         >
                                             {loadingShipping ? <Loader2 className="animate-spin" /> : 'Calculate Shipping'}
                                         </button>
@@ -357,7 +357,7 @@ const Checkout = () => {
                                                     <div
                                                         key={rate.id}
                                                         onClick={() => setSelectedRate(rate)}
-                                                        className={`p-4 border rounded-lg cursor-pointer flex items-center justify-between transition-all ${selectedRate?.id === rate.id ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-gray-200 hover:border-blue-300'}`}
+                                                        className={`p-4 border rounded-lg cursor-pointer flex items-center justify-center transition-all ${selectedRate?.id === rate.id ? 'border-secondary bg-secondary/5 ring-1 ring-secondary' : 'border-gray-200 hover:border-secondary/50'}`}
                                                     >
                                                         <div className="flex items-center gap-3">
                                                             <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedRate?.id === rate.id ? 'border-blue-600' : 'border-gray-300'}`}>
@@ -384,7 +384,7 @@ const Checkout = () => {
                                                 <button
                                                     type="button"
                                                     onClick={submitShippingHandler}
-                                                    className="flex-1 bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2"
+                                                    className="flex-1 bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
                                                 >
                                                     Continue to Payment <ChevronRight size={18} />
                                                 </button>
@@ -402,12 +402,12 @@ const Checkout = () => {
                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
                                 <div className="flex items-center justify-between mb-8">
                                     <div className="flex items-center gap-3">
-                                        <div className="p-2 bg-blue-50 text-blue-400 rounded-lg">
+                                        <div className="p-2 bg-secondary/10 text-secondary rounded-lg">
                                             <CreditCard size={24} />
                                         </div>
                                         <h2 className="text-xl font-semibold text-gray-900">Payment Details</h2>
                                     </div>
-                                    <button onClick={() => setStep(1)} className="text-sm text-blue-400 hover:text-blue-800 font-medium">
+                                    <button onClick={() => setStep(1)} className="text-sm text-secondary hover:text-primary font-medium">
                                         Edit Shipping
                                     </button>
                                 </div>
@@ -432,13 +432,13 @@ const Checkout = () => {
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                             <div>
                                                 <label className={labelStyle}>Expiration Date</label>
-                                                <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent outline-none transition-all">
+                                                <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-secondary focus-within:border-transparent outline-none transition-all">
                                                     <div id="card-date" className="h-6"></div>
                                                 </div>
                                             </div>
                                             <div>
                                                 <label className={labelStyle}>CVV</label>
-                                                <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent outline-none transition-all">
+                                                <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-secondary focus-within:border-transparent outline-none transition-all">
                                                     <div id="card-cvv" className="h-6"></div>
                                                 </div>
                                             </div>
@@ -446,7 +446,7 @@ const Checkout = () => {
 
                                         <div>
                                             <label className={labelStyle}>Zip Code</label>
-                                            <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent outline-none transition-all">
+                                            <div className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus-within:ring-2 focus-within:ring-secondary focus-within:border-transparent outline-none transition-all">
                                                 <div id="card-postal-code" className="h-6"></div>
                                             </div>
                                         </div>
@@ -460,7 +460,7 @@ const Checkout = () => {
                                     <button
                                         onClick={initPayment}
                                         disabled={loading}
-                                        className="w-full bg-blue-900 text-white py-4 rounded-lg font-semibold hover:bg-blue-800 transition-colors flex items-center justify-center gap-2 mt-6 disabled:opacity-70 disabled:cursor-not-allowed"
+                                        className="w-full bg-primary text-white py-4 rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 mt-6 disabled:opacity-70 disabled:cursor-not-allowed"
                                     >
                                         {loading ? <Loader2 className="animate-spin" size={20} /> : 'Pay Now'}
                                     </button>

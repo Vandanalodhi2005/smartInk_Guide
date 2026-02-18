@@ -24,39 +24,53 @@ const HomeAbout = () => {
           <div className="w-full lg:w-1/2 space-y-6 text-left">
 
             <h2 className="text-blue-600 font-semibold uppercase tracking-wider text-sm">
-              About SmartInk Guide
+              Your Partner in Smart Printing
             </h2>
 
             <h3 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
-              Your Trusted Online Destination for Printing Essentials
+              Simplifying Your Printing Experience
             </h3>
 
             <p className="text-gray-600 leading-relaxed">
-              SmartInk Guide is an independent online retail platform offering
-              a broad range of printers, genuine-quality ink and toner cartridges,
-              and essential printing supplies.
+              At Smart Ink Guide, we focus on simplifying the way customers purchase printers and supplies online. From ink cartridges and toner to multifunction printers and paper, we provide detailed product information to help you make confident decisions.
             </p>
 
             <p className="text-gray-600 leading-relaxed">
-              We focus on transparency, product accuracy, and customer
-              satisfaction—helping homes, students, and businesses choose
-              the right printing solutions with confidence.
+              Whether you're printing school assignments, managing business documents, or running a small office, our goal is to provide dependable products and transparent information — all in one place.
             </p>
 
-            {/* BUTTONS */}
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Link
-                to="/about"
-                className="px-6 py-3 border border-[#20a1dd] text-[#20a1dd] font-semibold rounded-md hover:bg-[#20a1dd] transition duration-300"
-              >
-                Learn More
-              </Link>
+            <ul className="text-gray-600 space-y-2 mt-2">
+              <li className="flex items-center gap-2"><span className="text-[#20a1dd]">✔</span> Clear Product Descriptions</li>
+              <li className="flex items-center gap-2"><span className="text-[#20a1dd]">✔</span> Compatibility Guidance</li>
+              <li className="flex items-center gap-2"><span className="text-[#20a1dd]">✔</span> Responsive Customer Support</li>
+              <li className="flex items-center gap-2"><span className="text-[#20a1dd]">✔</span> Reliable Fulfillment</li>
+            </ul>
 
+            <div className="mt-6">
+              <h4 className="text-xl font-bold text-gray-900 mb-3">Who We Serve</h4>
+              <div className="space-y-4">
+                <div>
+                  <h5 className="font-semibold text-gray-800">🏠 Home Users & Students</h5>
+                  <p className="text-sm text-gray-600">Affordable printers and ink for everyday assignments, photos, and personal documents.</p>
+                </div>
+                <div>
+                  <h5 className="font-semibold text-gray-800">💼 Remote Professionals</h5>
+                  <p className="text-sm text-gray-600">Compact wireless printers and high-yield cartridges designed for home office productivity.</p>
+                </div>
+                <div>
+                  <h5 className="font-semibold text-gray-800">🏢 Small & Growing Businesses</h5>
+                  <p className="text-sm text-gray-600">High-volume laser printers, toner supplies, and cost-efficient printing solutions.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* BUTTONS */}
+            <div className="flex flex-wrap gap-4 pt-6">
               <Link
                 to="/printers"
-                className="px-6 py-3 bg-[#20a1dd] text-white font-semibold rounded-md hover:bg-[#20a1dd] transition duration-300"
+                className="px-6 py-3 bg-[#20a1dd] text-white font-semibold rounded-md hover:bg-[#1a8bbd] transition duration-300"
               >
-                Explore Products
+                Explore All Products
               </Link>
             </div>
 

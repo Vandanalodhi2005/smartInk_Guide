@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -10,30 +11,35 @@
 }
 
 :root {
-  /* Brand Colors - Blue 400 Theme */
-  --primary: #60a5fa;
-  --primary-dark: #3b82f6;
-  --primary-foreground: #ffffff;
+  /* Brand Colors - Strict Professional Theme */
+  /* Primary: Deep Navy (Text, Headings, Footer) */
+  --primary: #0b213e;
 
-  --secondary: #dbeafe;
-  --secondary-foreground: #2563eb;
+  /* Accent: Brand Blue (Buttons, Links, Highlights) */
+  --primary-dark: #091a32;
+  /* Darker shade of navy */
+  --secondary: #20a1dd;
+  /* Brand Blue */
 
   /* UI Colors */
-  --bg: #f0f9ff;
-  --card: #ffffff;
-  --text: #1e3a5f;
+  --bg: #ffffff;
+  --card: #f8fafc;
+  /* Slate-50 for slight contrast */
+  --text: #0b213e;
+  /* Deep Navy for text */
   --muted: #64748b;
-  --border: #bfdbfe;
+  /* Slate-500 for secondary text */
+  --border: #e2e8f0;
 
   /* Status Colors */
   --success: #10b981;
   --error: #ef4444;
   --warning: #f59e0b;
-  --info: #60a5fa;
+  --info: #20a1dd;
 
   /* Fonts */
-  --font-heading: 'Outfit', system-ui, sans-serif;
-  --font-body: 'Outfit', system-ui, sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
 }
 
 /* Dark mode removed */
@@ -45,12 +51,21 @@
 }
 
 body {
-  font-family: 'Outfit', system-ui, sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--text);
   line-height: 1.6;
   background: var(--bg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
 }
 
 body::after {

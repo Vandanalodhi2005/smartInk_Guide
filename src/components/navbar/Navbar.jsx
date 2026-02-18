@@ -21,7 +21,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobilePrinterOpen, setMobilePrinterOpen] = useState(false);
-  const [printerOpen, setPrinterOpen] = useState(false);
+
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -34,8 +34,15 @@ const Navbar = () => {
   const cartCount = cartItems.reduce((acc, item) => acc + Number(item.qty), 0);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      if (window.scrollY > 60) {
+        setIsScrolled(true);
+      } else if (window.scrollY < 40) {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -180,38 +187,11 @@ const Navbar = () => {
 
             <Link to="/" className="hover:text-blue-600">Home</Link>
 
-            {/* PRINTER DROPDOWN */}
-            <div
-              className="relative"
-              onMouseEnter={() => setPrinterOpen(true)}
-              onMouseLeave={() => setPrinterOpen(false)}
-            >
-              <button className="flex items-center gap-1 hover:text-blue-600">
-                Printers
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform ${printerOpen ? "rotate-180" : ""
-                    }`}
-                />
-              </button>
-
-              <AnimatePresence>
-                {printerOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 15 }}
-                    transition={{ duration: 0.25 }}
-                    className="absolute left-0 mt-4 w-64 bg-white shadow-xl rounded-xl p-4 border"
-                  >
-                    <Link to="/home-printers" className="block py-2 hover:text-blue-600">Home Printer</Link>
-                    <Link to="/office-printers" className="block py-2 hover:text-blue-600">Office Printer</Link>
-                    <Link to="/laser-printers" className="block py-2 hover:text-blue-600">Laser Printers</Link>
-                    <Link to="/inkjet-printers" className="block py-2 hover:text-blue-600">Inkjet Printers</Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            {/* DIRECT LINKS (Previously Dropdown) */}
+            <Link to="/home-printers" className="hover:text-blue-600">Home Printers</Link>
+            <Link to="/office-printers" className="hover:text-blue-600">Office Printers</Link>
+            <Link to="/laser-printers" className="hover:text-blue-600">Laser Printers</Link>
+            <Link to="/inkjet-printers" className="hover:text-blue-600">Inkjet Printers</Link>
 
             <Link to="/ink-toner" className="hover:text-blue-600">Ink & Toner</Link>
             <Link to="/blogs" className="hover:text-blue-600">Blogs</Link>

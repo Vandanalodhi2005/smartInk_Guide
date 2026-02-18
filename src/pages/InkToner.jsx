@@ -179,7 +179,7 @@ const InkToner = ({ forcedCategory, forcedTitle, forcedDescription }) => {
 
           <div className="ink-controls-bottom">
             <div className="ink-stats">
-              <span className="text-sm font-bold text-slate-500">
+              <span className="text-sm font-bold text-muted">
                 Found {filteredAndSortedProducts.length} Results
               </span>
             </div>
@@ -195,7 +195,7 @@ const InkToner = ({ forcedCategory, forcedTitle, forcedDescription }) => {
                     <option key={brand} value={brand}>{brand}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" size={16} />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted" size={16} />
               </div>
               <div className="ink-select-wrapper">
                 <select
@@ -208,7 +208,7 @@ const InkToner = ({ forcedCategory, forcedTitle, forcedDescription }) => {
                   <option value="price-high">Highest Price</option>
                   <option value="rating">Top Rated</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" size={16} />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted" size={16} />
               </div>
             </div>
           </div>
@@ -287,7 +287,7 @@ const InkToner = ({ forcedCategory, forcedTitle, forcedDescription }) => {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-              className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full"
+              className="w-12 h-12 border-4 border-secondary border-t-transparent rounded-full"
             />
           </div>
         )}

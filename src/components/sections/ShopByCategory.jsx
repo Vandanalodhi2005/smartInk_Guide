@@ -6,9 +6,12 @@ import i3 from "../../assets/i3.jpg";
 
 const ShopByCategory = () => {
   const categories = [
-    { image: i1, title: "Printers", link: "/printers", badge: "Popular" },
-    { image: i3, title: "Ink Cartridges", link: "/ink-toner", badge: "Best Seller" },
-    { image: i2, title: "Toner & Supplies", link: "/ink-toner", badge: "Premium" },
+    { image: i1, title: "Printers", link: "/printers", badge: "Inkjet & Laser" },
+    { image: i3, title: "Ink Cartridges", link: "/ink-toner", badge: "Original & Compatible" },
+    { image: i2, title: "Toner Cartridges", link: "/ink-toner", badge: "High Yield" },
+    { image: i1, title: "Scanners", link: "/printers", badge: "Document & Portable" },
+    { image: i3, title: "Paper & Media", link: "/ink-toner", badge: "Photo & Everyday" },
+    { image: i2, title: "Accessories", link: "/printers", badge: "Cables & Essentials" },
   ];
 
   return (
@@ -65,14 +68,63 @@ const ShopByCategory = () => {
 
                 <Link
                   to={category.link}
-                  className="inline-block px-6 py-3 bg-[#20a1dd] hover:bg-[#20a1dd] rounded-lg font-semibold transition-all duration-300 shadow-md"
+                  className="inline-block px-6 py-3 bg-[#20a1dd] hover:bg-[#1a8bbd] rounded-lg font-semibold transition-all duration-300 shadow-md"
                 >
                   Shop Now
                 </Link>
               </div>
             </motion.div>
           ))}
+        </div>
 
+        {/* SOLUTIONS SECTION */}
+        <div className="mt-20">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-4xl font-bold text-[#20a1dd]">
+              Solutions for Every Printing Need
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Home & Personal</h3>
+              <p className="text-gray-600 mb-4 text-sm">Reliable printers and cost-effective ink solutions for daily tasks.</p>
+              <Link to="/printers" className="text-[#20a1dd] font-semibold hover:underline">Shop Home Printers &rarr;</Link>
+            </div>
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Small Business</h3>
+              <p className="text-gray-600 mb-4 text-sm">Multifunction printers and high-capacity toner built for efficiency.</p>
+              <Link to="/printers" className="text-[#20a1dd] font-semibold hover:underline">Shop Business Printers &rarr;</Link>
+            </div>
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">High-Volume Office</h3>
+              <p className="text-gray-600 mb-4 text-sm">Enterprise-ready laser printers designed for demanding workflows.</p>
+              <Link to="/printers" className="text-[#20a1dd] font-semibold hover:underline">Explore Office Solutions &rarr;</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* FEATURED PRODUCTS SECTION */}
+        <div className="mt-20 text-center">
+          <h2 className="text-2xl sm:text-4xl font-bold text-[#20a1dd] mb-4">
+            Featured Products
+          </h2>
+          <p className="max-w-2xl mx-auto text-gray-600 mb-8">
+            Explore our featured selection of printers and ink supplies chosen for performance, reliability, and value.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto text-left mb-8">
+            <div className="flex items-center gap-2 text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100"><span className="text-[#20a1dd]">✔</span> Wireless Connectivity</div>
+            <div className="flex items-center gap-2 text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100"><span className="text-[#20a1dd]">✔</span> High Print Speeds</div>
+            <div className="flex items-center gap-2 text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100"><span className="text-[#20a1dd]">✔</span> Energy-Efficient Designs</div>
+            <div className="flex items-center gap-2 text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100"><span className="text-[#20a1dd]">✔</span> Compatible Supplies</div>
+          </div>
+
+          <Link
+            to="/printers"
+            className="inline-block px-8 py-3 bg-[#20a1dd] text-white font-semibold rounded-lg hover:bg-[#1a8bbd] transition shadow-md"
+          >
+            View All Products
+          </Link>
         </div>
       </div>
 

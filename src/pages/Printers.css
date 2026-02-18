@@ -41,7 +41,7 @@
     font-weight: 900;
     letter-spacing: -0.05em;
     margin-bottom: 16px;
-    background: linear-gradient(135deg, #1064a5 0%, #3bb2f6 100%);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -49,10 +49,29 @@
 
 .printers-hero-header p {
     font-size: 1.25rem;
-    color: #64748b;
+    color: var(--muted);
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
+}
+
+.hero-image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-image {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+    transition: transform 0.5s ease;
+}
+
+.hero-image:hover {
+    transform: scale(1.02);
 }
 
 /* Glassmorphic Control Panel */
@@ -102,8 +121,8 @@
 
 .printer-search-container input:focus {
     outline: none;
-    border-color: #3398e5;
-    box-shadow: 0 0 0 5px rgba(28, 81, 167, 0.08);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 5px rgba(32, 161, 221, 0.08);
     background: #fff;
 }
 
@@ -117,7 +136,7 @@
 }
 
 .printer-search-container input:focus+.printer-search-icon {
-    color: #39a9dd;
+    color: var(--primary);
 }
 
 /* Control Bottom Row */
@@ -173,8 +192,8 @@
 
 .professional-select:focus {
     outline: none;
-    border-color: #3ba2f6;
-    box-shadow: 0 0 0 4px rgba(18, 62, 133, 0.05);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(32, 161, 221, 0.05);
 }
 
 .price-slider-panel {
@@ -207,7 +226,7 @@
     appearance: none;
     width: 16px;
     height: 16px;
-    background: #3b82f6;
+    background: var(--primary);
     border-radius: 50%;
     cursor: pointer;
     border: 3px solid #fff;
@@ -217,7 +236,7 @@
 .price-value {
     font-size: 0.875rem;
     font-weight: 800;
-    color: #0c338e;
+    color: var(--primary-dark);
     min-width: 60px;
     text-align: right;
 }
@@ -284,8 +303,8 @@
 }
 
 .status-in {
-    background: rgba(16, 145, 185, 0.1);
-    color: #059669;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
     border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
@@ -312,8 +331,8 @@
 .brand-chip {
     font-size: 0.7rem;
     font-weight: 900;
-    color: #3babf6;
-    background: rgba(34, 110, 171, 0.08);
+    color: var(--primary);
+    background: rgba(32, 161, 221, 0.08);
     padding: 6px 14px;
     border-radius: 10px;
     text-transform: uppercase;
@@ -371,7 +390,7 @@
 .current-price-bold {
     font-size: 1.875rem;
     font-weight: 950;
-    color: #0f172a;
+    color: var(--primary-dark);
     letter-spacing: -0.02em;
 }
 
@@ -379,7 +398,7 @@
     width: 60px;
     height: 60px;
     border-radius: 20px;
-    background: #0f172a;
+    background: var(--primary-dark);
     color: #fff;
     display: flex;
     align-items: center;
@@ -391,7 +410,7 @@
 }
 
 .cart-btn-circle:hover {
-    background: #3bb2f6;
+    background: var(--primary);
     transform: scale(1.05) rotate(5deg);
     box-shadow: 0 15px 30px rgba(53, 119, 226, 0.3);
 }
@@ -426,7 +445,7 @@
 .buy-now-btn-premium {
     padding: 14px;
     border-radius: 16px;
-    background: #1976a1;
+    background: var(--secondary);
     color: #fff;
     border: none;
     font-size: 0.8rem;
@@ -441,7 +460,7 @@
 }
 
 .buy-now-btn-premium:hover {
-    background: #3ba5f6;
+    background: var(--primary);
     transform: translateY(-2px);
     box-shadow: 0 15px 30px rgba(18, 132, 204, 0.25);
 }
@@ -467,7 +486,7 @@
 
 .btn-load-more {
     padding: 20px 60px;
-    background: #195885;
+    background: var(--secondary);
     color: #fff;
     border: none;
     border-radius: 24px;
@@ -481,7 +500,7 @@
 .btn-load-more:hover:not(:disabled) {
     transform: translateY(-5px);
     box-shadow: 0 25px 50px -10px rgba(15, 23, 42, 0.4);
-    background: #0b5d94;
+    background: var(--primary-dark);
 }
 
 .btn-load-more:disabled {

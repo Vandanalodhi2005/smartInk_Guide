@@ -105,6 +105,20 @@ const PolicyHub = () => {
             ),
             path: '/disclaimer',
             gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+        },
+        {
+            id: 'consumer-rights',
+            title: 'Consumer Rights',
+            description: 'Your rights regarding transparency, security, and fair treatment as a customer',
+            icon: (
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm1-5c-.55 0-1 .45-1 1v2H9v-2c0-1.66 1.34-3 3-3s3 1.34 3 3-1.34 3-3 3v2h-.5c-.28 0-.5.22-.5.5v2.5H12V11z" />
+                    <circle cx="12" cy="17" r="1" />
+                    <path d="M11 15h2v2h-2zm0-8h2v6h-2z" />
+                </svg>
+            ),
+            path: '/consumer-rights',
+            gradient: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
         }
     ];
 

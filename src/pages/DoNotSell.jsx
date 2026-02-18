@@ -1,4 +1,5 @@
 import '../styles/PolicyPages.css';
+import { Mail, MapPin, Globe } from 'lucide-react';
 
 const DoNotSell = () => {
     return (
@@ -7,11 +8,12 @@ const DoNotSell = () => {
                 {/* Hero Section */}
                 <div className="policy-hero">
                     <div className="policy-hero-content">
-                        <h1>Do Not Sell My Personal Information</h1>
-                        <p className="last-updated">Last Updated: January 26, 2026</p>
+                        <h1>Do Not Sell Or Share My Personal Information</h1>
+                        <p className="last-updated">Effective Date: February 18, 2026</p>
                         <p className="intro-text">
-                            Your privacy rights under CCPA/CPRA are important to us. We're committed to transparency
-                            and giving you control over your personal information.
+                            This page is provided in accordance with the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA), and other applicable U.S. privacy laws.
+                            <br /><br />
+                            Smart Ink Guide respects your privacy and is committed to protecting your personal information.
                         </p>
                     </div>
                 </div>
@@ -22,11 +24,11 @@ const DoNotSell = () => {
                         <div className="policy-info-card" style={{ animationDelay: '0.1s' }}>
                             <div className="icon-wrapper">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                                 </svg>
                             </div>
-                            <h3>We Don't Sell Data</h3>
-                            <p>Your information is never sold to third parties</p>
+                            <h3>No Sale</h3>
+                            <p>We do not sell personal data</p>
                         </div>
 
                         <div className="policy-info-card" style={{ animationDelay: '0.2s' }}>
@@ -36,220 +38,135 @@ const DoNotSell = () => {
                                 </svg>
                             </div>
                             <h3>Your Rights</h3>
-                            <p>Full CCPA/CPRA privacy rights protection</p>
+                            <p>CCPA/CPRA Compliant</p>
                         </div>
 
                         <div className="policy-info-card" style={{ animationDelay: '0.3s' }}>
                             <div className="icon-wrapper">
                                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
                                 </svg>
                             </div>
-                            <h3>Easy Requests</h3>
-                            <p>Simple process to exercise your rights</p>
-                        </div>
-
-                        <div className="policy-info-card" style={{ animationDelay: '0.4s' }}>
-                            <div className="icon-wrapper">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                                </svg>
-                            </div>
-                            <h3>Transparent</h3>
-                            <p>Clear information about data usage</p>
+                            <h3>Transparency</h3>
+                            <p>Clear data practices</p>
                         </div>
                     </div>
 
                     {/* Main Content */}
                     <div className="policy-content-card">
+
+                        {/* 1. Our Position on Selling Personal Information */}
                         <section className="policy-section">
-                            <h2>We Do NOT Sell or Share Personal Information</h2>
-                            <p>Prints Carts does not sell, share, or exchange personal information for advertising, remarketing,
-                                or commercial data-sharing purposes as defined under CCPA/CPRA.</p>
-
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>❌ No Data Sales</h4>
-                                    <p>We never sell personal information</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>❌ No Ad Sharing</h4>
-                                    <p>No cross-context behavioral advertising</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>❌ No Tracking Cookies</h4>
-                                    <p>No third-party advertising cookies</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>❌ No Retargeting</h4>
-                                    <p>No remarketing systems used</p>
-                                </div>
-                            </div>
-
-                            <p className="policy-note">
-                                Your personal information is used only for essential business functions such as order processing,
-                                secure payments, and customer communication.
-                            </p>
-                        </section>
-
-                        <section className="policy-section">
-                            <h2>Your Privacy Rights Under CCPA/CPRA</h2>
-                            <p>California residents have the following rights:</p>
-
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>📋 Right to Know</h4>
-                                    <p>Request information about personal data we collect, use, disclose, or retain</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🗑️ Right to Delete</h4>
-                                    <p>Request deletion of your personal information (subject to legal requirements)</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>✏️ Right to Correct</h4>
-                                    <p>Request corrections to inaccurate information we hold</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🚫 Right to Opt Out</h4>
-                                    <p>Opt out of any sale or sharing of personal information</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🔒 Limit Sensitive Info</h4>
-                                    <p>Request restrictions on use of sensitive personal information</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>⚖️ Non-Discrimination</h4>
-                                    <p>Equal service regardless of exercising your rights</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        <section className="policy-section">
-                            <h2>How to Submit a Request</h2>
-                            <p>If you wish to exercise any CCPA/CPRA privacy rights:</p>
-
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>📧 Email Request</h4>
-                                    <p><a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>📬 Mail Request</h4>
-                                    <p>7181 Beacon Dr 15<br />Reno, NV 89506</p>
-                                </div>
-                            </div>
-
-                            <h3>Please Include:</h3>
+                            <h2>1. Our Position on Selling Personal Information</h2>
+                            <p>Smart Ink Guide does NOT sell personal information. We do not:</p>
                             <ul>
-                                <li>Your full name</li>
-                                <li>Your contact email address</li>
-                                <li>The specific request (Access, Delete, Correct, Opt-Out, etc.)</li>
-                                <li>Any relevant account information</li>
+                                <li>Sell customer data to third parties</li>
+                                <li>Exchange personal data for monetary compensation</li>
+                                <li>Share customer data for independent third-party marketing</li>
                             </ul>
-
-                            <p className="policy-note">
-                                To protect your privacy, we may request additional information to verify your identity before
-                                processing your request.
-                            </p>
+                            <p className="policy-note">We collect and use personal information only for legitimate business purposes, including order fulfillment, customer support, and website improvement.</p>
                         </section>
 
+                        {/* 2. What “Sell” or “Share” Means Under California Law */}
                         <section className="policy-section">
-                            <h2>Categories of Personal Information</h2>
-                            <p>We collect only information necessary for essential e-commerce operations:</p>
+                            <h2>2. What “Sell” or “Share” Means Under California Law</h2>
+                            <p>Under the CCPA/CPRA, “sell” or “share” can include:</p>
                             <ul>
-                                <li>Name and contact details</li>
-                                <li>Shipping and billing address</li>
-                                <li>Email for order confirmations</li>
-                                <li>Payment details (processed securely through third-party systems)</li>
-                                <li>Order history and preferences</li>
-                                <li>Basic website session data (non-marketing cookies)</li>
+                                <li>Providing personal information to third parties for cross-context behavioral advertising</li>
+                                <li>Exchanging data for valuable consideration</li>
                             </ul>
-                            <p className="policy-note">
-                                We do not collect biometric, geolocation, or highly sensitive information for marketing purposes.
-                            </p>
+                            <p>Even if no money changes hands, certain advertising activities may legally qualify as “sharing.” Smart Ink Guide does not intentionally sell or share personal information as defined by California law.</p>
                         </section>
 
+                        {/* 3. Categories of Information We May Collect */}
                         <section className="policy-section">
-                            <h2>Purposes for Using Personal Information</h2>
-
-                            <h3>We Use Information For:</h3>
+                            <h2>3. Categories of Information We May Collect</h2>
+                            <p>For transparency, we may collect the following categories of personal information:</p>
                             <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>✅ Order Processing</h4>
-                                    <p>Fulfillment and delivery</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>✅ Secure Payments</h4>
-                                    <p>Transaction processing</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>✅ Customer Support</h4>
-                                    <p>Assistance and communication</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>✅ Fraud Prevention</h4>
-                                    <p>Security and protection</p>
-                                </div>
+                                <div className="feature-item"><h4>Identifiers</h4><p>Name, email, IP address</p></div>
+                                <div className="feature-item"><h4>Commercial Info</h4><p>Purchase history</p></div>
+                                <div className="feature-item"><h4>Internet Activity</h4><p>Pages viewed, browsing behavior</p></div>
+                                <div className="feature-item"><h4>Device Info</h4><p>Browser type, device type</p></div>
                             </div>
+                            <p className="mt-4">This information is used strictly for business operations and service delivery.</p>
+                        </section>
 
-                            <h3>We Do NOT Use For:</h3>
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>❌ Behavioral Advertising</h4>
-                                    <p>No targeted ads</p>
+                        {/* 4. Your California Privacy Rights */}
+                        <section className="policy-section">
+                            <h2>4. Your California Privacy Rights</h2>
+                            <p>If you are a California resident, you have the right to:</p>
+                            <div className="space-y-4">
+                                <div>
+                                    <h4 className="font-bold text-gray-800">✔ Right to Know</h4>
+                                    <p>Request details about the personal information we collect and how it is used.</p>
                                 </div>
-                                <div className="feature-item">
-                                    <h4>❌ Cross-Site Tracking</h4>
-                                    <p>No tracking across websites</p>
+                                <div>
+                                    <h4 className="font-bold text-gray-800">✔ Right to Delete</h4>
+                                    <p>Request deletion of personal information, subject to legal exceptions.</p>
                                 </div>
-                                <div className="feature-item">
-                                    <h4>❌ Selling Data</h4>
-                                    <p>Never sold to third parties</p>
+                                <div>
+                                    <h4 className="font-bold text-gray-800">✔ Right to Correct</h4>
+                                    <p>Request correction of inaccurate personal information.</p>
                                 </div>
-                                <div className="feature-item">
-                                    <h4>❌ Marketing Profiling</h4>
-                                    <p>No automated profiling</p>
+                                <div>
+                                    <h4 className="font-bold text-gray-800">✔ Right to Opt-Out</h4>
+                                    <p>Request that we do not sell or share your personal information. Although Smart Ink Guide does not sell personal information, you may still submit an opt-out request for record purposes.</p>
+                                </div>
+                                <div>
+                                    <h4 className="font-bold text-gray-800">✔ Right to Non-Discrimination</h4>
+                                    <p>We will not discriminate against you for exercising your privacy rights.</p>
                                 </div>
                             </div>
                         </section>
 
+                        {/* 5. How to Submit a Request */}
                         <section className="policy-section">
-                            <h2>Third-Party Service Providers</h2>
-                            <p>We share data only with essential service providers:</p>
-                            <ul>
-                                <li>Payment processors (for secure transactions)</li>
-                                <li>Shipping carriers (for delivery)</li>
-                                <li>Customer communication tools</li>
-                                <li>Fraud-prevention services</li>
-                                <li>Hosting and IT infrastructure providers</li>
-                            </ul>
-                            <p className="policy-note">
-                                These partners are contractually required to handle information securely and cannot use it for
-                                advertising or resale.
-                            </p>
-                        </section>
-
-                        <section className="policy-section">
-                            <h2>Minors' Information</h2>
-                            <div className="feature-grid">
-                                <div className="feature-item">
-                                    <h4>🚫 Under 13</h4>
-                                    <p>We do not knowingly collect information from children under 13</p>
-                                </div>
-                                <div className="feature-item">
-                                    <h4>🔒 Under 16</h4>
-                                    <p>We do not sell or share data of minors under 16</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* Contact Section */}
-                        <div className="contact-info-box">
-                            <h3>Questions About Your Privacy Rights?</h3>
+                            <h2>5. How to Submit a Request</h2>
+                            <p>To exercise your rights, you may contact us:</p>
                             <p>📧 Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
-                            <p>📍 Address: 7181 Beacon Dr 15, Reno, NV 89506</p>
-                            <p>🌐 Website: <a href="https://www.smartinkguide.com">www.smartinkguide.com</a></p>
-                            <p>We're committed to responding within a reasonable timeframe.</p>
+                            <p>Subject Line: “Privacy Rights Request”</p>
+                            <p className="mt-4">Please include:</p>
+                            <ul>
+                                <li>Full name</li>
+                                <li>Email address associated with your order or account</li>
+                                <li>Description of your request</li>
+                            </ul>
+                            <p className="policy-note">We may need to verify your identity before processing your request. We will respond within the time frame required by applicable law.</p>
+                        </section>
+
+                        {/* 6. Authorized Agents */}
+                        <section className="policy-section">
+                            <h2>6. Authorized Agents</h2>
+                            <p>If you submit a request through an authorized agent, we may require written authorization, proof of identity, and verification documentation to protect against fraudulent requests.</p>
+                        </section>
+
+                        {/* 7. Advertising & Tracking Disclosure */}
+                        <section className="policy-section">
+                            <h2>7. Advertising & Tracking Disclosure</h2>
+                            <p>Smart Ink Guide may use analytics tools, advertising services, and remarketing technologies to help improve user experience and measure advertising performance.</p>
+                            <p>You may manage cookie preferences through your browser settings or by reviewing our Cookie Policy.</p>
+                        </section>
+
+                        {/* 8. Data Retention */}
+                        <section className="policy-section">
+                            <h2>8. Data Retention</h2>
+                            <p>We retain personal information only as long as necessary to fulfill transactions, comply with legal obligations, resolve disputes, and maintain business records.</p>
+                        </section>
+
+                        {/* 9. Updates to This Page */}
+                        <section className="policy-section">
+                            <h2>9. Updates to This Page</h2>
+                            <p>We reserve the right to update this page to reflect changes in legal requirements, business practices, and technology. Updates become effective upon posting.</p>
+                        </section>
+
+                        {/* 10. Contact Information */}
+                        <div className="contact-info-box">
+                            <h3>10. Contact Information</h3>
+                            <p><strong>Smart Ink Guide - Privacy Compliance Department</strong><br />
+                                30 N GOULD STREET SUITE R<br />
+                                SHERIDAN, WY 82801<br />
+                                United States</p>
+                            <p className="mt-2">Email: <a href="mailto:support@smartinkguide.com">support@smartinkguide.com</a></p>
                         </div>
                     </div>
                 </div>
