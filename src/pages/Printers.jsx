@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
 import { addToCart } from '../redux/actions/cartActions';
 import { useCart } from '../context/CartContext';
-import { Eye, ShoppingBag, ChevronDown, Search, Filter, Home, Building2, Printer as PrinterIcon, Zap } from 'lucide-react';
+import { Eye, ShoppingBag, ChevronDown, Search, Filter, Home, Building2, Printer as PrinterIcon, Zap, X, Check } from 'lucide-react';
 import './Printers.css';
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -25,6 +25,32 @@ const Printers = ({ forcedCategory, forcedUsageCategory }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
   const { addToCart: contextAddToCart } = useCart();
+
+  // Advanced Filters State
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    technology: [],
+    usageCategory: [],
+    allInOneType: [],
+    wireless: [],
+    mainFunction: [],
+    brand: []
+  });
+
+  const uniqueBrands = useMemo(() => {
+    const brands = new Set(allProducts.map(p => p.brand).filter(Boolean));
+    return [...brands].sort();
+  }, [allProducts]);
+
+  const handleFilterChange = (category, value) => {
+    setFilters(prev => {
+      const current = prev[category];
+      const updated = current.includes(value)
+        ? current.filter(item => item !== value)
+        : [...current, value];
+      return { ...prev, [category]: updated };
+    });
+  };
 
   // Sync state with URL params changes
   useEffect(() => {
@@ -100,6 +126,27 @@ const Printers = ({ forcedCategory, forcedUsageCategory }) => {
   const filteredAndSortedPrinters = useMemo(() => {
     let filtered = allProducts || [];
     filtered = filtered.filter(p => p.price >= priceRange.min && p.price <= priceRange.max);
+
+    // Apply Advanced Filters
+    // Apply Advanced Filters (Multi-Select)
+    if (filters.brand.length > 0) {
+      filtered = filtered.filter(p => filters.brand.includes(p.brand));
+    }
+    if (filters.technology.length > 0) {
+      filtered = filtered.filter(p => filters.technology.some(t => p.technology?.includes(t)));
+    }
+    if (filters.usageCategory.length > 0) {
+      filtered = filtered.filter(p => filters.usageCategory.some(u => p.usageCategory?.includes(u)));
+    }
+    if (filters.allInOneType.length > 0) {
+      filtered = filtered.filter(p => filters.allInOneType.some(type => p.allInOneType?.includes(type)));
+    }
+    if (filters.wireless.length > 0) {
+      filtered = filtered.filter(p => filters.wireless.includes(p.wireless));
+    }
+    if (filters.mainFunction.length > 0) {
+      filtered = filtered.filter(p => filters.mainFunction.some(f => p.mainFunction?.includes(f)));
+    }
 
     const sorted = [...filtered];
     switch (sortBy) {
@@ -225,20 +272,96 @@ const Printers = ({ forcedCategory, forcedUsageCategory }) => {
                 />
                 <span className="price-value">${priceRange.max}</span>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="printer-select-box">
+        {/* Permanent Advanced Filter Panel */}
+        <div className="overflow-hidden bg-white border border-slate-200 shadow-xl rounded-2xl mt-4 relative z-10 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+            <div className="filter-group">
+              <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Technology</label>
+              <div className="relative">
                 <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="professional-select"
+                  className="professional-select w-full text-sm py-2"
+                  value={filters.technology}
+                  onChange={(e) => setFilters({ ...filters, technology: e.target.value })}
                 >
-                  <option value="featured">Best Match</option>
-                  <option value="price-low">Lowest Price</option>
-                  <option value="price-high">Highest Price</option>
-                  <option value="rating">Top Rated</option>
-                  <option value="name">A-Z Name</option>
+                  <option value="">Any</option>
+                  <option value="Inkjet">Inkjet</option>
+                  <option value="Laser">Laser</option>
+                  <option value="Laser (B/W)">Laser (B/W)</option>
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none size-4" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none size-3" />
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Usage</label>
+              <div className="relative">
+                <select
+                  className="professional-select w-full text-sm py-2"
+                  value={filters.usageCategory}
+                  onChange={(e) => setFilters({ ...filters, usageCategory: e.target.value })}
+                >
+                  <option value="">Any</option>
+                  <option value="Home">Home</option>
+                  <option value="Office">Office</option>
+                  <option value="Mobile">Mobile</option>
+                  <option value="Photo">Photo</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none size-3" />
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Type</label>
+              <div className="relative">
+                <select
+                  className="professional-select w-full text-sm py-2"
+                  value={filters.allInOneType}
+                  onChange={(e) => setFilters({ ...filters, allInOneType: e.target.value })}
+                >
+                  <option value="">Any</option>
+                  <option value="Multifunction">Multifunction</option>
+                  <option value="Single Function">Single Function</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none size-3" />
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Wireless</label>
+              <div className="relative">
+                <select
+                  className="professional-select w-full text-sm py-2"
+                  value={filters.wireless}
+                  onChange={(e) => setFilters({ ...filters, wireless: e.target.value })}
+                >
+                  <option value="">Any</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none size-3" />
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Function</label>
+              <div className="relative">
+                <select
+                  className="professional-select w-full text-sm py-2"
+                  value={filters.mainFunction}
+                  onChange={(e) => setFilters({ ...filters, mainFunction: e.target.value })}
+                >
+                  <option value="">Any</option>
+                  <option value="Print">Print</option>
+                  <option value="Scan">Scan</option>
+                  <option value="Copy">Copy</option>
+                  <option value="Fax">Fax</option>
+                  <option value="Print Only">Print Only</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none size-3" />
               </div>
             </div>
           </div>
@@ -350,7 +473,7 @@ const Printers = ({ forcedCategory, forcedUsageCategory }) => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 

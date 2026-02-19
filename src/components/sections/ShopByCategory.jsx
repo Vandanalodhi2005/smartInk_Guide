@@ -1,22 +1,34 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import i1 from "../../assets/i1.jpg";
-import i2 from "../../assets/i2.jpg";
-import i3 from "../../assets/i3.jpg";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ShopByCategory = () => {
+  const scrollRef = useRef(null);
+
   const categories = [
-    { image: i1, title: "Printers", link: "/printers", badge: "Inkjet & Laser" },
-    { image: i3, title: "Ink Cartridges", link: "/ink-toner", badge: "Original & Compatible" },
-    { image: i2, title: "Toner Cartridges", link: "/ink-toner", badge: "High Yield" },
-    { image: i1, title: "Scanners", link: "/printers", badge: "Document & Portable" },
-    { image: i3, title: "Paper & Media", link: "/ink-toner", badge: "Photo & Everyday" },
-    { image: i2, title: "Accessories", link: "/printers", badge: "Cables & Essentials" },
+    { image: "/homePrinter.png", title: "Home Printers", link: "/home-printers", badge: "Compact & Photo" },
+    { image: "/ofiicePrinter.png", title: "Office Printers", link: "/office-printers", badge: "High Volume" },
+    { image: "/lasserPrinter.png", title: "Laser Printers", link: "/laser-printers", badge: "Fast & Sharp" },
+    { image: "/inkjetPrinter.png", title: "Inkjet Printers", link: "/inkjet-printers", badge: "Vibrant Color" },
+    { image: "/ink&toner.png", title: "Ink & Toner", link: "/ink-toner", badge: "Supplies" },
   ];
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const { current } = scrollRef;
+      const scrollAmount = 300; // Adjust scroll distance
+      if (direction === "left") {
+        current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      } else {
+        current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      }
+    }
+  };
 
   return (
     <section className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative group">
 
         {/* Header */}
         <div className="text-center mb-10">
@@ -28,47 +40,58 @@ const ShopByCategory = () => {
           </p>
         </div>
 
-        {/* Horizontal Scroll Container */}
-        <div className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 no-scrollbar">
+        {/* Slider Controls (Desktop) */}
+        <button
+          onClick={() => scroll("left")}
+          className="absolute left-0 top-[45%] -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#20a1dd] p-3 rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 -ml-4 md:ml-0 hidden md:block"
+          aria-label="Previous category"
+        >
+          <ChevronLeft size={24} />
+        </button>
 
+        <button
+          onClick={() => scroll("right")}
+          className="absolute right-0 top-[45%] -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#20a1dd] p-3 rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 -mr-4 md:mr-0 hidden md:block"
+          aria-label="Next category"
+        >
+          <ChevronRight size={24} />
+        </button>
+
+        {/* Horizontal Scroll Container */}
+        <div
+          ref={scrollRef}
+          className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 px-4"
+        >
           {categories.map((category, index) => (
             <motion.div
               key={index}
               whileHover={{ y: -6 }}
               transition={{ duration: 0.3 }}
-              className="relative min-w-[85%] sm:min-w-[45%] lg:min-w-[30%] snap-center group rounded-2xl overflow-hidden"
+              className="relative min-w-[85%] sm:min-w-[45%] lg:min-w-[30%] snap-center group/card rounded-2xl overflow-hidden bg-white"
             >
-              {/* Glow Border */}
-              <div className="absolute inset-0 rounded-2xl border border-[#20a1dd] opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none shadow-[0_0_25px_rgba(59,130,246,0.25)]"></div>
-
-              {/* Image */}
-              <div className="relative h-60 sm:h-72 overflow-hidden rounded-2xl">
+              {/* Image Container */}
+              <div className="relative h-60 sm:h-72 overflow-hidden rounded-2xl border border-gray-100">
                 <img
                   src={category.image}
                   alt={category.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover/card:scale-105"
                 />
 
-                {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-
                 {/* Floating Badge */}
-                <div className="absolute top-4 left-4 bg-[#20a1dd] text-white text-xs px-3 py-1 rounded-full shadow-md">
+                <div className="absolute top-4 left-4 bg-[#20a1dd] text-white text-xs px-3 py-1 rounded-full shadow-md z-10">
                   {category.badge}
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <h3 className="text-xl sm:text-2xl font-semibold mb-4 relative inline-block">
+              {/* Content (Below Image) */}
+              <div className="pt-6 text-center">
+                <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover/card:text-[#20a1dd] transition-colors">
                   {category.title}
-                  {/* Animated Underline */}
-                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#20a1dd] transition-all duration-300 group-hover:w-full"></span>
                 </h3>
 
                 <Link
                   to={category.link}
-                  className="inline-block px-6 py-3 bg-[#20a1dd] hover:bg-[#1a8bbd] rounded-lg font-semibold transition-all duration-300 shadow-md"
+                  className="inline-block px-8 py-2.5 border-2 border-[#20a1dd] text-[#20a1dd] font-bold rounded-full hover:bg-[#20a1dd] hover:text-white transition-all duration-300"
                 >
                   Shop Now
                 </Link>
@@ -84,18 +107,18 @@ const ShopByCategory = () => {
               Solutions for Every Printing Need
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition">
+          <div className="flex md:grid md:grid-cols-3 gap-4 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory">
+            <div className="min-w-[280px] md:min-w-0 bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition snap-center">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Home & Personal</h3>
               <p className="text-gray-600 mb-4 text-sm">Reliable printers and cost-effective ink solutions for daily tasks.</p>
               <Link to="/printers" className="text-[#20a1dd] font-semibold hover:underline">Shop Home Printers &rarr;</Link>
             </div>
-            <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition">
+            <div className="min-w-[280px] md:min-w-0 bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition snap-center">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Small Business</h3>
               <p className="text-gray-600 mb-4 text-sm">Multifunction printers and high-capacity toner built for efficiency.</p>
               <Link to="/printers" className="text-[#20a1dd] font-semibold hover:underline">Shop Business Printers &rarr;</Link>
             </div>
-            <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition">
+            <div className="min-w-[280px] md:min-w-0 bg-gray-50 p-6 rounded-xl border border-gray-100 text-center hover:shadow-lg transition snap-center">
               <h3 className="text-xl font-bold text-gray-900 mb-2">High-Volume Office</h3>
               <p className="text-gray-600 mb-4 text-sm">Enterprise-ready laser printers designed for demanding workflows.</p>
               <Link to="/printers" className="text-[#20a1dd] font-semibold hover:underline">Explore Office Solutions &rarr;</Link>
@@ -128,14 +151,30 @@ const ShopByCategory = () => {
         </div>
       </div>
 
-      {/* Hide Scrollbar */}
+      {/* Custom Scrollbar Styling - Mobile Only */}
       <style>{`
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
+        @media (max-width: 1024px) {
+          .overflow-x-auto::-webkit-scrollbar {
+            height: 6px;
+          }
+          .overflow-x-auto::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+          }
+          .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: #20a1dd;
+            border-radius: 10px;
+          }
         }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+        
+        @media (min-width: 1024px) {
+           .overflow-x-auto::-webkit-scrollbar {
+            display: none;
+           }
+           .overflow-x-auto {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+          }
         }
       `}</style>
     </section>

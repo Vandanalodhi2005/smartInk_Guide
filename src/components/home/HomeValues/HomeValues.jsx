@@ -29,13 +29,14 @@ const HomeValues = () => {
         <section className="home-values">
             <div className="values-container">
                 <h2 className="section-title text-center">Trust & Value</h2>
-                <div className="values-grid">
+                <div className="values-row">
                     {values.map((value, index) => (
-                        <div key={index} className={`value-card ${value.title === 'Independence' ? 'independence' : ''}`}>
+                        <div key={index} className="value-card">
                             <div className="value-icon">{value.icon}</div>
-                            <h3>{value.title}</h3>
-                            <p>{value.description}</p>
-                            {value.details && <p className="value-details">{value.details}</p>}
+                            <div className="value-content">
+                                <h3>{value.title}</h3>
+                                <p>{value.description}</p>
+                            </div>
                         </div>
                     ))}
                 </div>

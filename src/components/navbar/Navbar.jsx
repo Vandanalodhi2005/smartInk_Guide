@@ -183,7 +183,7 @@ const Navbar = () => {
           </div>
 
           {/* DESKTOP NAV LINKS */}
-          <nav className="hidden md:flex items-center gap-8 mt-4 text-sm font-semibold border-t pt-4">
+          <nav className="hidden md:flex items-center justify-center gap-8 mt-4 text-sm font-semibold border-t pt-4">
 
             <Link to="/" className="hover:text-blue-600">Home</Link>
 

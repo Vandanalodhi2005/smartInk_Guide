@@ -1,75 +1,106 @@
 .home-values {
-    padding: 100px 20px;
+    padding: 60px 20px;
     background: #f0f9ff;
+    width: 100%;
 }
 
 .values-container {
     max-width: 1300px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .home-values .section-title {
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 800;
     color: #20a1dd;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
+    text-align: center;
 }
 
-.values-grid {
+/* Strict Row Layout */
+.values-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
 }
 
 .value-card {
-    padding: 40px;
-    background: #f8faff;
-    border-radius: 20px;
+    background: #ffffff;
+    padding: 30px 20px;
+    border-radius: 16px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e5e7eb;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    /* Ensure uniform height */
 }
 
 .value-card:hover {
     transform: translateY(-5px);
-    background: #fff;
-    box-shadow: 0 15px 40px rgba(32, 161, 221, 0.08);
+    box-shadow: 0 10px 30px rgba(32, 161, 221, 0.1);
+    border-color: #20a1dd;
 }
 
 .value-icon {
     font-size: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    display: inline-block;
 }
 
 .value-card h3 {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
-    color: #333;
-    margin-bottom: 16px;
+    color: #1f2937;
+    margin: 0 0 8px 0;
 }
 
 .value-card p {
-    font-size: 15px;
-    line-height: 1.6;
-    color: #666;
+    font-size: 14px;
+    color: #6b7280;
     margin: 0;
+    line-height: 1.5;
 }
 
-.value-details {
-    margin-top: 12px !important;
-    font-size: 13px !important;
-    font-style: italic;
-    opacity: 0.8;
-}
+/* Responsive: Horizontal Scroll for anything smaller than Desktop */
+/* This ensures "One Row" behavior is maintained everywhere */
+@media (max-width: 1024px) {
+    .values-row {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 20px;
+        /* Space for scrollbar */
+        gap: 16px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scroll on iOS */
+    }
 
-.value-card.independence {
-    grid-column: span 1;
-}
+    .value-card {
+        min-width: 260px;
+        /* Fixed width to prevent squishing */
+        flex: 0 0 auto;
+        /* Prevent shrinking */
+        scroll-snap-align: center;
+    }
 
-@media (max-width: 768px) {
-    .home-values {
-        padding: 60px 20px;
+    /* Scrollbar Styling */
+    .values-row::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .values-row::-webkit-scrollbar-track {
+        background: #f3f4f6;
+        border-radius: 10px;
+    }
+
+    .values-row::-webkit-scrollbar-thumb {
+        background: #20a1dd;
+        border-radius: 10px;
     }
 }
